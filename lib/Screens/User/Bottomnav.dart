@@ -22,7 +22,7 @@ class _BottomnaviState extends State<Bottomnavi> {
     Delivery(),
     Cart(),
     History(),
-    const Profileall(),
+     Profileall(),
   ];
 
   @override
@@ -58,22 +58,22 @@ class _BottomnaviState extends State<Bottomnavi> {
           BottomNavigationBarItem(
             icon: Icon(Icons.delivery_dining),
             label: 'Delivery',
-            backgroundColor: Colors.deepOrange,
+            backgroundColor: Colors.redAccent,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart_outlined),
             label: 'Cart',
-            backgroundColor: Colors.deepOrange,
+            backgroundColor: Colors.redAccent,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
             label: 'History',
-            backgroundColor: Colors.deepOrange,
+            backgroundColor: Colors.redAccent,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
             label: 'Profile',
-            backgroundColor: Colors.deepOrange,
+            backgroundColor: Colors.redAccent,
           ),
         ],
         currentIndex: _selectedIndex,

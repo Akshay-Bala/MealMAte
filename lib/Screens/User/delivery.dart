@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:mealmate/Screens/User/Profile.dart';
 import 'package:mealmate/Screens/User/menu.dart';
 
-
 class Delivery extends StatelessWidget {
   Delivery({super.key});
   final ValueNotifier<int> _currentIndexNotifier = ValueNotifier<int>(0);
@@ -20,45 +19,35 @@ class Delivery extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Home",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "Address of Kozhikode",
-              style: TextStyle(color: Colors.black, fontSize: 14.0),
-            )
-          ],
-        ),
-        leading: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Icon(
-            Icons.location_on,
-            color: Colors.deepOrange[500],
-          ),
+        backgroundColor: Colors.redAccent,
+        title: const Text(
+          "MealMate",
+          style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Profile(),
-                  ));
-            },
-            child: const CircleAvatar(
+          IconButton(
+            icon: const Icon(Icons.location_on),
+            color: Colors.white,
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            color: Colors.white,
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const CircleAvatar(
               child: Text(
                 "A",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Profile()),
+              );
+            },
           ),
           const SizedBox(width: 10),
         ],
@@ -68,282 +57,184 @@ class Delivery extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              // Search bar
               Card(
                 margin: const EdgeInsets.all(8.0),
-                shadowColor: Colors.black,
+                elevation: 4,
+                shadowColor: Colors.grey,
                 child: TextFormField(
                   decoration: InputDecoration(
-                    hintText: "Search",
+                    hintText: "Search for food or restaurants",
                     suffixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
                     ),
+                    filled: true,
+                    fillColor: Colors.redAccent.withOpacity(0.1),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
-              SizedBox(
-                height: 300,
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1,
-                  ),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 15,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Container(
-                          height: 120,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            image: const DecorationImage(
-                                image: NetworkImage(
-                                  "https://wallpaperaccess.com/full/4622468.jpg",
-                                ),
-                                fit: BoxFit.fill),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.amber,
-                          ),
-                          margin: const EdgeInsets.symmetric(horizontal: 5),
-                        ),
-                        const Text("Item Name")
-                      ],
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "WHAT'S ON YOUR MIND ? ? ? ",
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(
-                height: 300,
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1,
-                  ),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 15,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Container(
-                          height: 120,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            image: const DecorationImage(
-                                image: NetworkImage(
-                                  "https://img.freepik.com/premium-photo/chicken-biryani-plate-isolated-white-background-delicious-spicy-biryani-isolated_667286-5772.jpg?w=2000",
-                                ),
-                                fit: BoxFit.fill),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          margin: const EdgeInsets.symmetric(horizontal: 5),
-                        ),
-                        const Text("Name of dish")
-                      ],
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+
+              // Carousel Slider
               Container(
-                  height: 200,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(),
-                  child: CarouselSlider(
-                    items: imgList.map((item) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          item,
-                          fit: BoxFit.fill,
-                          width: double.infinity,
-                        ),
-                      );
-                    }).toList(),
-                    options: CarouselOptions(
-                      height: double.infinity,
-                      autoPlay: true,
-                      enlargeCenterPage: true,
-                      onPageChanged: (index, reason) {
-                        _currentIndexNotifier.value = index;
+                height: 200,
+                child: CarouselSlider(
+                  items: imgList.map((item) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        item,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      ),
+                    );
+                  }).toList(),
+                  options: CarouselOptions(
+                    height: double.infinity,
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    onPageChanged: (index, reason) {
+                      _currentIndexNotifier.value = index;
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Section Title
+              const Text(
+                "Popular Dishes",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.redAccent),
+              ),
+              const SizedBox(height: 10),
+
+              // Grid of Dishes
+              SizedBox(
+                height: 300,
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.75,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                  ),
+                  itemCount: 8,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Menu()),
+                        );
                       },
-                    ),
-                  )),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Menu(),
-                        ));
-                  },
-                  child: Column(
-                    children: [
-                      Stack(children: [
-                        Container(
-                          height: 200,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                            image: const DecorationImage(
-                                image: NetworkImage(
-                                  "https://th.bing.com/th/id/OIP.ZaRCXNn4N1B6eMraYw0ZNQHaFj?rs=1&pid=ImgDetMain",
+                      child: Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                image: const DecorationImage(
+                                  image: NetworkImage(
+                                    "https://img.freepik.com/premium-photo/chicken-biryani-plate-isolated-white-background-delicious-spicy-biryani-isolated_667286-5772.jpg?w=2000",
+                                  ),
+                                  fit: BoxFit.cover,
                                 ),
-                                fit: BoxFit.fill),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: -1,
-                          child: Container(
-                            height: 30,
-                            width: 100,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(12)),
-                              color: Colors.white,
+                              ),
                             ),
-                            child: Center(child: Text("data")),
-                          ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              "Dish Name",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                      ]),
-                      Container(
-                        height: 95,
-                        width: 310,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: Center(child: Text("Hotel Rahmath",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ),
-              const SizedBox(
-                height: 20,
+              const SizedBox(height: 20),
+
+              // Restaurant Cards
+              const Text(
+                "Nearby Restaurants",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.redAccent),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Menu(),
-                        ));
-                  },
-                  child: Column(
-                    children: [
-                      Stack(children: [
-                        Container(
-                          height: 200,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                            image: const DecorationImage(
-                                image: NetworkImage(
-                                  "https://th.bing.com/th/id/OIP.JQupWRHVtrRFXJb_oHVVkgHaEo?rs=1&pid=ImgDetMain",
-                                ),
-                                fit: BoxFit.fill),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: -1,
-                          child: Container(
-                            height: 30,
-                            width: 100,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(12)),
-                              color: Colors.white,
-                            ),
-                            child: Center(child: Text("data")),
-                          ),
-                        ),
-                      ]),
-                      Container(
-                        height: 95,
-                        width: 310,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: Center(child: Text("Hotel Arya bhavan",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)),
-                      ),
-                    ],
+              const SizedBox(height: 10),
+
+              // Restaurant Card List
+              Column(
+                children: [
+                  RestaurantCard(
+                    restaurantName: "Hotel Rahmath",
+                    imageUrl: "https://th.bing.com/th/id/OIP.ZaRCXNn4N1B6eMraYw0ZNQHaFj?rs=1&pid=ImgDetMain",
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Menu(),
-                        ));
-                  },
-                  child: Column(
-                    children: [
-                      Stack(children: [
-                        Container(
-                          height: 200,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                            image: const DecorationImage(
-                                image: NetworkImage(
-                                  "https://i0.wp.com/foodntravel.in/wp-content/uploads/2022/12/3.jpg",
-                                ),
-                                fit: BoxFit.fill),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: -1,
-                          child: Container(
-                            height: 30,
-                            width: 100,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(12)),
-                              color: Colors.white,
-                            ),
-                            child: Center(child: Text("data")),
-                          ),
-                        ),
-                      ]),
-                      Container(
-                        height: 95,
-                        width: 310,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: Center(child: Text("Soofi Mandhi",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)),
-                      ),
-                    ],
+                  RestaurantCard(
+                    restaurantName: "Hotel Arya Bhavan",
+                    imageUrl: "https://th.bing.com/th/id/OIP.JQupWRHVtrRFXJb_oHVVkgHaEo?rs=1&pid=ImgDetMain",
                   ),
-                ),
-              )
+                  RestaurantCard(
+                    restaurantName: "Soofi Mandhi",
+                    imageUrl: "https://i0.wp.com/foodntravel.in/wp-content/uploads/2022/12/3.jpg",
+                  ),
+                ],
+              ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class RestaurantCard extends StatelessWidget {
+  final String restaurantName;
+  final String imageUrl;
+
+  const RestaurantCard({Key? key, required this.restaurantName, required this.imageUrl}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Menu()),
+          );
+        },
+        child: Stack(
+          children: [
+            Container(
+              height: 150,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                image: DecorationImage(
+                  image: NetworkImage(imageUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 10,
+              left: 10,
+              child: Container(
+                color: Colors.white.withOpacity(0.8),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Text(
+                  restaurantName,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

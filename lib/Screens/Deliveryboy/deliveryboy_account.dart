@@ -1,127 +1,215 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class DeliveryboyAccount extends StatelessWidget {
-   const DeliveryboyAccount({super.key});
+class DeliveryboyAccount extends StatefulWidget {
+  const DeliveryboyAccount({super.key});
+
+  @override
+  _DeliveryBoyProfileState createState() => _DeliveryBoyProfileState();
+}
+
+class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
+  bool _isEditing = false; // Track if we are in edit mode
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+  }
+
+  Future<void> _loadProfileData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection("Delivery_boy").doc(user.email).get();
+      if (snapshot.exists) {
+        var data = snapshot.data() as Map<String, dynamic>;
+        _nameController.text = data["Name"];
+        _emailController.text = data["Email"];
+        _phoneController.text = data["Phone number"];
+      }
+    }
+  }
+
+  Future<void> _updateProfile() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Map<String, dynamic> data = {
+        "Name": _nameController.text,
+        "Email": _emailController.text,
+        "Phone number": _phoneController.text,
+      };
+
+      try {
+        await FirebaseFirestore.instance.collection("Delivery_boy").doc(user.email).update(data);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Profile updated successfully")));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Update failed: ${e.toString()}")));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      
+    return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.green.shade800,
+        title: const Text('Profile'),
+        centerTitle: true,
       ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              // Top section with a rounded corner
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  color: Colors.orange.shade900,
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(50),
-                  ),
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            // Background gradient
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.green.shade800, Colors.greenAccent.shade400],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
-                child: Center(
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.white.withOpacity(0.3),
+              ),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Top section with icon
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
                     child: const Icon(
-                      Icons.person,
-                      size: 50,
+                      Icons.delivery_dining,
+                      size: 80,
                       color: Colors.white,
                     ),
                   ),
-                ),
+                  const SizedBox(height: 30),
+
+                  // Form Section
+                  Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Name Field
+                        buildInputField(
+                          controller: _nameController,
+                          label: "Full Name",
+                          icon: Icons.person,
+                          enabled: _isEditing,
+                          validator: (value) => value == null || value.isEmpty ? 'Enter your name' : null,
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Email Field
+                        buildInputField(
+                          controller: _emailController,
+                          label: "Email Address",
+                          icon: Icons.email,
+                          enabled: false, // Email should be read-only
+                          validator: (value) => value == null || value.isEmpty ? 'Enter a valid email' : null,
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Phone Field
+                        buildInputField(
+                          controller: _phoneController,
+                          label: "Phone Number",
+                          icon: Icons.phone,
+                          keyboardType: TextInputType.phone,
+                          enabled: _isEditing,
+                          validator: (value) => value == null || value.isEmpty ? 'Enter your phone number' : null,
+                        ),
+                        const SizedBox(height: 24),
+
+                        // Edit/Save Button
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_isEditing) {
+                              if (formKey.currentState!.validate()) {
+                                _updateProfile();
+                              }
+                            }
+                            setState(() {
+                              _isEditing = !_isEditing; // Toggle editing state
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange.shade800,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          child: Text(
+                            _isEditing ? 'Save Changes' : 'Edit Profile',
+                            style: const TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+
+                        // Logout Button
+                        TextButton(
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
+                            Navigator.pop(context); // Go back to login screen
+                          },
+                          child: const Text(
+                            'Logout',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
-
-              // Form Section
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Name Field
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Name",
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Email Field
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Phone Field
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Phone No",
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Work Shift Field
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Work Shift",
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Edit Button
-                    ElevatedButton(
-                      onPressed: () {
-                        // Add your edit logic here
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange.shade900,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        'Edit',
-                        style: TextStyle(fontSize: 18,color: Colors.black),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
+    );
+  }
 
-
+  // Input Field Helper Function
+  Widget buildInputField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    TextInputType keyboardType = TextInputType.text,
+    bool obscureText = false,
+    bool enabled = true,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      enabled: enabled,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.9),
+        prefixIcon: Icon(icon, color: Colors.green.shade800),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      validator: validator,
     );
   }
 }

@@ -8,65 +8,75 @@ class DeliveryboyOrders extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Orders'),
+        backgroundColor: Colors.tealAccent,
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh, color: Colors.white),
             onPressed: () {},
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildTab('All Orders', true),
-                _buildTab('Completed', false),
-                _buildTab('Cancelled', false),
-              ],
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.lightBlueAccent, Colors.purpleAccent.withOpacity(0.5)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          const SizedBox(height: 10),
-          // Orders List
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                _buildOrderCard(
-                  orderId: '1234567890',
-                  from: '83, Anna nagar, second street, Karaikudi',
-                  to: '23, kalanivasal karaikudi, TN, India 630002',
-                  date: '12-05-2024 05:30 PM',
-                  amount: '150',
-                  status: 'Completed',
-                  statusColor: Colors.green,
-                ),
-                _buildOrderCard(
-                  orderId: '1234567890',
-                  from: '83, Anna nagar, second street, Karaikudi',
-                  to: '23, kalanivasal karaikudi, TN, India 630002',
-                  date: '12-05-2024 05:30 PM',
-                  amount: '280',
-                  status: 'Cancelled',
-                  statusColor: Colors.red,
-                ),
-              ],
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildTab('All Orders', true),
+                  _buildTab('Completed', false),
+                  _buildTab('Cancelled', false),
+                ],
+              ),
             ),
-          ),
-          // Footer
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text('Completed Orders: 08'),
-                Text('Cancelled Orders: 03'),
-              ],
+            const SizedBox(height: 10),
+            // Orders List
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: [
+                  _buildOrderCard(
+                    orderId: '1234567890',
+                    from: '83, Anna Nagar, Second Street, Karaikudi',
+                    to: '23, Kalanivasal, Karaikudi, TN, India 630002',
+                    date: '12-05-2024 05:30 PM',
+                    amount: '150',
+                    status: 'Completed',
+                    statusColor: Colors.green,
+                  ),
+                  _buildOrderCard(
+                    orderId: '1234567891',
+                    from: '55, Main Road, Karaikudi',
+                    to: '12, Kamarajar Street, Karaikudi, TN, India 630002',
+                    date: '12-05-2024 06:00 PM',
+                    amount: '280',
+                    status: 'Cancelled',
+                    statusColor: Colors.red,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            // Footer
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('Completed Orders: 08'),
+                  Text('Cancelled Orders: 03'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -77,7 +87,7 @@ class DeliveryboyOrders extends StatelessWidget {
       style: TextStyle(
         fontSize: 16,
         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-        color: isSelected ? Colors.black : Colors.grey,
+        color: isSelected ? Colors.white : Colors.grey,
       ),
     );
   }
@@ -93,6 +103,11 @@ class DeliveryboyOrders extends StatelessWidget {
   }) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
+      elevation: 6,
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -101,7 +116,7 @@ class DeliveryboyOrders extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Order id: $orderId'),
+                Text('Order ID: $orderId'),
                 Text(
                   date,
                   style: const TextStyle(color: Colors.grey),

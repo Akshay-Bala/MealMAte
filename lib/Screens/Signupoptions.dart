@@ -4,34 +4,33 @@ import 'package:mealmate/Screens/Hotel/Hotel_signup.dart';
 import 'package:mealmate/Screens/User/registrationpage.dart';
 
 
-class SignupOptions extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Signup Navigation',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: SignupSelectionPage(),
-    );
-  }
-}
-
 class SignupSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Choose Signup Options'),
-        backgroundColor: Colors.blueAccent,
+        title: const Text(
+          'Choose Signup Option',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.deepPurple,
         centerTitle: true,
+        elevation: 0,
       ),
       body: Container(
+        width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blueAccent, Colors.lightBlueAccent],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
+            colors: [
+              Colors.deepPurple.shade700,
+              Colors.purpleAccent.shade200,
+            ],
           ),
         ),
         child: Center(
@@ -51,19 +50,19 @@ class SignupSelectionPage extends StatelessWidget {
                   },
                   icon: Icons.delivery_dining,
                 ),
-                SizedBox(height: 20), // Space between buttons
+                const SizedBox(height: 20),
                 buildSignupButton(
                   context: context,
                   title: 'User Signup',
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RegistrationPage()),
+                      MaterialPageRoute(builder: (context) => UserRegistration()),
                     );
                   },
                   icon: Icons.person,
                 ),
-                SizedBox(height: 20), // Space between buttons
+                const SizedBox(height: 20),
                 buildSignupButton(
                   context: context,
                   title: 'Hotel Signup',
@@ -91,20 +90,21 @@ class SignupSelectionPage extends StatelessWidget {
   }) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.blueAccent, backgroundColor: Colors.white, padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0), // Text and icon color
+        backgroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
-        elevation: 5,
-        side: BorderSide(color: Colors.blueAccent, width: 2),
+        elevation: 8,
+        side: const BorderSide(color: Colors.deepPurple, width: 2),
       ),
       onPressed: onPressed,
-      icon: Icon(icon, size: 24, color: Colors.blueAccent),
+      icon: Icon(icon, size: 24, color: Colors.deepPurple),
       label: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
-          color: Colors.blueAccent,
+          color: Colors.deepPurple,
           fontWeight: FontWeight.bold,
         ),
       ),

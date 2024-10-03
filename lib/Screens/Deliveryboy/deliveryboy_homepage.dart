@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class DeliveryboyHomepage extends StatelessWidget {
   const DeliveryboyHomepage({super.key});
 
@@ -10,8 +8,9 @@ class DeliveryboyHomepage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Dashboard"),
+        backgroundColor: Colors.tealAccent,
         actions: const [
-          Icon(Icons.bike_scooter), // Top-right bike icon
+          Icon(Icons.bike_scooter, color: Colors.white), // Top-right bike icon
         ],
       ),
       body: Padding(
@@ -23,29 +22,32 @@ class DeliveryboyHomepage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildStatCard("Orders Completed", "25"),
-                _buildStatCard("Orders Cancelled", "06"),
+                _buildStatCard("Orders Completed", "25", Colors.lightGreen[100]!),
+                _buildStatCard("Orders Cancelled", "06", Colors.red[100]!),
               ],
             ),
             const SizedBox(height: 16.0),
-            _buildStatCard("Total Earnings", "₹ 850", expanded: true),
+            _buildStatCard("Total Earnings", "₹ 850", Colors.blue[100]!, expanded: true),
             const SizedBox(height: 16.0),
-            
+
             // New Order Section
             _buildNewOrderCard(),
           ],
         ),
       ),
-      
     );
   }
 
   // Method to build stat cards
-  Widget _buildStatCard(String title, String value, {bool expanded = false}) {
+  Widget _buildStatCard(String title, String value, Color color, {bool expanded = false}) {
     return Expanded(
       flex: expanded ? 2 : 1,
       child: Card(
         elevation: 4,
+        color: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -70,6 +72,9 @@ class DeliveryboyHomepage extends StatelessWidget {
   Widget _buildNewOrderCard() {
     return Card(
       elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -107,7 +112,10 @@ class DeliveryboyHomepage extends StatelessWidget {
                     // Reject Order
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
+                    backgroundColor: Colors.redAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                   ),
                   child: const Text("Reject"),
                 ),
@@ -116,7 +124,10 @@ class DeliveryboyHomepage extends StatelessWidget {
                     // Accept Order
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.greenAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                   ),
                   child: const Text("Accept"),
                 ),

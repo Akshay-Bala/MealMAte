@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:mealmate/Screens/Hotel/Hotel_bottomnav.dart';
-import 'package:mealmate/Screens/User/about.dart';
-import 'package:mealmate/Screens/User/paymentoption.dart';
-import 'package:mealmate/Screens/User/rating.dart';
+
+
+
 import 'package:mealmate/Screens/login.dart';
 import 'package:mealmate/firebase_options.dart';
 
@@ -29,10 +28,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(),
       home: Loginpage(),
       routes: {
-        'Login': (context) => Loginpage(),
-        'Payment': (context) => const Payment(),
-        'About': (context) => AboutPage(),
-        'Rating': (context) => Rating(),
+        // 'Login': (context) => Loginpage(),
+        // 'Payment': (context) => const Payment(),
+        // 'About': (context) => AboutPage(),
+        // 'Rating': (context) => Rating(),
       },
     );
   }

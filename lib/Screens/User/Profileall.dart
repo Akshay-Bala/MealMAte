@@ -10,46 +10,54 @@ class Profileall extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Profile', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.redAccent,
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              color: Colors.redAccent,
               child: Container(
                 height: 150,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.deepOrange.shade500,
                 ),
                 child: Row(
                   children: [
                     const Padding(
-                      padding: EdgeInsets.all(4.0),
+                      padding: EdgeInsets.all(8.0),
                       child: CircleAvatar(
                         radius: 50,
                         // You can set an image here for the avatar if needed.
+                        backgroundColor: Colors.white,
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 15),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Name",
+                          "John Doe", // Replace with actual user name
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16.0,
+                            fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const Text(
-                          "Email_id",
+                          "john.doe@example.com", // Replace with actual user email
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.0,
+                            color: Colors.white70,
+                            fontSize: 16.0,
                           ),
                         ),
                         InkWell(
@@ -59,8 +67,9 @@ class Profileall extends StatelessWidget {
                           child: const Text(
                             "View Activity",
                             style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12.0,
+                              color: Colors.yellowAccent,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -70,67 +79,18 @@ class Profileall extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             Expanded(
               child: ListView(
                 children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      _navigateTo(context, 'Rating');
-                    },
-                    child: const ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.star),
-                      ),
-                      title: Text('Rating'),
-                      trailing: Icon(Icons.arrow_forward_ios),
-                    ),
-                  ),
-                  const Divider(height: 10, endIndent: 25, indent: 15),
-                  InkWell(
-                    onTap: () {
-                      _navigateTo(context, 'Payment');
-                    },
-                    child: const ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.payment),
-                      ),
-                      title: Text('Payment Settings'),
-                      trailing: Icon(Icons.arrow_forward_ios),
-                    ),
-                  ),
-                  const Divider(height: 10, endIndent: 25, indent: 15),
-                  InkWell(
-                    onTap: () {
-                      _navigateTo(context, 'About');
-                    },
-                    child: const ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.info),
-                      ),
-                      title: Text('About'),
-                      trailing: Icon(Icons.arrow_forward_ios),
-                    ),
-                  ),
-                  const Divider(height: 10, endIndent: 25, indent: 15),
-                 
-                  InkWell(
-                    onTap: () {
-                      _navigateTo(context, 'Login');
-                    },
-                    child: const ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.logout),
-                      ),
-                      title: Text('Logout'),
-                      trailing: Icon(Icons.arrow_forward_ios),
-                    ),
-                  ),
-                  const Divider(height: 10, endIndent: 25, indent: 15),
+                  _buildListTile(context, 'Rating', Icons.star, 'Rating'),
+                  _buildDivider(),
+                  _buildListTile(context, 'Payment Settings', Icons.payment, 'Payment'),
+                  _buildDivider(),
+                  _buildListTile(context, 'About', Icons.info, 'About'),
+                  _buildDivider(),
+                  _buildListTile(context, 'Logout', Icons.logout, 'Login'),
+                  _buildDivider(),
                 ],
               ),
             ),
@@ -138,5 +98,28 @@ class Profileall extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildListTile(BuildContext context, String title, IconData icon, String routeName) {
+    return InkWell(
+      onTap: () {
+        _navigateTo(context, routeName);
+      },
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Colors.redAccent,
+          child: Icon(icon, color: Colors.white),
+        ),
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 16, color: Colors.black),
+        ),
+        trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey),
+      ),
+    );
+  }
+
+  Divider _buildDivider() {
+    return const Divider(height: 10, endIndent: 25, indent: 15);
   }
 }

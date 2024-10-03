@@ -1,251 +1,141 @@
+import 'dart:io';
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:mealmate/Screens/login.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HotelSignup extends StatefulWidget {
-  const HotelSignup({super.key});
+
+  HotelSignup({super.key});
 
   @override
-  _HotelSignupPageState createState() => _HotelSignupPageState();
+  State<HotelSignup> createState() => _SampleregState();
 }
 
-class _HotelSignupPageState extends State<HotelSignup> {
-  final _formKey = GlobalKey<FormState>();
+class _SampleregState extends State<HotelSignup> {
+  TextEditingController nameController = TextEditingController();
 
-  // Controllers for the text fields
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
+  TextEditingController phoneController =
+      TextEditingController();
+
+  TextEditingController emailController =
+      TextEditingController();
+
+  TextEditingController passwordController =
+      TextEditingController();
+
+      final ImagePicker _picker = ImagePicker();
+
+      File? _file;
+
+ Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _file = File(pickedFile.path);
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.deepPurple, Colors.purpleAccent],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Form(
-              key: _formKey,
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  const Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 30),
-
-                  // Name Field
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Name of the restaurant',
-                      hintText: 'Enter name',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white54),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.2),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: const Icon(Icons.person, color: Colors.white),
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter Restaurant name';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Email Field
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Enter email',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white54),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.2),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: const Icon(Icons.email, color: Colors.white),
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          !value.contains('@')) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Phone Number Field
-                  TextFormField(
-                    controller: _phoneController,
-                    decoration: InputDecoration(
-                      labelText: 'Phone Number',
-                      hintText: 'Enter your phone number',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white54),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.2),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: const Icon(Icons.phone, color: Colors.white),
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                    keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value == null || value.isEmpty || value.length < 10) {
-                        return 'Please enter a valid phone number';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Password Field
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      hintText: 'Enter password',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white54),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.2),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: const Icon(Icons.lock, color: Colors.white),
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty || value.length < 6) {
-                        return 'Password must be at least 6 characters long';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Address Field
-                  TextFormField(
-                    controller: _addressController,
-                    decoration: InputDecoration(
-                      labelText: 'Address',
-                      hintText: 'Enter address',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white54),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.2),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon:
-                          const Icon(Icons.location_on, color: Colors.white),
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                    maxLines: 3,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter address';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 30),
-
-                  // Sign Up Button
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        print('started');
-                       Map<String, dynamic> datas = {
-  "Name of restaurant": _nameController.text,
-  "email": _emailController.text,
-  "Phone number": _phoneController.text,
-  "Address": _addressController.text,
-};
-
-                        print(datas);
-                        await HotelRegister(context, datas,
-                            _emailController.text, _passwordController.text);
-
-                        // Add your signup logic here
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.deepPurple,
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16.0, horizontal: 50.0),
-                    ),
-                    child: const Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Loginpage(),
-                            ));
-                      },
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                ],
+    return Form(
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextFormField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
+              SizedBox(height: 20,),
+              InkWell(
+                onTap: (){
+                  _pickImage();
+                },
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: _file != null ? FileImage(_file!) : null,
+                    child: _file == null
+                        ? Icon(
+                            Icons.add_a_photo,
+                            size: 50,
+                            color: Colors.grey[700],
+                          )
+                        : null,
+                ),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: addressController,
+                decoration: InputDecoration(
+                  labelText: 'Address',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: phoneController,
+                decoration: InputDecoration(
+                  labelText: 'Phone',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  border: OutlineInputBorder(),
+                ),
+                obscureText: false,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
+                  Map<String, dynamic> data = {
+                    "Name": nameController.text,
+                    "Address": addressController.text,
+                    "Phone": phoneController.text,
+                    "Email":emailController.text,
+                  };
+                  SampleRegister(context, emailController.text,
+                      passwordController.text, data,_file);
+                },
+                child: Text('Register'),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              // ElevatedButton(
+              //   onPressed: () async {
+              //   await  SampleProfileview();
+              //     Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) => Sampleprofile(),
+              //         ));
+              //   },
+              //   child: Text('View users details'),
+              // ),
+            ],
           ),
         ),
       ),
@@ -256,36 +146,42 @@ class _HotelSignupPageState extends State<HotelSignup> {
 
 
 
+final FirebaseAuth Sample_auth = FirebaseAuth.instance;
+final FirebaseFirestore Sample_store = FirebaseFirestore.instance;
 
-
-final FirebaseAuth auth = FirebaseAuth.instance;
-final FirebaseFirestore Fstore = FirebaseFirestore.instance;
-// final FirebaseStorage storage = FirebaseStorage.instance; 
-
-Future<void> HotelRegister(BuildContext context,data,String eMail,String passWord,) async {
+Future<void> SampleRegister(
+    BuildContext context, email, password, data, _file) async {
   try {
-try {
-   UserCredential credential = await auth.createUserWithEmailAndPassword(
-        email: eMail, password: passWord);   
-  
-} catch (e) {
-  print(e);
-  
-}
-   
+    UserCredential cred = await Sample_auth.createUserWithEmailAndPassword(
+        email: email, password: password);
 
-    await Fstore.collection("HOtels").doc(eMail).set(data);
-   
+    if (cred.user != null) {
+      try {
+        final store = FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child('${cred.user!.uid}.jpg');
+        await store.putFile(_file);
+        final imageurl = await store.getDownloadURL();
+        data['imgUrl'] = imageurl;
+      } catch (e) {
+        print('error img add $e');
+      }
+
+      try {
+        await Sample_store.collection("Hotels").doc(email).set(data);
+      } catch (e) {
+        print('error register $e');
+      }
+    }
 
     ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text("User registered successfully")));
-        Navigator.pop(context);
+        .showSnackBar(SnackBar(content: Text("Registered successfully")));
   } catch (e) {
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Registration failed: ${e.toString()}")),
-    );
     print(e);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("unsuccesffull")));
   }
 }
+
 

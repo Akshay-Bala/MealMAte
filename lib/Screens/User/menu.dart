@@ -14,13 +14,13 @@ class Menu extends StatelessWidget {
               "Name of the Restaurant",
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 20.0,
+                fontSize: 22.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
               "Address of Restaurant",
-              style: TextStyle(color: Colors.black, fontSize: 15.0),
+              style: TextStyle(color: Colors.black54, fontSize: 14.0),
             ),
           ],
         ),
@@ -30,7 +30,7 @@ class Menu extends StatelessWidget {
             width: 60,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.green.shade800,
+              color: Colors.green.shade700,
             ),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -42,6 +42,7 @@ class Menu extends StatelessWidget {
                 Icon(
                   Icons.star,
                   color: Colors.white,
+                  size: 16,
                 ),
               ],
             ),
@@ -52,177 +53,143 @@ class Menu extends StatelessWidget {
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Veg/Non-Veg Filters
-              Row(
-                children: [
-                  Container(
-                    height: 30,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: const Color.fromARGB(88, 0, 0, 0)),
-                    ),
-                    child: Center(
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            "assets/images/veg.png",
-                            width: 20,
-                            height: 30,
-                          ),
-                          const SizedBox(width: 5),
-                          const Text("Veg"),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    height: 30,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: const Color.fromARGB(88, 0, 0, 0)),
-                    ),
-                    child: Center(
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            "assets/images/nonveg.png",
-                            width: 20,
-                            height: 30,
-                          ),
-                          const SizedBox(width: 5),
-                          const Text("Non Veg"),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              // Menu Items List
               ListView.builder(
-                shrinkWrap: true, // Added to prevent overflow
-                physics: const NeverScrollableScrollPhysics(),
                 itemCount: 10, // Limit the number of items to 10
+                shrinkWrap: true, // Prevent overflow
+                physics: const NeverScrollableScrollPhysics(), // Disable scrolling
                 itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Container(
-                      height: 180,
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/veg.png",
-                                      width: 20,
-                                      height: 30,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Container(
-                                      height: 16,
-                                      width: 70,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Colors.amber[600],
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Text(
-                                        "Bestseller",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 5),
-                                const Text(
-                                  'Item Name',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                const Text(
-                                  'Rating::',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                const Text(
-                                  'Price',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.green,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Stack(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: Image.network(
-                                    "https://wallpapercave.com/wp/wp8847780.jpg",
-                                    height: 120,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 15,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 40),
-                                      backgroundColor:
-                                          const Color.fromARGB(255, 240, 210, 235),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: const Text(
-                                      'ADD',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  return MenuItemCard(
+                    itemName: 'Item Name $index',
+                    itemPrice: 12.99 + index,
+                    itemImageUrl: "https://wallpapercave.com/wp/wp8847780.jpg",
                   );
                 },
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class MenuItemCard extends StatefulWidget {
+  final String itemName;
+  final double itemPrice;
+  final String itemImageUrl;
+
+  const MenuItemCard({
+    Key? key,
+    required this.itemName,
+    required this.itemPrice,
+    required this.itemImageUrl,
+  }) : super(key: key);
+
+  @override
+  _MenuItemCardState createState() => _MenuItemCardState();
+}
+
+class _MenuItemCardState extends State<MenuItemCard> {
+  int _itemCount = 0;
+
+  void _increaseCount() {
+    setState(() {
+      _itemCount++;
+    });
+  }
+
+  void _decreaseCount() {
+    setState(() {
+      if (_itemCount > 0) {
+        _itemCount--;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Container(
+        height: 180,
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+   
+                  const SizedBox(height: 5),
+                  Text(
+                    widget.itemName,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  const Text(
+                    'Rating: 4.5', // Placeholder for dynamic rating
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    '\$${widget.itemPrice.toStringAsFixed(2)}', // Display item price
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: _decreaseCount,
+                        color: Colors.red,
+                      ),
+                      Text(
+                        '$_itemCount',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: _increaseCount,
+                        color: Colors.green,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  widget.itemImageUrl,
+                  height: 120,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
