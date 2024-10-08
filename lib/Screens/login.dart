@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
 import 'package:mealmate/Screens/Deliveryboy/deliveryboy_bottomnav.dart';
 import 'package:mealmate/Screens/Hotel/Hotel_bottomnav.dart';
 import 'package:mealmate/Screens/Signupoptions.dart';
 import 'package:mealmate/Screens/User/Bottomnav.dart';
-
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -24,7 +22,7 @@ class _LoginpageState extends State<Loginpage> {
   final List<String> userTypes = [
     'Delivery_boys',
     'Hotels',
-    'Users',  // Add any navigation here if Admin is supposed to go to a different page
+    'Users', // Add any navigation here if Admin is supposed to go to a different page
   ];
 
   @override
@@ -170,7 +168,8 @@ class _LoginpageState extends State<Loginpage> {
                       ElevatedButton(
                         onPressed: () {
                           if (selectedUserType != null) {
-                            login(context, usernamectrl.text, passwordctrl.text);
+                            login(
+                                context, usernamectrl.text, passwordctrl.text);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -249,15 +248,18 @@ class _LoginpageState extends State<Loginpage> {
 }
 
 // Updated login logic to navigate based on user type
-Future<void> login(BuildContext context, String email, String password,
-  ) async {
+Future<void> login(
+  BuildContext context,
+  String email,
+  String password,
+) async {
   FirebaseAuth loginauth = FirebaseAuth.instance;
   try {
     UserCredential logincred = await loginauth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
-    String? type= await getDataTypes(email);
+    String? type = await getDataTypes(email);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Login Successful as $type")),
@@ -265,23 +267,25 @@ Future<void> login(BuildContext context, String email, String password,
 
     // Navigate to respective page based on user type
     switch (type) {
-      case 'Delivery_boys':
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const DeliveryboyBottomnav()),
-        );
-        break;
       case 'Users':
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Bottomnavi()),
         );
         break;
+      case 'Delivery_boys':
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const DeliveryboyBottomnav()),
+        );
+        
+        break;
       case 'Hotels':
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HotelBottomnav()),
         );
+
         break;
       // case 'Admin':
       //   // Placeholder for Admin navigation
@@ -301,51 +305,81 @@ Future<void> login(BuildContext context, String email, String password,
   }
 }
 
-
-
-
-
-Future<String?> getDataTypes( String email) async {
+Future<String?> getDataTypes(String email) async {
   final List<String> userTypes = [
     'Delivery_boys',
     'Hotels',
-    'Users',  // Add any navigation here if Admin is supposed to go to a different page
+    'Users', // Add any navigation here if Admin is supposed to go to a different page
   ];
 
   try {
-    for(String collection in userTypes){
-    // Querying the collection
+    for (String collection in userTypes) {
+      // Log the collection being checked
+      print('Checking collection: $collection');
 
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
-        .collection(collection)
-        .where('email', isEqualTo: email)
-        .get();
+      // Querying the collection
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection(collection)
+              .where('email', isEqualTo: email)
+              .get();
 
-    // Check if any documents are returned
-    if (querySnapshot.docs.isNotEmpty) {
-      print('User found in $collection');
-      
-      // Get the first document
-      Map<String, dynamic>? userData = querySnapshot.docs.first.data();
-      
-      if (userData != null) {
-        currentuserdata = userData;
-        print(currentuserdata);
+      // Log the number of documents returned by the query
+      print('Documents found in $collection: ${querySnapshot.docs.length}');
+      List<Map<String, dynamic>> userdata = [];
+      // Check if any documents are returned
+      if (querySnapshot.docs.isNotEmpty) {
+        print('User found in $collection');
+
+        // Get the first document
+        if (collection == 'Delivery_boys') {
+          userdata = querySnapshot.docs.map((doc) {
+            return {
+              'name': doc['name'],
+              'age': doc['age'].toString(),
+              'place': doc['place'],
+              'email': doc['email'],
+              'imgUrl': doc['imgUrl'],
+            };
+          }).toList();
+        } else if (collection == 'Hotels') {
+          userdata = querySnapshot.docs.map((doc) {
+            return {
+              'name': doc['name'],
+              'email': doc['email'],
+              'phone': doc['phone'].toString(),
+              'address': doc['address'],
+              // 'imgUrl': doc['imgUrl'],
+            };
+          }).toList();
+        } else if (collection == "Users") {
+          userdata = querySnapshot.docs.map((doc) {
+            return {
+              'name': doc['name'],
+              'age': doc['age'],
+              'place': doc['place'],
+              'email': doc['email'],
+              // 'imgUrl': doc['imgUrl'],
+            };
+          }).toList();
+        }
+
+        if (userdata.isNotEmpty) {
+          currentuserdata = userdata.first;
+        }
+
+        return collection; // Return the collection type if user is found
       }
-      
-      return collection;
-    
     }
-     else {
-      print('No user found in $collection');
-      return null;
-    }
-  }} catch (e) {
+
+    // If no user found in any collection, return null
+    print('No user found in any collection');
+    return null;
+  } catch (e) {
+    // Log the error if there is any issue with querying Firestore
     print('Error fetching data: $e');
     return null;
   }
 }
 
 Map<String, dynamic> currentuserdata = {};
-
-

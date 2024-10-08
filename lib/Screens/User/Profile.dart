@@ -1,12 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mealmate/Screens/login.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Placeholder for the current user data, assuming it's fetched from Firestore or any other data source
+    Map<String, dynamic> currentuserdata = {
+      'imgUrl': 'https://www.example.com/image.png',
+      'name': 'John Doe',
+      'place': 'New York',
+      'email': 'johndoe@example.com',
+      'age': 25,
+    };
+
     return Scaffold(
       backgroundColor: Colors.deepOrange[500],
       appBar: AppBar(
@@ -22,8 +32,7 @@ class Profile extends StatelessWidget {
             alignment: Alignment.bottomRight,
             child: Container(
               height: MediaQuery.of(context).size.height * 0.8,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 30.0),
+              padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 30.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: const [
@@ -40,18 +49,20 @@ class Profile extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Center(
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundImage: NetworkImage(
-                            "https://i.ytimg.com/vi/WhVDS4EARSc/hqdefault.jpg"),
-                      ),
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundImage: currentuserdata['imgUrl'] != null
+                          ? NetworkImage(currentuserdata['imgUrl'])
+                          : null,
+                      child: currentuserdata['imgUrl'] == null
+                          ? const Icon(Icons.person, size: 50)
+                          : null,
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
-                      
+                      readOnly: true,
                       decoration: InputDecoration(
-                          hintText: '',
+                        hintText: currentuserdata['name'],
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -59,8 +70,9 @@ class Profile extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      readOnly: true,
                       decoration: InputDecoration(
-                        labelText: "Mobile",
+                        hintText: currentuserdata['place'],
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -68,8 +80,9 @@ class Profile extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      readOnly: true,
                       decoration: InputDecoration(
-                        labelText: "Email",
+                        hintText: currentuserdata['email'],
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -77,17 +90,9 @@ class Profile extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      readOnly: true,
                       decoration: InputDecoration(
-                        labelText: "Date of Birth",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Gender",
+                        hintText: currentuserdata['age'].toString(),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -95,7 +100,9 @@ class Profile extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        // Add update functionality here
+                      },
                       child: Container(
                         height: 50,
                         width: double.infinity,
@@ -121,40 +128,3 @@ class Profile extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-Future<void> ProfileGet() async {
-  try {
-    String? email = FirebaseAuth.instance.currentUser!.email;
-    print(email);
-    var update = FirebaseFirestore.instance
-        .collection("users")
-        .where("email", isEqualTo: email);
-    QuerySnapshot querySnapshot = await update.get();
-    print(querySnapshot);
-  List<Map<String, dynamic>>   profiledatasss =
-        querySnapshot.docs.map((doc) {
-      return {  
-        'username': doc['username'],
-        'email': doc['email'],
-        'gender': doc['gender'],
-        'profileImage': doc['profileImage'],
-        'date_of_birth': doc['date_of_birth']
-      };
-    }).toList();
-    print(profiledata);
-    if (profiledatasss.isNotEmpty) {
-      profiledata=profiledatasss[0];
-    }
-  } catch (e) {
-    print("exptn:$e");
-  }
-}
-Map<String, dynamic> profiledata={};

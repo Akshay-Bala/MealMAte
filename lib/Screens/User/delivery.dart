@@ -1,11 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mealmate/Screens/User/Profile.dart';
 import 'package:mealmate/Screens/User/menu.dart';
+import 'package:mealmate/Screens/login.dart';
 
 class Delivery extends StatelessWidget {
   Delivery({super.key});
-  final ValueNotifier<int> _currentIndexNotifier = ValueNotifier<int>(0);
+
   final List<String> imgList = [
     "https://wallpaperaccess.com/full/826921.jpg",
     "https://wallpapercave.com/wp/wp7029319.jpg",
@@ -13,6 +15,15 @@ class Delivery extends StatelessWidget {
     "https://wallpaperaccess.com/full/767265.jpg",
     "https://wallpapercave.com/wp/wp8329822.jpg",
   ];
+
+  // Method to fetch restaurants from Firebase
+  Future<List<Map<String, dynamic>>> getRestaurants() async {
+    // Fetch restaurant data from the 'restaurants' collection in Firestore
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Hotels').get();
+
+    // Convert snapshot documents to a list of maps
+    return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +47,9 @@ class Delivery extends StatelessWidget {
             onPressed: () {},
           ),
           IconButton(
-            icon: const CircleAvatar(
+            icon: CircleAvatar(
               child: Text(
-                "A",
+                currentuserdata['name'][0],
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
@@ -95,9 +106,6 @@ class Delivery extends StatelessWidget {
                     height: double.infinity,
                     autoPlay: true,
                     enlargeCenterPage: true,
-                    onPageChanged: (index, reason) {
-                      _currentIndexNotifier.value = index;
-                    },
                   ),
                 ),
               ),
@@ -160,81 +168,67 @@ class Delivery extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Restaurant Cards
+              // Nearby Restaurants Title
               const Text(
                 "Nearby Restaurants",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.redAccent),
               ),
               const SizedBox(height: 10),
 
-              // Restaurant Card List
-              Column(
-                children: [
-                  RestaurantCard(
-                    restaurantName: "Hotel Rahmath",
-                    imageUrl: "https://th.bing.com/th/id/OIP.ZaRCXNn4N1B6eMraYw0ZNQHaFj?rs=1&pid=ImgDetMain",
-                  ),
-                  RestaurantCard(
-                    restaurantName: "Hotel Arya Bhavan",
-                    imageUrl: "https://th.bing.com/th/id/OIP.JQupWRHVtrRFXJb_oHVVkgHaEo?rs=1&pid=ImgDetMain",
-                  ),
-                  RestaurantCard(
-                    restaurantName: "Soofi Mandhi",
-                    imageUrl: "https://i0.wp.com/foodntravel.in/wp-content/uploads/2022/12/3.jpg",
-                  ),
-                ],
+              // Fetch and display restaurants from Firestore
+              FutureBuilder<List<Map<String, dynamic>>>(
+                future: getRestaurants(), // Fetch restaurants
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text("Error fetching restaurants"));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text("No restaurants available"));
+                  }
+
+                  final restaurants = snapshot.data!;
+                  return SizedBox(
+                    height: 300, // Adjust the height as needed
+                    child: ListView.builder(
+
+                      itemCount: restaurants.length,
+                      itemBuilder: (context, index) {
+                        final restaurant = restaurants[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: 150,
+                            child: Card(
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)
+                              ),
+                              child: ListTile(
+                                leading: Image.network(
+                                  restaurant['imgUrl'] ?? '',
+                                  width: 120,
+                                  height: 120,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                                title: Text(restaurant['name'] ?? 'No Name',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const Menu()),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class RestaurantCard extends StatelessWidget {
-  final String restaurantName;
-  final String imageUrl;
-
-  const RestaurantCard({Key? key, required this.restaurantName, required this.imageUrl}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Menu()),
-          );
-        },
-        child: Stack(
-          children: [
-            Container(
-              height: 150,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                image: DecorationImage(
-                  image: NetworkImage(imageUrl),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 10,
-              left: 10,
-              child: Container(
-                color: Colors.white.withOpacity(0.8),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: Text(
-                  restaurantName,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );

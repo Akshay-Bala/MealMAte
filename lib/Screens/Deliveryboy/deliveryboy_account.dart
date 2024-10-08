@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mealmate/Screens/login.dart';
 
 class DeliveryboyAccount extends StatefulWidget {
   const DeliveryboyAccount({super.key});
@@ -13,7 +14,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _placeController = TextEditingController();
 
   bool _isEditing = false; // Track if we are in edit mode
 
@@ -31,7 +32,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
         var data = snapshot.data() as Map<String, dynamic>;
         _nameController.text = data["Name"];
         _emailController.text = data["Email"];
-        _phoneController.text = data["Phone number"];
+        _placeController.text = data["Phone number"];
       }
     }
   }
@@ -42,7 +43,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
       Map<String, dynamic> data = {
         "Name": _nameController.text,
         "Email": _emailController.text,
-        "Phone number": _phoneController.text,
+        "Place": _placeController.text,
       };
 
       try {
@@ -60,7 +61,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.green.shade800,
-        title: const Text('Profile'),
+        title: Text('Profile'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -107,7 +108,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
                         // Name Field
                         buildInputField(
                           controller: _nameController,
-                          label: "Full Name",
+                          label: currentuserdata['name'],
                           icon: Icons.person,
                           enabled: _isEditing,
                           validator: (value) => value == null || value.isEmpty ? 'Enter your name' : null,
@@ -117,7 +118,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
                         // Email Field
                         buildInputField(
                           controller: _emailController,
-                          label: "Email Address",
+                          label: currentuserdata['email'],
                           icon: Icons.email,
                           enabled: false, // Email should be read-only
                           validator: (value) => value == null || value.isEmpty ? 'Enter a valid email' : null,
@@ -126,8 +127,8 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
 
                         // Phone Field
                         buildInputField(
-                          controller: _phoneController,
-                          label: "Phone Number",
+                          controller: _placeController,
+                          label: currentuserdata['place'],
                           icon: Icons.phone,
                           keyboardType: TextInputType.phone,
                           enabled: _isEditing,

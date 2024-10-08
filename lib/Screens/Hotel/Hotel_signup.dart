@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HotelSignup extends StatefulWidget {
-
   HotelSignup({super.key});
 
   @override
@@ -20,20 +18,17 @@ class _SampleregState extends State<HotelSignup> {
 
   TextEditingController addressController = TextEditingController();
 
-  TextEditingController phoneController =
-      TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
-  TextEditingController emailController =
-      TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
-  TextEditingController passwordController =
-      TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-      final ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
 
-      File? _file;
+  File? _file;
 
- Future<void> _pickImage() async {
+  Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
@@ -41,10 +36,12 @@ class _SampleregState extends State<HotelSignup> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Form(
       child: Scaffold(
+        backgroundColor: Colors.teal[200],
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -57,21 +54,23 @@ class _SampleregState extends State<HotelSignup> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               InkWell(
-                onTap: (){
+                onTap: () {
                   _pickImage();
                 },
                 child: CircleAvatar(
                   radius: 50,
                   backgroundImage: _file != null ? FileImage(_file!) : null,
-                    child: _file == null
-                        ? Icon(
-                            Icons.add_a_photo,
-                            size: 50,
-                            color: Colors.grey[700],
-                          )
-                        : null,
+                  child: _file == null
+                      ? Icon(
+                          Icons.add_a_photo,
+                          size: 50,
+                          color: Colors.grey[700],
+                        )
+                      : null,
                 ),
               ),
               SizedBox(height: 20),
@@ -111,13 +110,13 @@ class _SampleregState extends State<HotelSignup> {
               ElevatedButton(
                 onPressed: () async {
                   Map<String, dynamic> data = {
-                    "Name": nameController.text,
-                    "Address": addressController.text,
-                    "Phone": phoneController.text,
-                    "Email":emailController.text,
+                    "name": nameController.text,
+                    "address": addressController.text,
+                    "phone": phoneController.text,
+                    "email": emailController.text,
                   };
                   SampleRegister(context, emailController.text,
-                      passwordController.text, data,_file);
+                      passwordController.text, data, _file);
                 },
                 child: Text('Register'),
               ),
@@ -142,9 +141,6 @@ class _SampleregState extends State<HotelSignup> {
     );
   }
 }
-
-
-
 
 final FirebaseAuth Sample_auth = FirebaseAuth.instance;
 final FirebaseFirestore Sample_store = FirebaseFirestore.instance;
@@ -183,5 +179,3 @@ Future<void> SampleRegister(
         .showSnackBar(SnackBar(content: Text("unsuccesffull")));
   }
 }
-
-

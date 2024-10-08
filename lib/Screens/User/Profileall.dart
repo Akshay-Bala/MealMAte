@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mealmate/Screens/login.dart';
 
 class Profileall extends StatelessWidget {
   const Profileall({super.key});
@@ -32,12 +33,11 @@ class Profileall extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: CircleAvatar(
-                        radius: 50,
-                        // You can set an image here for the avatar if needed.
-                        backgroundColor: Colors.white,
+                        radius: 40, // Adjust radius to control the avatar size
+                        backgroundImage: NetworkImage(currentuserdata['imgUrl'] ?? 'null'),
                       ),
                     ),
                     const SizedBox(width: 15),
@@ -45,17 +45,17 @@ class Profileall extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "John Doe", // Replace with actual user name
-                          style: TextStyle(
+                        Text(
+                          currentuserdata['name'], // Replace with actual user name
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Text(
-                          "john.doe@example.com", // Replace with actual user email
-                          style: TextStyle(
+                        Text(
+                          currentuserdata['email'], // Replace with actual user email
+                          style: const TextStyle(
                             color: Colors.white70,
                             fontSize: 16.0,
                           ),
@@ -112,9 +112,9 @@ class Profileall extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: TextStyle(fontSize: 16, color: Colors.black),
+          style: const TextStyle(fontSize: 16, color: Colors.black),
         ),
-        trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey),
+        trailing: const Icon(Icons.arrow_forward_ios, color: Colors.grey),
       ),
     );
   }

@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:mealmate/Screens/login.dart';
 
 class HotelDishesadd extends StatefulWidget {
   @override
@@ -14,7 +15,23 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   File? _imageFile;
+  List<Map<String, dynamic>> _dishes = []; // To store added dishes
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController.text = currentuserdata['email'] ?? '';
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _priceController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,20 +51,53 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
         ),
       ),
       padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          children: [
-            _buildImagePicker(),
-            const SizedBox(height: 20),
-            _buildTextField("Dish Name", _nameController, "Enter dish name"),
-            const SizedBox(height: 20),
-            _buildTextField("Price", _priceController, "Enter dish price",
-              inputType: TextInputType.number,),
-            const SizedBox(height: 20),
-            _buildAddDishButton(),
-          ],
-        ),
+      child: Column(
+        children: [
+          Expanded(
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  _buildImagePicker(),
+                  const SizedBox(height: 20),
+                  _buildTextField(
+                      "Dish Name", _nameController, "Enter dish name"),
+                  const SizedBox(height: 20),
+                  _buildTextField(
+                    "Price",
+                    _priceController,
+                    "Enter dish price",
+                    inputType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    readOnly: true,
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      hintText: currentuserdata['email'],
+                      labelStyle: const TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.2),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: const Icon(Icons.email, color: Colors.white),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 20),
+                  _buildAddDishButton(),
+                  const SizedBox(height: 20),
+                  const Divider(),
+                  _buildDishList(), // Show added dishes here
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -69,8 +119,11 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
   }
 
   Widget _buildTextField(
-      String label, TextEditingController controller, String errorText,
-      {TextInputType inputType = TextInputType.text}) {
+    String label,
+    TextEditingController controller,
+    String errorText, {
+    TextInputType inputType = TextInputType.text,
+  }) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
@@ -121,46 +174,101 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
 
   void _addDish() async {
     if (_formKey.currentState?.validate() ?? false && _imageFile != null) {
-      print('uuu');
       Map<String, dynamic> data = {
-        "Name of the dish": _nameController.text,
-        "Price": _priceController.text,
-       
+        "name of the dish": _nameController.text,
+        "price": _priceController.text,
+        "email": currentuserdata['email'],
       };
       await _saveDishToFirestore(data);
-      // _clearForm();
+      _clearForm();
+    } else if (_imageFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please select an image")));
     }
   }
 
-  Future<String?> _uploadImage(File imageFile,data) async {
-   final storageref=FirebaseStorage.instance.ref().child('dishes').child(imageFile.path.split('/').last);
-   print("objectggg");
-   await storageref.putFile(imageFile);
-   final imgurl=await storageref.getDownloadURL();
-   return imgurl;
+  Future<String?> _uploadImage(File imageFile) async {
+    final storageRef = FirebaseStorage.instance.ref().child('dishes').child(
+        '${DateTime.now().millisecondsSinceEpoch}_${imageFile.path.split('/').last}');
+    await storageRef.putFile(imageFile);
+    return await storageRef.getDownloadURL();
   }
 
   Future<void> _saveDishToFirestore(Map<String, dynamic> data) async {
-    if(_imageFile != null)
-    data["imgurl"]=await _uploadImage(_imageFile!, data);
-    print("object");
+    if (_imageFile != null) {
+      data["imgurl"] = await _uploadImage(_imageFile!);
+    }
     try {
       await FirebaseFirestore.instance.collection("Dishes").add(data);
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Dish added successfully")));
-      Navigator.pop(context);
+
+      setState(() {
+        _dishes.add(data);
+      });
     } catch (e) {
-      print('Error in saving dish: $e');
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Failed: ${e.toString()}")));
     }
   }
 
-  // void _clearForm() {
-  //   _nameController.clear();
-  //   _priceController.clear();
-  //   setState(() {
-  //     _imageFile = null;
-  //   });
-  // }
+  Widget _buildDishList() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection("Dishes").snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Text(
+            'No dishes added',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          );
+        }
+
+        var dishes = snapshot.data!.docs.map((doc) {
+          return {
+            "name of the dish": doc["name of the dish"],
+            "price": doc["price"],
+            "imgurl": doc["imgurl"],
+            "email": doc["email"],
+          };
+        }).toList();
+
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: dishes.length,
+          itemBuilder: (context, index) {
+            final dish = dishes[index];
+            return Card(
+              color: Colors.white,
+              child: ListTile(
+                leading: dish["imgurl"] != null
+                    ? Image.network(dish["imgurl"], width: 50, height: 50)
+                    : const Icon(Icons.fastfood),
+                title: Text(dish["name of the dish"]),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Price: \$${dish["price"]}"),
+                    Text("Email: ${dish["email"]}"),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _clearForm() {
+    _formKey.currentState?.reset();
+    _nameController.clear();
+    _priceController.clear();
+    setState(() {
+      _imageFile = null;
+    });
+  }
 }

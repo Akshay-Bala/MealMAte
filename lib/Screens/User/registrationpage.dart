@@ -45,6 +45,7 @@ class _SampleregState extends State<UserRegistration> {
   Widget build(BuildContext context) {
     return Form(
       child: Scaffold(
+        backgroundColor: Colors.purple[200],
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(

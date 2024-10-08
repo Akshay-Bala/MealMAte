@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:mealmate/Screens/login.dart';
 
 class HotelViewprofile extends StatefulWidget {
   const HotelViewprofile({super.key});
@@ -8,6 +10,7 @@ class HotelViewprofile extends StatefulWidget {
 }
 
 class _HotelProfilePageState extends State<HotelViewprofile> {
+ 
   final _formKey = GlobalKey<FormState>();
 
   // Controllers for the text fields
@@ -34,8 +37,8 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  const Text(
-                    'Name of the Restaurant',
+                   Text(
+                    currentuserdata['name'],
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 32,
@@ -51,12 +54,13 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
 
                   // Email Field
                   TextFormField(
+                    readOnly: true,
                     controller: _emailController,
                     decoration: InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Enter your email',
+                      
+                      hintText: currentuserdata['email'],
                       labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white54),
+                      hintStyle: const TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                       border: OutlineInputBorder(
@@ -67,23 +71,23 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
                     ),
                     style: const TextStyle(color: Colors.white),
                     keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty || !value.contains('@')) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty || !value.contains('@')) {
+                    //     return 'Please enter a valid email';
+                    //   }
+                    //   return null;
+                    // },
                   ),
                   const SizedBox(height: 20),
 
                   // Phone Number Field
                   TextFormField(
+                    readOnly: true,
                     controller: _phoneController,
                     decoration: InputDecoration(
-                      labelText: 'Phone Number',
-                      hintText: 'Enter your phone number',
+                      hintText: currentuserdata['phone'],
                       labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white54),
+                      hintStyle: const TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                       border: OutlineInputBorder(
@@ -94,24 +98,24 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
                     ),
                     style: const TextStyle(color: Colors.white),
                     keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value == null || value.isEmpty || value.length < 10) {
-                        return 'Please enter a valid phone number';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty || value.length < 10) {
+                    //     return 'Please enter a valid phone number';
+                    //   }
+                    //   return null;
+                    // },
                   ),
                   const SizedBox(height: 20),
 
 
                   // Address Field
                   TextFormField(
+                    readOnly: true,
                     controller: _addressController,
                     decoration: InputDecoration(
-                      labelText: 'Address',
-                      hintText: 'Enter your address',
+                      hintText: currentuserdata['address'],
                       labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white54),
+                      hintStyle: const TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                       border: OutlineInputBorder(
