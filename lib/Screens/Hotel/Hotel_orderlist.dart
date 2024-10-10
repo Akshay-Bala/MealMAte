@@ -1,6 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class HotelOrderlist extends StatelessWidget {
+class HotelOrderlist extends StatefulWidget {
+
+   HotelOrderlist({super.key});
+   
+  @override
+  State<HotelOrderlist> createState() => _HotelOrderlistState();
+}
+
+class _HotelOrderlistState extends State<HotelOrderlist> {@override
+  void initState() {
+    getorderedlist();
+    super.initState();
+  }
   // Dummy data representing user orders
   final List<Map<String, dynamic>> orders = [
     {
@@ -32,9 +46,6 @@ class HotelOrderlist extends StatelessWidget {
       'paymentStatus': 'Refunded'
     },
   ];
-
-   HotelOrderlist({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -203,3 +214,9 @@ class OrderStatusBadge extends StatelessWidget {
     );
   }
 }
+
+Future<List<Map<String, dynamic>>> getorderedlist() async {
+  var email=FirebaseAuth.instance.currentUser!.email;
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('payments').where('hotel_email', isEqualTo: email).get();
+    return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+  }

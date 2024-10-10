@@ -178,11 +178,11 @@ class Delivery extends StatelessWidget {
                 future: getRestaurants(), // Fetch restaurants
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return  Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return const Center(child: Text("Error fetching restaurants"));
+                    return  Center(child: Text("Error fetching restaurants"));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text("No restaurants available"));
+                    return  Center(child: Text("No restaurants available"));
                   }
 
                   final restaurants = snapshot.data!;
