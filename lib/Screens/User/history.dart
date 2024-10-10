@@ -111,7 +111,7 @@ class OrderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'Total: \$${order.total.toStringAsFixed(2)}',
+                      'Payment: Cash on delivery',
                       style: const TextStyle(color: Colors.grey, fontSize: 13),
                     ),
                     const Text(
@@ -186,3 +186,5 @@ class OrderCard extends StatelessWidget {
     );
   }
 }
+
+

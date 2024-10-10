@@ -18,10 +18,7 @@ class Delivery extends StatelessWidget {
 
   // Method to fetch restaurants from Firebase
   Future<List<Map<String, dynamic>>> getRestaurants() async {
-    // Fetch restaurant data from the 'restaurants' collection in Firestore
     QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Hotels').get();
-
-    // Convert snapshot documents to a list of maps
     return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
@@ -72,7 +69,7 @@ class Delivery extends StatelessWidget {
               Card(
                 margin: const EdgeInsets.all(8.0),
                 elevation: 4,
-                shadowColor: Colors.grey,
+                shadowColor: Colors.white,
                 child: TextFormField(
                   decoration: InputDecoration(
                     hintText: "Search for food or restaurants",
@@ -120,23 +117,24 @@ class Delivery extends StatelessWidget {
 
               // Grid of Dishes
               SizedBox(
-                height: 300,
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.75,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
+                height: 200,
+              
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  // gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                  //   childAspectRatio: 0.75,
+                  //   crossAxisSpacing: 10,
+                  //   mainAxisSpacing: 10, crossAxisCount: 2,
+                  // ),
                   itemCount: 8,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Menu()),
-                        );
-                      },
+                      // onTap: () {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(builder: (context) => const Menu()),
+                      //   );
+                      // },
                       child: Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -146,7 +144,7 @@ class Delivery extends StatelessWidget {
                               height: 150,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                image: const DecorationImage(
+                                image:  DecorationImage(
                                   image: NetworkImage(
                                     "https://img.freepik.com/premium-photo/chicken-biryani-plate-isolated-white-background-delicious-spicy-biryani-isolated_667286-5772.jpg?w=2000",
                                   ),
@@ -213,9 +211,10 @@ class Delivery extends StatelessWidget {
                                 ),
                                 title: Text(restaurant['name'] ?? 'No Name',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                                 onTap: () {
+
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const Menu()),
+                                    MaterialPageRoute(builder: (context) =>  Menu(restname: restaurant['name'], restaddress: restaurant['address'], restemail: restaurant['email'] ?? 'No Email',)),
                                   );
                                 },
                               ),

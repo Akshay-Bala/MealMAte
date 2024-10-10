@@ -1,8 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mealmate/Screens/User/cart.dart';
 
 class Menu extends StatefulWidget {
-  const Menu({super.key});
+  final String restname;
+  final String restaddress;
+  final String restemail;
+
+  Menu({
+    super.key,
+    required this.restname,
+    required this.restaddress,
+    required this.restemail,
+  });
 
   @override
   _MenuState createState() => _MenuState();
@@ -11,48 +21,43 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   double _totalPrice = 0.0; // Total price tracker
   List<MenuItem> _menuItems = [];
+  List<MenuItem> _cartItems = []; // Local cart state
 
   @override
   void initState() {
     super.initState();
-    _fetchMenuItems("user@example.com"); // Call with the actual email
+    _fetchMenuItems(widget.restemail); // Fetch based on restaurant email
   }
 
-  Future<void> _fetchMenuItems(String email) async {
+  Future<void> _fetchMenuItems(String restEmail) async {
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('Hotels')
-        .where('email', isEqualTo: email)
+        .collection('Dishes') // Ensure this collection exists
+        .where('email', isEqualTo: restEmail) // Find restaurant by email
         .get();
 
     if (snapshot.docs.isNotEmpty) {
-      final restaurantId = snapshot.docs.first.id; // Get the restaurant ID
-
-      final dishSnapshot = await FirebaseFirestore.instance
-          .collection('Dishes')
-          .doc(restaurantId) // Use restaurantId instead of email
-          .collection('Dishes')
-          .get();
-
       setState(() {
-        _menuItems = dishSnapshot.docs.map((doc) {
+        _menuItems = snapshot.docs.map((doc) {
           return MenuItem(
             name: doc['name of the dish'],
-            price: doc['price'],
-            imageUrl: doc['imgurl'],
+            price: (double.parse(doc['price'])),
+            imageUrl: doc['imgurl'] ?? "",
           );
         }).toList();
       });
     }
   }
 
-  void _updateTotalPrice(double itemPrice, bool isAdding) {
+  void _addToCart(MenuItem item) {
     setState(() {
-      if (isAdding) {
-        _totalPrice += itemPrice;
+      if (_cartItems.contains(item)) {
+        // Item already in cart, increase quantity
+        _cartItems.firstWhere((cartItem) => cartItem == item).quantity++;
       } else {
-        _totalPrice -= itemPrice;
-        if (_totalPrice < 0) _totalPrice = 0; // Prevent negative values
+        // Item not in cart, add it
+        _cartItems.add(item);
       }
+      _totalPrice += item.price; // Update total price
     });
   }
 
@@ -60,58 +65,36 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [ // Fetch restaurants
-            Text('Restuarant nme'
-              ,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+          children: [
             Text(
-              ' Restuarant addresss',
+              widget.restname,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              widget.restaddress,
               style: TextStyle(color: Colors.black54, fontSize: 14.0),
             ),
           ],
         ),
-        actions: <Widget>[
-          Container(
-            height: 30,
-            width: 60,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.green.shade700,
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "4.4",
-                  style: TextStyle(color: Colors.white),
-                ),
-                Icon(
-                  Icons.star,
-                  color: Colors.white,
-                  size: 16,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 10),
-        ],
         backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: _menuItems.length, // Use the length of the menu items
+                itemCount: _menuItems.length,
                 itemBuilder: (context, index) {
+                  final item = _menuItems[index];
+                  final isAdded = _cartItems.contains(item);
                   return MenuItemCard(
-                    itemName: _menuItems[index].name,
-                    itemPrice: _menuItems[index].price ,
-                    itemImageUrl: _menuItems[index].imageUrl,
-                    onUpdateTotal: _updateTotalPrice, // Passing the price updater
+                    menuItem: item,
+                    onAddToCart: _addToCart, // Pass the function directly
+                    isAdded: isAdded,
                   );
                 },
               ),
@@ -123,10 +106,22 @@ class _MenuState extends State<Menu> {
                   // Navigate to Cart Page
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const CartPage()),
+                    MaterialPageRoute(
+                      builder: (context) => Cart(
+                        cartitems: _cartItems,
+                        totalPrice: _totalPrice,
+                        restEmail: widget.restemail, restname: widget.restname, restaddress: widget.restaddress,
+                      ),
+                    ),
                   );
                 },
-                child: Text('Go to Cart (\$${_totalPrice.toStringAsFixed(2)})'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green.shade700, // Button color
+                  padding: EdgeInsets.symmetric(vertical: 16), // Button padding
+                ),
+                child: Text(
+                  'Go to Cart',
+                ),
               ),
             ),
           ],
@@ -136,51 +131,17 @@ class _MenuState extends State<Menu> {
   }
 }
 
-class MenuItemCard extends StatefulWidget {
-  final String itemName;
-  final double itemPrice;
-  final String itemImageUrl;
-  final Function(double, bool) onUpdateTotal;
+class MenuItemCard extends StatelessWidget {
+  final MenuItem menuItem;
+  final Function(MenuItem) onAddToCart;
+  final bool isAdded;
 
   const MenuItemCard({
     Key? key,
-    required this.itemName,
-    required this.itemPrice,
-    required this.itemImageUrl,
-    required this.onUpdateTotal,
+    required this.menuItem,
+    required this.onAddToCart,
+    required this.isAdded,
   }) : super(key: key);
-
-  @override
-  _MenuItemCardState createState() => _MenuItemCardState();
-}
-
-class _MenuItemCardState extends State<MenuItemCard> {
-  int _itemCount = 0;
-  bool _addedToCart = false;
-
-  void _increaseCount() {
-    setState(() {
-      _itemCount++;
-      widget.onUpdateTotal(widget.itemPrice, true);
-    });
-  }
-
-  void _decreaseCount() {
-    if (_itemCount > 0) {
-      setState(() {
-        _itemCount--;
-        widget.onUpdateTotal(widget.itemPrice, false);
-      });
-    }
-  }
-
-  void _addItemToCart() {
-    setState(() {
-      _addedToCart = true;
-      _itemCount = 1; // Default count after adding to cart
-      widget.onUpdateTotal(widget.itemPrice, true); // Add initial price
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,10 +150,10 @@ class _MenuItemCardState extends State<MenuItemCard> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: EdgeInsets.symmetric(vertical: 8),
       child: Container(
         height: 180,
-        padding: const EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(10.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -201,55 +162,35 @@ class _MenuItemCardState extends State<MenuItemCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 5),
+                  SizedBox(height: 5),
                   Text(
-                    widget.itemName,
-                    style: const TextStyle(
+                    menuItem.name,
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  const Text(
-                    'Rating: 4.5', // Placeholder for dynamic rating
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
+                  SizedBox(height: 5),
                   Text(
-                    '\$${widget.itemPrice.toStringAsFixed(2)}', // Display item price
-                    style: const TextStyle(
+                    '\$${menuItem.price.toStringAsFixed(2)}',
+                    style: TextStyle(
                       fontSize: 16,
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  _addedToCart
-                      ? Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove),
-                              onPressed: _decreaseCount,
-                              color: Colors.red,
-                            ),
-                            Text(
-                              '$_itemCount',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.add),
-                              onPressed: _increaseCount,
-                              color: Colors.green,
-                            ),
-                          ],
-                        )
-                      : ElevatedButton(
-                          onPressed: _addItemToCart,
-                          child: const Text('Add'),
-                        ),
+                  SizedBox(height: 5),
+                  ElevatedButton(
+                    onPressed: () {
+                      onAddToCart(menuItem); // Call the function when button pressed
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green.shade700, // Button color
+                    ),
+                    child: Text(
+                      isAdded ? "Added" : "Add to cart",
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -258,7 +199,9 @@ class _MenuItemCardState extends State<MenuItemCard> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.network(
-                  widget.itemImageUrl,
+                  menuItem.imageUrl.isNotEmpty
+                      ? menuItem.imageUrl
+                      : "https://wallpapercave.com/wp/wp7556107.jpg", // Placeholder or actual image
                   height: 120,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -272,32 +215,26 @@ class _MenuItemCardState extends State<MenuItemCard> {
   }
 }
 
-class CartPage extends StatelessWidget {
-  const CartPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cart'),
-      ),
-      body: const Center(
-        child: Text(
-          'This is the Cart Page where payment will be processed.',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    );
-  }
-}
-
 class MenuItem {
   final String name;
   final double price;
   final String imageUrl;
+  int quantity;
 
-  MenuItem({required this.name, required this.price, required this.imageUrl});
+  MenuItem({
+    required this.name,
+    required this.price,
+    required this.imageUrl,
+    this.quantity = 1,
+  });
+
+  // Override equality and hashCode to use contains and firstWhere correctly
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is MenuItem && other.name == name && other.price == price;
+  }
+
+  @override
+  int get hashCode => name.hashCode ^ price.hashCode;
 }
-
-
-

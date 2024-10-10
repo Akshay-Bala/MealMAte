@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mealmate/Screens/User/G_map.dart';
 import 'package:mealmate/Screens/User/Profileall.dart';
 import 'package:mealmate/Screens/User/cart.dart';
 
@@ -20,7 +21,7 @@ class _BottomnaviState extends State<Bottomnavi> {
 
   final List<Widget> _screens = [
     Delivery(),
-    Cart(),
+    Gmaplocation(),
     History(),
      Profileall(),
   ];
@@ -61,8 +62,8 @@ class _BottomnaviState extends State<Bottomnavi> {
             backgroundColor: Colors.redAccent,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            label: 'Cart',
+            icon: Icon(Icons.location_city),
+            label: 'Location',
             backgroundColor: Colors.redAccent,
           ),
           BottomNavigationBarItem(

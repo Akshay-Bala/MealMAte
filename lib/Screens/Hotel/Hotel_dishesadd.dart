@@ -201,7 +201,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
     try {
       await FirebaseFirestore.instance.collection("Dishes").add(data);
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Dish added successfully")));
+           SnackBar(content: Text("Dish added successfully")));
 
       setState(() {
         _dishes.add(data);
