@@ -5,7 +5,7 @@ import 'package:mealmate/Screens/Hotel/Hotel_viewprofile.dart';
 
 
 class HotelBottomnav extends StatefulWidget {
-  const HotelBottomnav({super.key});
+   HotelBottomnav({super.key});
 
   @override
   _BottomNavPageState createState() => _BottomNavPageState();
@@ -36,18 +36,21 @@ class _BottomNavPageState extends State<HotelBottomnav> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+            backgroundColor: Colors.purpleAccent
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Orders',
+            backgroundColor: Colors.purpleAccent
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
+            backgroundColor: Colors.purpleAccent
           ),
         ],
         currentIndex: _selectedIndex,

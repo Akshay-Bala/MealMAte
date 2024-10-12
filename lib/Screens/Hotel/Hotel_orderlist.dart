@@ -3,54 +3,52 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HotelOrderlist extends StatefulWidget {
+  HotelOrderlist({super.key});
 
-   HotelOrderlist({super.key});
-   
   @override
   State<HotelOrderlist> createState() => _HotelOrderlistState();
 }
 
-class _HotelOrderlistState extends State<HotelOrderlist> {@override
+class _HotelOrderlistState extends State<HotelOrderlist> {
+  List<Map<String, dynamic>> orders = [];
+
+  @override
   void initState() {
-    getorderedlist();
     super.initState();
+    getOrderedList();
   }
-  // Dummy data representing user orders
-  final List<Map<String, dynamic>> orders = [
-    {
-      'orderId': 'ORD12345',
-      'status': 'Paid',
-      'amount': 25.99,
-      'date': '2023-09-12',
-      'paymentStatus': 'Completed'
-    },
-    {
-      'orderId': 'ORD67890',
-      'status': 'Pending',
-      'amount': 45.50,
-      'date': '2023-09-10',
-      'paymentStatus': 'Awaiting Payment'
-    },
-    {
-      'orderId': 'ORD54321',
-      'status': 'Paid',
-      'amount': 75.99,
-      'date': '2023-09-05',
-      'paymentStatus': 'Completed'
-    },
-    {
-      'orderId': 'ORD09876',
-      'status': 'Cancelled',
-      'amount': 100.00,
-      'date': '2023-09-01',
-      'paymentStatus': 'Refunded'
-    },
-  ];
+
+  Future<void> getOrderedList() async {
+    try {
+      var email = FirebaseAuth.instance.currentUser!.email;
+
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('payments')
+          .where('hotel_email', isEqualTo: email)
+          .get();
+
+      // Convert the fetched documents into a list of maps (orders)
+      List<Map<String, dynamic>> fetchedOrders = snapshot.docs.map((doc) {
+        Map<String, dynamic> orderData = doc.data() as Map<String, dynamic>;
+        orderData['orderId'] = doc.id; // Adding the document ID as orderId
+        return orderData;
+      }).toList();
+
+      setState(() {
+        orders = fetchedOrders;
+      });
+    } catch (e) {
+      print('Failed to fetch orders: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title:  Text("Orders",style: TextStyle(color: Colors.white),),
+       backgroundColor: Colors.deepPurple),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.deepPurple, Colors.purpleAccent],
             begin: Alignment.topLeft,
@@ -58,27 +56,30 @@ class _HotelOrderlistState extends State<HotelOrderlist> {@override
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding:  EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'My Orders',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 20),
+              
+               SizedBox(height: 20),
               Expanded(
-                child: ListView.builder(
-                  itemCount: orders.length,
-                  itemBuilder: (context, index) {
-                    final order = orders[index];
-                    return OrderCard(order: order);
-                  },
-                ),
+                child: orders.isEmpty
+                    ?  Center(
+                        child: Text(
+                          'No orders found.',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: orders.length,
+                        itemBuilder: (context, index) {
+                          final order = orders[index];
+                          return OrderCard(order: order);
+                        },
+                      ),
               ),
             ],
           ),
@@ -91,7 +92,7 @@ class _HotelOrderlistState extends State<HotelOrderlist> {@override
 class OrderCard extends StatelessWidget {
   final Map<String, dynamic> order;
 
-  const OrderCard({super.key, required this.order});
+   OrderCard({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +101,9 @@ class OrderCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-      margin: const EdgeInsets.only(bottom: 16.0),
+      margin:  EdgeInsets.only(bottom: 16.0),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -112,63 +113,56 @@ class OrderCard extends StatelessWidget {
               children: [
                 Text(
                   'Order ID: ${order['orderId']}',
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                     color: Colors.deepPurple,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
+                SizedBox(width: 10,),
                 Text(
-                  order['date'],
-                  style: const TextStyle(color: Colors.grey),
+                  (order['timestamp'] as Timestamp).toDate().toString(),
+                  style:  TextStyle(color: Colors.grey),
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+             SizedBox(height: 10),
 
             // Amount and Payment Status
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Amount: \$${order['amount'].toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
+                Expanded(
+                  child: Text(
+                    'Amount: ₹${order['total'].toStringAsFixed(2)}',
+                    style:  TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                OrderStatusBadge(status: order['paymentStatus']),
+                OrderStatusBadge(status: 'Completed'), // Update status as needed
               ],
             ),
-            const SizedBox(height: 10),
+             SizedBox(height: 10),
 
             // Payment status and icon
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
-                  order['paymentStatus'] == 'Completed'
-                      ? Icons.check_circle
-                      : order['paymentStatus'] == 'Awaiting Payment'
-                          ? Icons.hourglass_bottom
-                          : Icons.cancel,
-                  color: order['paymentStatus'] == 'Completed'
-                      ? Colors.green
-                      : order['paymentStatus'] == 'Awaiting Payment'
-                          ? Colors.orange
-                          : Colors.red,
+                  Icons.check_circle,
+                  color: Colors.green,
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  order['paymentStatus'],
+                 SizedBox(width: 10),
+                 Text(
+                  'Completed',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
-                    color: order['paymentStatus'] == 'Completed'
-                        ? Colors.green
-                        : order['paymentStatus'] == 'Awaiting Payment'
-                            ? Colors.orange
-                            : Colors.red,
+                    color: Colors.green,
                   ),
                 ),
               ],
@@ -183,23 +177,14 @@ class OrderCard extends StatelessWidget {
 class OrderStatusBadge extends StatelessWidget {
   final String status;
 
-  const OrderStatusBadge({super.key, required this.status});
+   OrderStatusBadge({super.key, required this.status});
 
   @override
   Widget build(BuildContext context) {
-    Color statusColor;
-    if (status == 'Completed') {
-      statusColor = Colors.green;
-    } else if (status == 'Awaiting Payment') {
-      statusColor = Colors.orange;
-    } else if (status == 'Refunded') {
-      statusColor = Colors.red;
-    } else {
-      statusColor = Colors.grey;
-    }
+    Color statusColor = Colors.green;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      padding:  EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
         color: statusColor.withOpacity(0.2),
         borderRadius: BorderRadius.circular(12),
@@ -214,9 +199,3 @@ class OrderStatusBadge extends StatelessWidget {
     );
   }
 }
-
-Future<List<Map<String, dynamic>>> getorderedlist() async {
-  var email=FirebaseAuth.instance.currentUser!.email;
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('payments').where('hotel_email', isEqualTo: email).get();
-    return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-  }

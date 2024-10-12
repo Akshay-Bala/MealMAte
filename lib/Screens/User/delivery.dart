@@ -27,19 +27,19 @@ class Delivery extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.redAccent,
-        title: const Text(
+        backgroundColor: Colors.green.shade700,
+        title:  Text(
           "MealMate",
           style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.location_on),
+            icon:  Icon(Icons.location_on),
             color: Colors.white,
             onPressed: () {},
           ),
           IconButton(
-            icon: const Icon(Icons.notifications),
+            icon:  Icon(Icons.notifications),
             color: Colors.white,
             onPressed: () {},
           ),
@@ -57,33 +57,28 @@ class Delivery extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(width: 10),
+           SizedBox(width: 10),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding:  EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
               // Search bar
-              Card(
-                margin: const EdgeInsets.all(8.0),
-                elevation: 4,
-                shadowColor: Colors.white,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Search for food or restaurants",
-                    suffixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
-                    fillColor: Colors.redAccent.withOpacity(0.1),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Search for food or restaurants",
+                  suffixIcon:  Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
                   ),
+                  filled: true,
+                  fillColor: Colors.green.withOpacity(.2),
                 ),
               ),
-              const SizedBox(height: 20),
+               SizedBox(height: 20),
 
               // Carousel Slider
               Container(
@@ -106,72 +101,76 @@ class Delivery extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+               SizedBox(height: 20),
 
               // Section Title
-              const Text(
+               Text(
                 "Popular Dishes",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.redAccent),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.green),
               ),
-              const SizedBox(height: 10),
+               SizedBox(height: 10),
 
               // Grid of Dishes
               SizedBox(
                 height: 200,
               
                 child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  // gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                  //   childAspectRatio: 0.75,
-                  //   crossAxisSpacing: 10,
-                  //   mainAxisSpacing: 10, crossAxisCount: 2,
-                  // ),
-                  itemCount: 8,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      // onTap: () {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(builder: (context) => const Menu()),
-                      //   );
-                      // },
-                      child: Card(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 150,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                image:  DecorationImage(
-                                  image: NetworkImage(
-                                    "https://img.freepik.com/premium-photo/chicken-biryani-plate-isolated-white-background-delicious-spicy-biryani-isolated_667286-5772.jpg?w=2000",
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              "Dish Name",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+  scrollDirection: Axis.horizontal,
+  itemCount: 8,
+  itemBuilder: (context, index) {
+    return GestureDetector(
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, // To align text to the start
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                "https://img.freepik.com/premium-photo/chicken-biryani-plate-isolated-white-background-delicious-spicy-biryani-isolated_667286-5772.jpg?w=2000",
+                height: 150,
+                width: 200, // You can adjust the width to your requirement
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(Icons.broken_image, size: 150); // Placeholder for error
+                },
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(), // Show loading indicator
+                  );
+                },
               ),
-              const SizedBox(height: 20),
+            ),
+            SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                "Dish Name",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  },
+),
+
+              ),
+               SizedBox(height: 20),
 
               // Nearby Restaurants Title
-              const Text(
+               Text(
                 "Nearby Restaurants",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.redAccent),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.green),
               ),
-              const SizedBox(height: 10),
+               SizedBox(height: 10),
 
               // Fetch and display restaurants from Firestore
               FutureBuilder<List<Map<String, dynamic>>>(
@@ -194,7 +193,7 @@ class Delivery extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final restaurant = restaurants[index];
                         return Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding:  EdgeInsets.all(8.0),
                           child: SizedBox(
                             height: 150,
                             child: Card(

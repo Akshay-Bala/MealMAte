@@ -4,38 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:mealmate/Screens/login.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({super.key});
+   Profile({super.key});
 
   @override
   Widget build(BuildContext context) {
     // Placeholder for the current user data, assuming it's fetched from Firestore or any other data source
-    Map<String, dynamic> currentuserdata = {
-      'imgUrl': 'https://www.example.com/image.png',
-      'name': 'John Doe',
-      'place': 'New York',
-      'email': 'johndoe@example.com',
-      'age': 25,
-    };
-
+   
     return Scaffold(
-      backgroundColor: Colors.deepOrange[500],
+      backgroundColor: Colors.green[500],
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange[500],
-        title: const Text("Profile"),
+        backgroundColor: Colors.green[500],
+        title:  Text("Profile"),
       ),
       body: Stack(
         children: [
-          const Column(
+           Column(
             children: [],
           ),
           Align(
             alignment: Alignment.bottomRight,
             child: Container(
               height: MediaQuery.of(context).size.height * 0.8,
-              padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 30.0),
+              padding:  EdgeInsets.symmetric(horizontal: 25.0, vertical: 30.0),
               decoration: BoxDecoration(
                 color: Colors.white,
-                boxShadow: const [
+                boxShadow:  [
                   BoxShadow(color: Colors.white, spreadRadius: 3),
                 ],
                 borderRadius: BorderRadius.vertical(
@@ -55,10 +48,10 @@ class Profile extends StatelessWidget {
                           ? NetworkImage(currentuserdata['imgUrl'])
                           : null,
                       child: currentuserdata['imgUrl'] == null
-                          ? const Icon(Icons.person, size: 50)
+                          ?  Icon(Icons.person, size: 50)
                           : null,
                     ),
-                    const SizedBox(height: 20),
+                     SizedBox(height: 20),
                     TextFormField(
                       readOnly: true,
                       decoration: InputDecoration(
@@ -68,7 +61,7 @@ class Profile extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                     SizedBox(height: 10),
                     TextFormField(
                       readOnly: true,
                       decoration: InputDecoration(
@@ -78,7 +71,7 @@ class Profile extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                     SizedBox(height: 10),
                     TextFormField(
                       readOnly: true,
                       decoration: InputDecoration(
@@ -88,7 +81,7 @@ class Profile extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                     SizedBox(height: 10),
                     TextFormField(
                       readOnly: true,
                       decoration: InputDecoration(
@@ -98,7 +91,7 @@ class Profile extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                     SizedBox(height: 20),
                     InkWell(
                       onTap: () {
                         // Add update functionality here
@@ -108,9 +101,9 @@ class Profile extends StatelessWidget {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Colors.deepOrange[500],
+                          color: Colors.green[500],
                         ),
-                        child: const Center(
+                        child:  Center(
                           child: Text(
                             "Update",
                             style: TextStyle(color: Colors.white),

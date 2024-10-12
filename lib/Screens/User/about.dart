@@ -8,7 +8,7 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('About Us'),
-        backgroundColor: Colors.deepOrange.shade500,
+        backgroundColor: Colors.green.shade500,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -39,14 +39,14 @@ class AboutPage extends StatelessWidget {
               'For support or feedback, reach out to us at [email@example.com] or call us at [Phone Number].',
             ),
             const Spacer(),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // Navigate to contact or website
-                },
-                child: const Text('Visit Our Website'),
-              ),
-            ),
+            // Center(
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       // Navigate to contact or website
+            //     },
+            //     child: const Text('Visit Our Website'),
+            //   ),
+            // ),
           ],
         ),
       ),

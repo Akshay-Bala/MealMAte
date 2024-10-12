@@ -8,7 +8,7 @@ class DeliveryboyHomepage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Dashboard"),
-        backgroundColor: Colors.tealAccent,
+        backgroundColor: Colors.lightBlueAccent,
         actions: const [
           Icon(Icons.bike_scooter, color: Colors.white), // Top-right bike icon
         ],

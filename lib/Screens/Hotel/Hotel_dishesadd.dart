@@ -36,21 +36,22 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Dish")),
+      appBar: AppBar(title:  Text("Add Dishes",style: TextStyle(color: Colors.white),),
+       backgroundColor: Colors.deepPurple),
       body: _buildBody(),
     );
   }
 
   Widget _buildBody() {
     return Container(
-      decoration: const BoxDecoration(
+      decoration:  BoxDecoration(
         gradient: LinearGradient(
           colors: [Colors.deepPurple, Colors.purpleAccent],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
       ),
-      padding: const EdgeInsets.all(16.0),
+      padding:  EdgeInsets.all(16.0),
       child: Column(
         children: [
           Expanded(
@@ -60,38 +61,38 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
                 shrinkWrap: true,
                 children: [
                   _buildImagePicker(),
-                  const SizedBox(height: 20),
+                   SizedBox(height: 20),
                   _buildTextField(
                       "Dish Name", _nameController, "Enter dish name"),
-                  const SizedBox(height: 20),
+                   SizedBox(height: 20),
                   _buildTextField(
                     "Price",
                     _priceController,
                     "Enter dish price",
                     inputType: TextInputType.number,
                   ),
-                  const SizedBox(height: 20),
+                   SizedBox(height: 20),
                   TextFormField(
                     readOnly: true,
                     controller: _emailController,
                     decoration: InputDecoration(
                       hintText: currentuserdata['email'],
-                      labelStyle: const TextStyle(color: Colors.white),
+                      labelStyle:  TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide: BorderSide.none,
                       ),
-                      prefixIcon: const Icon(Icons.email, color: Colors.white),
+                      prefixIcon:  Icon(Icons.email, color: Colors.white),
                     ),
-                    style: const TextStyle(color: Colors.white),
+                    style:  TextStyle(color: Colors.white),
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  const SizedBox(height: 20),
+                   SizedBox(height: 20),
                   _buildAddDishButton(),
-                  const SizedBox(height: 20),
-                  const Divider(),
+                   SizedBox(height: 20),
+                   Divider(),
                   _buildDishList(), // Show added dishes here
                 ],
               ),
@@ -113,7 +114,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
                 color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.add_a_photo, size: 50),
+              child:  Icon(Icons.add_a_photo, size: 50),
             ),
     );
   }
@@ -128,13 +129,13 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.white),
+        labelStyle:  TextStyle(color: Colors.white),
         enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.purpleAccent),
+          borderSide:  BorderSide(color: Colors.white),
           borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white, width: 2),
+          borderSide:  BorderSide(color: Colors.white, width: 2),
           borderRadius: BorderRadius.circular(8),
         ),
       ),
@@ -150,13 +151,13 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
     return ElevatedButton(
       onPressed: _addDish,
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 15),
+        padding:  EdgeInsets.symmetric(vertical: 15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
         backgroundColor: Colors.white,
       ),
-      child: const Text(
+      child:  Text(
         'Add Dish',
         style: TextStyle(fontSize: 18),
       ),
@@ -183,7 +184,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
       _clearForm();
     } else if (_imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please select an image")));
+           SnackBar(content: Text("Please select an image")));
     }
   }
 
@@ -217,10 +218,10 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
       stream: FirebaseFirestore.instance.collection("Dishes").snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return  Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Text(
+          return  Text(
             'No dishes added',
             style: TextStyle(color: Colors.white, fontSize: 16),
           );
@@ -237,7 +238,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
 
         return ListView.builder(
           shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+          physics:  NeverScrollableScrollPhysics(),
           itemCount: dishes.length,
           itemBuilder: (context, index) {
             final dish = dishes[index];
@@ -246,7 +247,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
               child: ListTile(
                 leading: dish["imgurl"] != null
                     ? Image.network(dish["imgurl"], width: 50, height: 50)
-                    : const Icon(Icons.fastfood),
+                    :  Icon(Icons.fastfood),
                 title: Text(dish["name of the dish"]),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

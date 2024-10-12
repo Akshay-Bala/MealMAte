@@ -60,7 +60,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.green.shade800,
+        backgroundColor: Colors.lightBlueAccent,
         title: Text('Profile'),
         centerTitle: true,
       ),
@@ -71,7 +71,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.green.shade800, Colors.greenAccent.shade400],
+                  colors: [Colors.lightBlueAccent, Colors.purpleAccent.withOpacity(0.5)],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),

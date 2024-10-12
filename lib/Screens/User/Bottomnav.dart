@@ -9,7 +9,7 @@ import 'package:mealmate/Screens/User/history.dart';
 class Bottomnavi extends StatefulWidget {
   final int? ind;
 
-  const Bottomnavi({super.key, this.ind});
+   Bottomnavi({super.key, this.ind});
 
   @override
   _BottomnaviState createState() => _BottomnaviState();
@@ -55,26 +55,26 @@ class _BottomnaviState extends State<Bottomnavi> {
         children: _screens,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.delivery_dining),
             label: 'Delivery',
-            backgroundColor: Colors.redAccent,
+            backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.location_city),
             label: 'Location',
-            backgroundColor: Colors.redAccent,
+            backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
             label: 'History',
-            backgroundColor: Colors.redAccent,
+            backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
             label: 'Profile',
-            backgroundColor: Colors.redAccent,
+            backgroundColor: Colors.green,
           ),
         ],
         currentIndex: _selectedIndex,

@@ -7,9 +7,8 @@ class Gmaplocation extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        actions: [
-          Text("G Map")
-        ],
+       title: Text('G Map',style: TextStyle(color: Colors.white),),
+       backgroundColor: Colors.green,
       ),
     );
   }

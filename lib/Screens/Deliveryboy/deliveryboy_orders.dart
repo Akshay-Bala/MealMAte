@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class DeliveryboyOrders extends StatelessWidget {
-  const DeliveryboyOrders({super.key});
+   DeliveryboyOrders({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Orders'),
-        backgroundColor: Colors.tealAccent,
+        title:  Text('Orders'),
+        backgroundColor: Colors.lightBlueAccent,
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh, color: Colors.white),
+            icon:  Icon(Icons.refresh, color: Colors.white),
             onPressed: () {},
           ),
         ],
@@ -27,7 +27,7 @@ class DeliveryboyOrders extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding:  EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -37,11 +37,11 @@ class DeliveryboyOrders extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 10),
+             SizedBox(height: 10),
             // Orders List
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding:  EdgeInsets.symmetric(horizontal: 16),
                 children: [
                   _buildOrderCard(
                     orderId: '1234567890',
@@ -50,7 +50,7 @@ class DeliveryboyOrders extends StatelessWidget {
                     date: '12-05-2024 05:30 PM',
                     amount: '150',
                     status: 'Completed',
-                    statusColor: Colors.green,
+                    statusColor:  Colors.greenAccent,
                   ),
                   _buildOrderCard(
                     orderId: '1234567891',
@@ -59,13 +59,13 @@ class DeliveryboyOrders extends StatelessWidget {
                     date: '12-05-2024 06:00 PM',
                     amount: '280',
                     status: 'Cancelled',
-                    statusColor: Colors.red,
+                    statusColor:  Color.fromARGB(255, 250, 18, 1),
                   ),
                 ],
               ),
             ),
             // Footer
-            const Padding(
+             Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -102,14 +102,14 @@ class DeliveryboyOrders extends StatelessWidget {
     required Color statusColor,
   }) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin:  EdgeInsets.only(bottom: 16),
       elevation: 6,
       color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -119,21 +119,21 @@ class DeliveryboyOrders extends StatelessWidget {
                 Text('Order ID: $orderId'),
                 Text(
                   date,
-                  style: const TextStyle(color: Colors.grey),
+                  style:  TextStyle(color: Colors.grey),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+             SizedBox(height: 8),
             Text('From: $from'),
-            const SizedBox(height: 8),
+             SizedBox(height: 8),
             Text('To: $to'),
-            const SizedBox(height: 16),
+             SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   '₹ $amount',
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),

@@ -7,7 +7,7 @@ import 'package:mealmate/Screens/Signupoptions.dart';
 import 'package:mealmate/Screens/User/Bottomnav.dart';
 
 class Loginpage extends StatefulWidget {
-  const Loginpage({super.key});
+   Loginpage({super.key});
 
   @override
   State<Loginpage> createState() => _LoginpageState();
@@ -35,9 +35,9 @@ class _LoginpageState extends State<Loginpage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.deepPurple.shade700,
-              Colors.purple.shade500,
-              Colors.purpleAccent.shade100,
+              Colors.green.shade700,
+              Colors.greenAccent.shade700,
+              Colors.lightGreenAccent.shade100,
             ],
           ),
         ),
@@ -45,12 +45,12 @@ class _LoginpageState extends State<Loginpage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const SizedBox(height: 80),
+               SizedBox(height: 80),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding:  EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const <Widget>[
+                  children:  <Widget>[
                     Text(
                       "Login",
                       style: TextStyle(
@@ -63,16 +63,16 @@ class _LoginpageState extends State<Loginpage> {
                     Text(
                       "Welcome Back",
                       style: TextStyle(
-                        color: Colors.white70,
+                        color: Colors.white,
                         fontSize: 20,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
+               SizedBox(height: 40),
               Container(
-                decoration: const BoxDecoration(
+                decoration:  BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(55),
@@ -81,13 +81,13 @@ class _LoginpageState extends State<Loginpage> {
                 ),
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+                       EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                   child: Column(
                     children: <Widget>[
                       // Username field
                       Card(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                         elevation: 4,
                         child: TextFormField(
@@ -95,16 +95,16 @@ class _LoginpageState extends State<Loginpage> {
                           decoration: InputDecoration(
                             labelText: 'Email',
                             labelStyle: TextStyle(
-                              color: Colors.purple.shade700,
+                              color: Colors.black,
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            prefixIcon: const Icon(Icons.email),
+                            prefixIcon:  Icon(Icons.email),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                       SizedBox(height: 20),
 
                       // Password field
                       Card(
@@ -118,17 +118,17 @@ class _LoginpageState extends State<Loginpage> {
                           decoration: InputDecoration(
                             labelText: 'Password',
                             labelStyle: TextStyle(
-                              color: Colors.purple.shade700,
+                              color: Colors.black,
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            prefixIcon: const Icon(Icons.lock),
-                            suffixIcon: const Icon(Icons.visibility),
+                            prefixIcon: Icon(Icons.lock),
+                            suffixIcon: Icon(Icons.visibility),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                       SizedBox(height: 20),
 
                       // Dropdown for selecting user type
                       Card(
@@ -141,7 +141,7 @@ class _LoginpageState extends State<Loginpage> {
                           decoration: InputDecoration(
                             labelText: 'Select Type',
                             labelStyle: TextStyle(
-                              color: Colors.purple.shade700,
+                              color: Colors.black,
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -162,7 +162,7 @@ class _LoginpageState extends State<Loginpage> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 30),
+                       SizedBox(height: 30),
 
                       // Login button
                       ElevatedButton(
@@ -172,27 +172,27 @@ class _LoginpageState extends State<Loginpage> {
                                 context, usernamectrl.text, passwordctrl.text);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
+                               SnackBar(
                                 content: Text('Please select a user type'),
                               ),
                             );
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple,
-                          padding: const EdgeInsets.symmetric(
+                          backgroundColor: Colors.green,
+                          padding:  EdgeInsets.symmetric(
                               vertical: 15, horizontal: 80),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
                           elevation: 8,
                         ),
-                        child: const Text(
+                        child:  Text(
                           'Login',
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                       SizedBox(height: 10),
 
                       // Forgot password link
                       Align(
@@ -208,13 +208,13 @@ class _LoginpageState extends State<Loginpage> {
                           child: Text(
                             "Forgot password?",
                             style: TextStyle(
-                              color: Colors.deepPurple.shade700,
+                              color: Colors.green.shade700,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                       SizedBox(height: 20),
 
                       // Signup link
                       TextButton(
@@ -229,7 +229,7 @@ class _LoginpageState extends State<Loginpage> {
                         child: Text(
                           'Create an account',
                           style: TextStyle(
-                            color: Colors.deepPurple.shade700,
+                            color: Colors.green.shade700,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -270,20 +270,20 @@ Future<void> login(
       case 'Users':
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Bottomnavi()),
+          MaterialPageRoute(builder: (context) =>  Bottomnavi()),
         );
         break;
       case 'Delivery_boys':
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const DeliveryboyBottomnav()),
+          MaterialPageRoute(builder: (context) =>  DeliveryboyBottomnav()),
         );
         
         break;
       case 'Hotels':
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HotelBottomnav()),
+          MaterialPageRoute(builder: (context) =>  HotelBottomnav()),
         );
 
         break;
@@ -295,7 +295,7 @@ Future<void> login(
       //   break;
       default:
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Invalid user type')),
+           SnackBar(content: Text('Invalid user type')),
         );
     }
   } catch (e) {
