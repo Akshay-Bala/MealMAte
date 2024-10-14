@@ -43,6 +43,7 @@ class History extends StatelessWidget {
                   restaurant: orderData['hotel_email'],
                   items: itemNames,
                   total: orderData['total'] as double,
+                  status: orderData['Order status'],
                 ),
               );
             },
@@ -61,12 +62,14 @@ class Order {
   final String restaurant;
   final List<String> items;
   final double total;
+  final String status;
 
-  Order({
+  Order( {
     required this.date,
     required this.restaurant,
     required this.items,
     required this.total,
+    required this.status,
   });
 }
 
@@ -153,7 +156,7 @@ class OrderCard extends StatelessWidget {
                       style:  TextStyle(fontSize: 16),
                     ),
                      Text(
-                      'Order Confirmed',
+                      order.status,
                       style: TextStyle(color: Colors.green, fontSize: 14),
                     ),
                      Text(

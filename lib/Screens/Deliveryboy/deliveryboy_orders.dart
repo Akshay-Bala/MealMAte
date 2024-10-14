@@ -32,8 +32,7 @@ class DeliveryboyOrders extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildTab('All Orders', true),
-                  _buildTab('Completed', false),
-                  _buildTab('Cancelled', false),
+                 
                 ],
               ),
             ),
@@ -45,7 +44,6 @@ class DeliveryboyOrders extends StatelessWidget {
                 children: [
                   _buildOrderCard(
                     orderId: '1234567890',
-                    from: '83, Anna Nagar, Second Street, Karaikudi',
                     to: '23, Kalanivasal, Karaikudi, TN, India 630002',
                     date: '12-05-2024 05:30 PM',
                     amount: '150',
@@ -54,7 +52,6 @@ class DeliveryboyOrders extends StatelessWidget {
                   ),
                   _buildOrderCard(
                     orderId: '1234567891',
-                    from: '55, Main Road, Karaikudi',
                     to: '12, Kamarajar Street, Karaikudi, TN, India 630002',
                     date: '12-05-2024 06:00 PM',
                     amount: '280',
@@ -94,7 +91,6 @@ class DeliveryboyOrders extends StatelessWidget {
 
   Widget _buildOrderCard({
     required String orderId,
-    required String from,
     required String to,
     required String date,
     required String amount,
@@ -124,8 +120,7 @@ class DeliveryboyOrders extends StatelessWidget {
               ],
             ),
              SizedBox(height: 8),
-            Text('From: $from'),
-             SizedBox(height: 8),
+           
             Text('To: $to'),
              SizedBox(height: 16),
             Row(
