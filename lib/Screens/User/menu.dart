@@ -78,7 +78,7 @@ class _MenuState extends State<Menu> {
             ),
           ],
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.green,
         elevation: 0,
       ),
       body: Padding(
@@ -120,7 +120,7 @@ class _MenuState extends State<Menu> {
                   padding: EdgeInsets.symmetric(vertical: 16), // Button padding
                 ),
                 child: Text(
-                  'Go to Cart',
+                  'Go to Cart',style: TextStyle(color: Colors.black),
                 ),
               ),
             ),
@@ -136,7 +136,7 @@ class MenuItemCard extends StatelessWidget {
   final Function(MenuItem) onAddToCart;
   final bool isAdded;
 
-  const MenuItemCard({
+   MenuItemCard({
     Key? key,
     required this.menuItem,
     required this.onAddToCart,
@@ -172,7 +172,7 @@ class MenuItemCard extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    '\$${menuItem.price.toStringAsFixed(2)}',
+                    '\₹ ${menuItem.price.toStringAsFixed(2)}',
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.green,
@@ -188,7 +188,7 @@ class MenuItemCard extends StatelessWidget {
                       backgroundColor: Colors.green.shade700, // Button color
                     ),
                     child: Text(
-                      isAdded ? "Added" : "Add to cart",
+                      isAdded ? "Added" : "Add to cart",style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ],
@@ -228,7 +228,6 @@ class MenuItem {
     this.quantity = 1,
   });
 
-  // Override equality and hashCode to use contains and firstWhere correctly
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

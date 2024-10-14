@@ -21,7 +21,7 @@ class Payment extends StatelessWidget {
         title: Text('Select Payment Method'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding:  EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -43,45 +43,45 @@ class Payment extends StatelessWidget {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('₹${item.price.toStringAsFixed(2)} each'),
-                        Text('Total: ₹${itemTotalPrice.toStringAsFixed(2)}'),
+                        Text('₹ ${item.price.toStringAsFixed(2)} each'),
+                        Text('Total: ₹ ${itemTotalPrice.toStringAsFixed(2)}'),
                       ],
                     ),
                   );
                 },
               ),
             ),
-            const SizedBox(height: 10),
+             SizedBox(height: 10),
             
             // Bill Summary Section
             Text(
               "Bill Summary",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
+             SizedBox(height: 10),
 
             // MRP Total
             ListTile(
               leading: Icon(Icons.attach_money_outlined, color: Colors.grey),
               title: Text("MRP Total"),
-              trailing: Text("₹${billAmount.toStringAsFixed(2)}"),
+              trailing: Text("₹ ${billAmount.toStringAsFixed(2)}"),
             ),
 
             // Delivery Charges
             ListTile(
               leading: Icon(Icons.delivery_dining, color: Colors.grey),
               title: Text("Delivery Charges"),
-              trailing: Text("₹${deliveryCharge.toStringAsFixed(2)}"),
+              trailing: Text("₹ ${deliveryCharge.toStringAsFixed(2)}"),
             ),
 
             // Total Amount
             ListTile(
-              leading: Icon(Icons.attach_money, color: Colors.grey),
-              title: Text("Total Amount"),
-              trailing: Text("₹${totalAmount.toStringAsFixed(2)}"),
+              leading: Icon(Icons.attach_money, color: Colors.black),
+              title: Text("Total Amount",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+              trailing: Text("₹ ${totalAmount.toStringAsFixed(2)}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
             ),
 
-            const SizedBox(height: 20),
+             SizedBox(height: 20),
 
             // Confirm Payment Button
             ElevatedButton(
@@ -115,6 +115,7 @@ class Payment extends StatelessWidget {
         }).toList(),
         'total': totalAmount,
         'timestamp': FieldValue.serverTimestamp(),
+        'Order status': "Pending"
       });
       print('Payment details stored successfully');
     } catch (e) {

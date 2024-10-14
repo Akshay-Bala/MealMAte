@@ -8,7 +8,7 @@ class DeliveryboyOrders extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title:  Text('Orders'),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.blue[300],
         actions: [
           IconButton(
             icon:  Icon(Icons.refresh, color: Colors.white),

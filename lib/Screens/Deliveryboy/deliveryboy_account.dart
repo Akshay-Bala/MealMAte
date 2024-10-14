@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mealmate/Screens/login.dart';
 
 class DeliveryboyAccount extends StatefulWidget {
-  const DeliveryboyAccount({super.key});
+   DeliveryboyAccount({super.key});
 
   @override
   _DeliveryBoyProfileState createState() => _DeliveryBoyProfileState();
@@ -48,7 +48,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
 
       try {
         await FirebaseFirestore.instance.collection("Delivery_boy").doc(user.email).update(data);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Profile updated successfully")));
+        ScaffoldMessenger.of(context).showSnackBar( SnackBar(content: Text("Profile updated successfully")));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Update failed: ${e.toString()}")));
       }
@@ -80,24 +80,24 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
               width: MediaQuery.of(context).size.width,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
+              padding:  EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Top section with icon
                   Container(
-                    padding: const EdgeInsets.all(20),
+                    padding:  EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: const Icon(
+                    child:  Icon(
                       Icons.delivery_dining,
                       size: 80,
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 30),
+                   SizedBox(height: 30),
 
                   // Form Section
                   Form(
@@ -113,7 +113,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
                           enabled: _isEditing,
                           validator: (value) => value == null || value.isEmpty ? 'Enter your name' : null,
                         ),
-                        const SizedBox(height: 16),
+                         SizedBox(height: 16),
 
                         // Email Field
                         buildInputField(
@@ -123,7 +123,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
                           enabled: false, // Email should be read-only
                           validator: (value) => value == null || value.isEmpty ? 'Enter a valid email' : null,
                         ),
-                        const SizedBox(height: 16),
+                         SizedBox(height: 16),
 
                         // Phone Field
                         buildInputField(
@@ -134,7 +134,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
                           enabled: _isEditing,
                           validator: (value) => value == null || value.isEmpty ? 'Enter your phone number' : null,
                         ),
-                        const SizedBox(height: 24),
+                         SizedBox(height: 24),
 
                         // Edit/Save Button
                         ElevatedButton(
@@ -150,17 +150,17 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orange.shade800,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            padding:  EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                           child: Text(
                             _isEditing ? 'Save Changes' : 'Edit Profile',
-                            style: const TextStyle(fontSize: 18, color: Colors.white),
+                            style:  TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                         SizedBox(height: 20),
 
                         // Logout Button
                         TextButton(
@@ -168,7 +168,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
                             await FirebaseAuth.instance.signOut();
                             Navigator.pop(context); // Go back to login screen
                           },
-                          child: const Text(
+                          child:  Text(
                             'Logout',
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 class DeliveryboyHomepage extends StatelessWidget {
-  const DeliveryboyHomepage({super.key});
+   DeliveryboyHomepage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Dashboard"),
+        title:  Text("Dashboard"),
         backgroundColor: Colors.lightBlueAccent,
-        actions: const [
+        actions:  [
           Icon(Icons.bike_scooter, color: Colors.white), // Top-right bike icon
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -26,9 +26,9 @@ class DeliveryboyHomepage extends StatelessWidget {
                 _buildStatCard("Orders Cancelled", "06", Colors.red[100]!),
               ],
             ),
-            const SizedBox(height: 16.0),
+             SizedBox(height: 16.0),
             _buildStatCard("Total Earnings", "₹ 850", Colors.blue[100]!, expanded: true),
-            const SizedBox(height: 16.0),
+             SizedBox(height: 16.0),
 
             // New Order Section
             _buildNewOrderCard(),
@@ -49,17 +49,17 @@ class DeliveryboyHomepage extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding:  EdgeInsets.all(16.0),
           child: Column(
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                style:  TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 8.0),
+               SizedBox(height: 8.0),
               Text(
                 value,
-                style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                style:  TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -76,34 +76,34 @@ class DeliveryboyHomepage extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding:  EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+             Text(
               "New Order",
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8.0),
-            const Text(
+             SizedBox(height: 8.0),
+             Text(
               "Id: #123455684",
               style: TextStyle(fontSize: 14.0),
             ),
-            const SizedBox(height: 8.0),
-            const Text(
+             SizedBox(height: 8.0),
+             Text(
               "From: 2nd Street Anna Nagar, Karaikudi",
               style: TextStyle(fontSize: 14.0),
             ),
-            const Text(
+             Text(
               "To: 3rd Floor, Anna Towers, Karaikudi",
               style: TextStyle(fontSize: 14.0),
             ),
-            const SizedBox(height: 8.0),
-            const Text(
+             SizedBox(height: 8.0),
+             Text(
               "₹ 150",
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 16.0),
+             SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -117,7 +117,7 @@ class DeliveryboyHomepage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  child: const Text("Reject"),
+                  child:  Text("Reject"),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -129,7 +129,7 @@ class DeliveryboyHomepage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  child: const Text("Accept"),
+                  child:  Text("Accept"),
                 ),
               ],
             )

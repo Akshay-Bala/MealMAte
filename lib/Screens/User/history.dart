@@ -12,7 +12,7 @@ class History extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title:  Text('Order History'),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.green,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance

@@ -12,6 +12,7 @@ class HotelOrderlist extends StatefulWidget {
 class _HotelOrderlistState extends State<HotelOrderlist> {
   List<Map<String, dynamic>> orders = [];
 
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +78,7 @@ class _HotelOrderlistState extends State<HotelOrderlist> {
                         itemCount: orders.length,
                         itemBuilder: (context, index) {
                           final order = orders[index];
-                          return OrderCard(order: order);
+                          return OrderCard(order: order, onStatusChange: getOrderedList,);
                         },
                       ),
               ),
@@ -88,22 +89,60 @@ class _HotelOrderlistState extends State<HotelOrderlist> {
     );
   }
 }
-
-class OrderCard extends StatelessWidget {
+class OrderCard extends StatefulWidget {
   final Map<String, dynamic> order;
+  final Function onStatusChange; // Callback to refresh the UI after status change
 
-   OrderCard({super.key, required this.order});
+  OrderCard({super.key, required this.order, required this.onStatusChange});
+
+  @override
+  _OrderCardState createState() => _OrderCardState();
+}
+
+class _OrderCardState extends State<OrderCard> {
+  late bool isAccepted;
+  late bool isRejected;
+
+  @override
+  void initState() {
+    super.initState();
+    isAccepted = widget.order['Order status'] == 'Order accepted';
+    isRejected = widget.order['Order status'] == 'Order rejected';
+  }
+
+  Future<void> updateOrderStatus(String orderId, String newStatus) async {
+    try {
+      // Update Firestore order status
+      await FirebaseFirestore.instance.collection('payments').doc(orderId).update({
+        'Order status': newStatus,
+      });
+      print('Order status updated to: $newStatus');
+      setState(() {
+        if (newStatus == 'Order accepted') {
+          isAccepted = true;
+          isRejected = false; // Ensure rejected is false if accepted
+        } else if (newStatus == 'Order rejected') {
+          isRejected = true;
+          isAccepted = false; // Ensure accepted is false if rejected
+        }
+      });
+    } catch (e) {
+      print('Failed to update order status: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> dishes = widget.order['items'] ?? [];
+
     return Card(
       elevation: 3,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-      margin:  EdgeInsets.only(bottom: 16.0),
+      margin: EdgeInsets.only(bottom: 16.0),
       child: Padding(
-        padding:  EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -111,23 +150,25 @@ class OrderCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Order ID: ${order['orderId']}',
-                  style:  TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.deepPurple,
+                Expanded(
+                  child: Text(
+                    'Order ID: ${widget.order['orderId']}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.deepPurple,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(width: 10,),
+                SizedBox(width: 10),
                 Text(
-                  (order['timestamp'] as Timestamp).toDate().toString(),
-                  style:  TextStyle(color: Colors.grey),
+                  (widget.order['timestamp'] as Timestamp).toDate().toString(),
+                  style: TextStyle(color: Colors.grey),
                 ),
               ],
             ),
-             SizedBox(height: 10),
+            SizedBox(height: 10),
 
             // Amount and Payment Status
             Row(
@@ -135,18 +176,61 @@ class OrderCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'Amount: ₹${order['total'].toStringAsFixed(2)}',
-                    style:  TextStyle(
+                    'Amount: ₹${widget.order['total'].toStringAsFixed(2)}',
+                    style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black87,
+                      color: Colors.black,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                OrderStatusBadge(status: 'Completed'), // Update status as needed
               ],
             ),
-             SizedBox(height: 10),
+            SizedBox(height: 10),
+
+            // Dishes and Quantities
+            Text(
+              'Ordered Dishes:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.deepPurple,
+              ),
+            ),
+            Container(
+              height: dishes.length * 50,
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(), // Prevent scrolling issues inside the card
+                itemCount: dishes.length,
+                itemBuilder: (context, index) {
+                  final dish = dishes[index];
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          dish['name'],
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        Text(
+                          'Qty: ${dish['quantity'] ?? 1}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 10),
 
             // Payment status and icon
             Row(
@@ -156,9 +240,9 @@ class OrderCard extends StatelessWidget {
                   Icons.check_circle,
                   color: Colors.green,
                 ),
-                 SizedBox(width: 10),
-                 Text(
-                  'Completed',
+                SizedBox(width: 10),
+                Text(
+                  widget.order['Order status'],
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -167,12 +251,67 @@ class OrderCard extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 20),
+
+            // Accept and Reject buttons
+            if (!isAccepted && !isRejected) ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      await updateOrderStatus(widget.order['orderId'], 'Order accepted');
+                      widget.onStatusChange(); // Callback to refresh the UI
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Order Accepted!'),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green, // Background color
+                    ),
+                    child: Text('Accept'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await updateOrderStatus(widget.order['orderId'], 'Order rejected');
+                      widget.onStatusChange(); // Callback to refresh the UI
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Order Rejected!'),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red, // Background color
+                    ),
+                    child: Text('Reject'),
+                  ),
+                ],
+              ),
+            ] else if (isAccepted) ...[
+              Text(
+                'Order Accepted',
+                style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+              ),
+            ] else if (isRejected) ...[
+              Text(
+                'Order Rejected',
+                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+            ],
           ],
         ),
       ),
     );
   }
 }
+
+
+
+
+
 
 class OrderStatusBadge extends StatelessWidget {
   final String status;
