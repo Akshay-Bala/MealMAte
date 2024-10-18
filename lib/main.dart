@@ -29,9 +29,10 @@ class MyApp extends StatelessWidget {
       home:  Loginpage(),
       //SplashScreen(),
       routes: {
-        'Login': (context) =>  Loginpage(),
+       // 'Login': (context) =>  Loginpage(),
         'About': (context) =>  AboutPage(),
         'Rating': (context) =>  Rating(),
+        
       },
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mealmate/Screens/Deliveryboy/deliveryboy_orders.dart';
 
 class DeliveryboyHomepage extends StatefulWidget {
   DeliveryboyHomepage({super.key});
@@ -71,6 +72,7 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
 
   Widget _buildNewOrderCard(Map<String, dynamic> order) {
     List<dynamic> dishes = order['items'] ?? [];
+    String userEmail = order['user_email'] ?? '';
 
     return Card(
       elevation: 4,
@@ -79,78 +81,116 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
       ),
       child: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "New Order",
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              "Order ID: ${order['orderId']}",
-              style: TextStyle(fontSize: 14.0),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              "Address: 3rd Floor, Anna Towers, Karaikudi",
-              style: TextStyle(fontSize: 14.0),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              "Amount: ₹${order['total'].toStringAsFixed(2)}",
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              "Ordered Dishes:",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            ...dishes.map((dish) => Text("${dish['name']} - Qty: ${dish['quantity']}")),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: FutureBuilder<Map<String, dynamic>>(
+          future: fetchUserDetails(userEmail),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Text('Error fetching user details');
+            } else if (!snapshot.hasData) {
+              return Text('User not found');
+            }
+
+            Map<String, dynamic> userData = snapshot.data!;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ElevatedButton(
-                  onPressed: (order['Order status'] == 'Order confirmed by hotel and delivery_partner')
-                      ? () async {
-                          await deliverOrder(order['orderId']);
-                          setState(() {
-                            order['Order status'] = 'Order delivered successfully';
-                          });
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.greenAccent[700],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: Text("Delivered", style: TextStyle(color: Colors.black)),
+                Text(
+                  "New Order",
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
-                if (order['Order status'] != 'Order confirmed by hotel and delivery_partner' &&
-                    order['Order status'] != 'Order delivered successfully')
-                  ElevatedButton(
-                    onPressed: () async {
-                      await acceptOrder(order['orderId']);
-                      setState(() {
-                        order['Order status'] = 'Order confirmed by hotel and delivery_partner';
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                SizedBox(height: 8.0),
+                Text(
+                  "Order ID: ${order['orderId']}",
+                  style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8.0),
+                Text(
+                  "Customer name:  ${userData['name'] ?? ''}",
+                  style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8.0),
+                Text(
+                  "Address:  ${userData['place'] ?? ''}",
+                  style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8.0),
+                Text(
+                  "Amount: ₹${order['total'].toStringAsFixed(2)}",
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8.0),
+                Text(
+                  "Ordered Dishes:",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                ...dishes.map((dish) => Text("${dish['name']} - Qty: ${dish['quantity']}")),
+                SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: (order['Order status'] == 'Order confirmed by hotel and delivery_partner')
+                          ? () async {
+                              await deliverOrder(order['orderId']);
+                              setState(() {
+                                order['Order status'] = 'Order delivered successfully';
+                              });
+                            }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.greenAccent[700],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
+                      child: Text("Delivered", style: TextStyle(color: Colors.black)),
                     ),
-                    child: Text("Accept", style: TextStyle(color: Colors.black)),
-                  ),
+                    if (order['Order status'] != 'Order confirmed by hotel and delivery_partner' &&
+                        order['Order status'] != 'Order delivered successfully')
+                      ElevatedButton(
+                        onPressed: () async {
+                          await acceptOrder(order['orderId']);
+                          setState(() {
+                            order['Order status'] = 'Order confirmed by hotel and delivery_partner';
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                        child: Text("Accept", style: TextStyle(color: Colors.black)),
+                      ),
+                  ],
+                ),
               ],
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
+  }
+
+  Future<Map<String, dynamic>> fetchUserDetails(String userEmail) async {
+    try {
+      QuerySnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .where('email', isEqualTo: userEmail)
+          .get();
+
+      if (userSnapshot.docs.isNotEmpty) {
+        return userSnapshot.docs.first.data() as Map<String, dynamic>;
+      } else {
+        return {};
+      }
+    } catch (e) {
+      print('Error fetching user details: $e');
+      return {};
+    }
   }
 }
 

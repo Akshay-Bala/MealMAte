@@ -41,12 +41,22 @@ class _SampleregState extends State<Deliveryboysignup> {
       });
     }
   }
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      child: Scaffold(
-        backgroundColor: Colors.green[200],
-        body: Padding(
+@override
+Widget build(BuildContext context) {
+  return Form(
+    child: Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.lightBlueAccent,
+              Colors.purpleAccent.withOpacity(0.5),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -58,21 +68,21 @@ class _SampleregState extends State<Deliveryboysignup> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
               InkWell(
-                onTap: (){
+                onTap: () {
                   _pickImage();
                 },
                 child: CircleAvatar(
                   radius: 50,
                   backgroundImage: _file != null ? FileImage(_file!) : null,
-                    child: _file == null
-                        ? Icon(
-                            Icons.add_a_photo,
-                            size: 50,
-                            color: Colors.grey[700],
-                          )
-                        : null,
+                  child: _file == null
+                      ? Icon(
+                          Icons.add_a_photo,
+                          size: 50,
+                          color: Colors.grey[700],
+                        )
+                      : null,
                 ),
               ),
               SizedBox(height: 20),
@@ -106,7 +116,7 @@ class _SampleregState extends State<Deliveryboysignup> {
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
-                obscureText: false,
+                obscureText: true, // Changed to obscure the password
               ),
               SizedBox(height: 20),
               ElevatedButton(
@@ -115,33 +125,28 @@ class _SampleregState extends State<Deliveryboysignup> {
                     "name": nameController.text,
                     "age": ageController.text,
                     "place": placeController.text,
-                    "email":emailController.text,
+                    "email": emailController.text,
                   };
-                  SampleRegister(context, emailController.text,
-                      passwordController.text, data,_file);
+                  SampleRegister(
+                    context,
+                    emailController.text,
+                    passwordController.text,
+                    data,
+                    _file,
+                  );
                 },
                 child: Text('Register'),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              // ElevatedButton(
-              //   onPressed: () async {
-              //   await  SampleProfileview();
-              //     Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //           builder: (context) => Sampleprofile(),
-              //         ));
-              //   },
-              //   child: Text('View users details'),
-              // ),
+              SizedBox(height: 10),
+              // Add the 'View user details' button if needed
             ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
 
 
