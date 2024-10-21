@@ -10,10 +10,10 @@ class HotelSignup extends StatefulWidget {
   HotelSignup({super.key});
 
   @override
-  State<HotelSignup> createState() => _SampleregState();
+  State<HotelSignup> createState() => _HotelSignupState();
 }
 
-class _SampleregState extends State<HotelSignup> {
+class _HotelSignupState extends State<HotelSignup> {
   TextEditingController nameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -36,96 +36,98 @@ class _SampleregState extends State<HotelSignup> {
   Widget build(BuildContext context) {
     return Form(
       child: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.purple, Colors.white], // Gradient from purple to white
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+        resizeToAvoidBottomInset: true, // Prevent bottom overflow
+        body: SingleChildScrollView( // Enable scrolling for the content
+          child: Container(
+            height: MediaQuery.of(context).size.height, // Full height container
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.purple, Colors.white], // Gradient from purple to white
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
-          ),
-          child: Padding(
-            padding:  EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                    border: OutlineInputBorder(),
+            child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 50), // Add spacing from the top
+                  TextFormField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                InkWell(
-                  onTap: () {
-                    _pickImage();
-                  },
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: _file != null ? FileImage(_file!) : null,
-                    child: _file == null
-                        ? Icon(
-                            Icons.add_a_photo,
-                            size: 50,
-                            color: Colors.grey[700],
-                          )
-                        : null,
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: _pickImage,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: _file != null ? FileImage(_file!) : null,
+                      child: _file == null
+                          ? Icon(
+                              Icons.add_a_photo,
+                              size: 50,
+                              color: Colors.grey[700],
+                            )
+                          : null,
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  controller: addressController,
-                  decoration: InputDecoration(
-                    labelText: 'Address',
-                    border: OutlineInputBorder(),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: addressController,
+                    decoration: InputDecoration(
+                      labelText: 'Address',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  controller: phoneController,
-                  decoration: InputDecoration(
-                    labelText: 'Phone',
-                    border: OutlineInputBorder(),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: phoneController,
+                    decoration: InputDecoration(
+                      labelText: 'Phone',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(),
+                    ),
+                    obscureText: true, // Obscure password
                   ),
-                  obscureText: true, // Make password field obscure
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () async {
-                    Map<String, dynamic> data = {
-                      "name": nameController.text,
-                      "address": addressController.text,
-                      "phone": phoneController.text,
-                      "email": emailController.text,
-                    };
-                    SampleRegister(context, emailController.text,
-                        passwordController.text, data, _file);
-                  },
-                  child: Text('Register',style: TextStyle(color: Colors.black),),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-              ],
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      Map<String, dynamic> data = {
+                        "name": nameController.text,
+                        "address": addressController.text,
+                        "phone": phoneController.text,
+                        "email": emailController.text,
+                      };
+                      SampleRegister(context, emailController.text,
+                          passwordController.text, data, _file);
+                    },
+                    child: Text(
+                      'Register',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
             ),
           ),
         ),
