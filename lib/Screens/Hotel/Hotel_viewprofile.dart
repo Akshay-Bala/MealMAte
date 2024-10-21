@@ -1,16 +1,15 @@
-
 import 'package:flutter/material.dart';
-import 'package:mealmate/Screens/login.dart';
+import 'package:mealmate/Screens/Deliveryboy/deliverysignup.dart';
+import 'package:mealmate/Screens/login.dart'; // Adjust the import according to your project structure
 
 class HotelViewprofile extends StatefulWidget {
-  const HotelViewprofile({super.key});
+   HotelViewprofile({super.key});
 
   @override
   _HotelProfilePageState createState() => _HotelProfilePageState();
 }
 
 class _HotelProfilePageState extends State<HotelViewprofile> {
- 
   final _formKey = GlobalKey<FormState>();
 
   // Controllers for the text fields
@@ -22,7 +21,7 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.deepPurple, Colors.purpleAccent],
             begin: Alignment.topLeft,
@@ -31,13 +30,13 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            padding:  EdgeInsets.symmetric(horizontal: 24.0),
             child: Form(
               key: _formKey,
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                   Text(
+                  Text(
                     currentuserdata['name'],
                     style: TextStyle(
                       color: Colors.white,
@@ -46,39 +45,28 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 30),
-
-                  // Name Field
-                  
-                  const SizedBox(height: 20),
+                   SizedBox(height: 30),
 
                   // Email Field
                   TextFormField(
                     readOnly: true,
                     controller: _emailController,
                     decoration: InputDecoration(
-                      
                       hintText: currentuserdata['email'],
-                      labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white),
+                      labelStyle:  TextStyle(color: Colors.white),
+                      hintStyle:  TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide: BorderSide.none,
                       ),
-                      prefixIcon: const Icon(Icons.email, color: Colors.white),
+                      prefixIcon:  Icon(Icons.email, color: Colors.white),
                     ),
-                    style: const TextStyle(color: Colors.white),
+                    style:  TextStyle(color: Colors.white),
                     keyboardType: TextInputType.emailAddress,
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty || !value.contains('@')) {
-                    //     return 'Please enter a valid email';
-                    //   }
-                    //   return null;
-                    // },
                   ),
-                  const SizedBox(height: 20),
+                   SizedBox(height: 20),
 
                   // Phone Number Field
                   TextFormField(
@@ -86,27 +74,20 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
                     controller: _phoneController,
                     decoration: InputDecoration(
                       hintText: currentuserdata['phone'],
-                      labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white),
+                      labelStyle:  TextStyle(color: Colors.white),
+                      hintStyle:  TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide: BorderSide.none,
                       ),
-                      prefixIcon: const Icon(Icons.phone, color: Colors.white),
+                      prefixIcon:  Icon(Icons.phone, color: Colors.white),
                     ),
-                    style: const TextStyle(color: Colors.white),
+                    style:  TextStyle(color: Colors.white),
                     keyboardType: TextInputType.phone,
-                    // validator: (value) {
-                    //   if (value == null || value.isEmpty || value.length < 10) {
-                    //     return 'Please enter a valid phone number';
-                    //   }
-                    //   return null;
-                    // },
                   ),
-                  const SizedBox(height: 20),
-
+                   SizedBox(height: 20),
 
                   // Address Field
                   TextFormField(
@@ -114,17 +95,17 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
                     controller: _addressController,
                     decoration: InputDecoration(
                       hintText: currentuserdata['address'],
-                      labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white),
+                      labelStyle:  TextStyle(color: Colors.white),
+                      hintStyle:  TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide: BorderSide.none,
                       ),
-                      prefixIcon: const Icon(Icons.location_on, color: Colors.white),
+                      prefixIcon:  Icon(Icons.location_on, color: Colors.white),
                     ),
-                    style: const TextStyle(color: Colors.white),
+                    style:  TextStyle(color: Colors.white),
                     maxLines: 3,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -133,7 +114,33 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 30),
+                   SizedBox(height: 30),
+
+                  // Add Delivery Boy Button
+                  ElevatedButton(
+                    onPressed: () {
+                      // Navigate to the Add Delivery Boy screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Deliveryboysignup(), // Create this screen
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.deepPurple,
+                      backgroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      'Add Delivery Boy',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                   SizedBox(height: 20),
                 ],
               ),
             ),

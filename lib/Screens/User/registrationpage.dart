@@ -10,10 +10,10 @@ class UserRegistration extends StatefulWidget {
   UserRegistration({super.key});
 
   @override
-  State<UserRegistration> createState() => _SampleregState();
+  State<UserRegistration> createState() => _UserRegistrationState();
 }
 
-class _SampleregState extends State<UserRegistration> {
+class _UserRegistrationState extends State<UserRegistration> {
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController placeController = TextEditingController();
@@ -34,107 +34,152 @@ class _SampleregState extends State<UserRegistration> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true, // Allow keyboard to push content
-        body: SingleChildScrollView( // Enable scrolling for the entire page
-          child: Container(
-            height: MediaQuery.of(context).size.height, // Ensure the container takes the full height
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.green, Colors.white], // Gradient with green and white
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.teal, Colors.white],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 50), // To add spacing from top
-                  TextFormField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                      border: OutlineInputBorder(),
-                    ),
+          ),
+          child: Padding(
+            padding:  EdgeInsets.all(20.0),
+            child: Center(
+              child: Card(
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding:  EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'User Registration',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20),
+                      InkWell(
+                        onTap: _pickImage,
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.grey[300],
+                          backgroundImage: _file != null ? FileImage(_file!) : null,
+                          child: _file == null
+                              ? Icon(
+                                  Icons.add_a_photo,
+                                  size: 40,
+                                  color: Colors.grey[600],
+                                )
+                              : null,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      _buildTextField(
+                        controller: nameController,
+                        label: 'Name',
+                        icon: Icons.person,
+                      ),
+                      SizedBox(height: 15),
+                      _buildTextField(
+                        controller: ageController,
+                        label: 'Age',
+                        icon: Icons.calendar_today,
+                      ),
+                      SizedBox(height: 15),
+                      _buildTextField(
+                        controller: placeController,
+                        label: 'Place',
+                        icon: Icons.location_on,
+                      ),
+                      SizedBox(height: 15),
+                      _buildTextField(
+                        controller: emailController,
+                        label: 'Email',
+                        icon: Icons.email,
+                      ),
+                      SizedBox(height: 15),
+                      _buildTextField(
+                        controller: passwordController,
+                        label: 'Password',
+                        icon: Icons.lock,
+                        obscureText: true,
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () async {
+                          Map<String, dynamic> data = {
+                            "name": nameController.text,
+                            "age": ageController.text,
+                            "place": placeController.text,
+                            "email": emailController.text,
+                          };
+                          await SampleRegister(
+                            context,
+                            emailController.text,
+                            passwordController.text,
+                            data,
+                            _file,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: Text(
+                          'Register',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                    ],
                   ),
-                  SizedBox(height: 20),
-                  InkWell(
-                    onTap: _pickImage,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: _file != null ? FileImage(_file!) : null,
-                      child: _file == null
-                          ? Icon(
-                              Icons.add_a_photo,
-                              size: 50,
-                              color: Colors.grey[700],
-                            )
-                          : null,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: ageController,
-                    decoration: InputDecoration(
-                      labelText: 'Age',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: placeController,
-                    decoration: InputDecoration(
-                      labelText: 'Place',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                    obscureText: true, // Ensure password is obscured
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {
-                      Map<String, dynamic> data = {
-                        "name": nameController.text,
-                        "age": ageController.text,
-                        "place": placeController.text,
-                        "email": emailController.text,
-                      };
-                      SampleRegister(
-                        context,
-                        emailController.text,
-                        passwordController.text,
-                        data,
-                        _file,
-                      );
-                    },
-                    child: Text(
-                      'Register',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                ],
+                ),
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    bool obscureText = false,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      style: TextStyle(color: Colors.black),
+      decoration: InputDecoration(
+        prefixIcon: Icon(icon, color: Colors.teal),
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.teal),
+        filled: true,
+        fillColor: Colors.white,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.teal),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.green),
         ),
       ),
     );
@@ -160,21 +205,21 @@ Future<void> SampleRegister(
         final imageurl = await store.getDownloadURL();
         data['imgUrl'] = imageurl;
       } catch (e) {
-        print('error img add $e');
+        print('Error uploading image: $e');
       }
 
       try {
         await Sample_store.collection("Users").doc(email).set(data);
       } catch (e) {
-        print('error register $e');
+        print('Error saving user data: $e');
       }
     }
 
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("Registered")));
+        .showSnackBar(SnackBar(content: Text("Registered successfully")));
   } catch (e) {
     print(e);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("unsuccesffull")));
+        .showSnackBar(SnackBar(content: Text("Registration unsuccessful")));
   }
 }

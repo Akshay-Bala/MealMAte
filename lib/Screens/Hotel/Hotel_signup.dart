@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -34,102 +33,147 @@ class _HotelSignupState extends State<HotelSignup> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true, // Prevent bottom overflow
-        body: SingleChildScrollView( // Enable scrolling for the content
-          child: Container(
-            height: MediaQuery.of(context).size.height, // Full height container
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.purple, Colors.white], // Gradient from purple to white
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.indigo, Colors.blue.shade100],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 50), // Add spacing from the top
-                  TextFormField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                      border: OutlineInputBorder(),
-                    ),
+          ),
+          child: Padding(
+            padding:  EdgeInsets.all(20.0),
+            child: Center(
+              child: Card(
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding:  EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Hotel Registration',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.indigo,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20),
+                      InkWell(
+                        onTap: _pickImage,
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.grey[300],
+                          backgroundImage: _file != null ? FileImage(_file!) : null,
+                          child: _file == null
+                              ? Icon(
+                                  Icons.add_a_photo,
+                                  size: 40,
+                                  color: Colors.grey[600],
+                                )
+                              : null,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      _buildTextField(
+                        controller: nameController,
+                        label: 'Hotel Name',
+                        icon: Icons.hotel,
+                      ),
+                      SizedBox(height: 15),
+                      _buildTextField(
+                        controller: addressController,
+                        label: 'Address',
+                        icon: Icons.location_on,
+                      ),
+                      SizedBox(height: 15),
+                      _buildTextField(
+                        controller: phoneController,
+                        label: 'Phone',
+                        icon: Icons.phone,
+                      ),
+                      SizedBox(height: 15),
+                      _buildTextField(
+                        controller: emailController,
+                        label: 'Email',
+                        icon: Icons.email,
+                      ),
+                      SizedBox(height: 15),
+                      _buildTextField(
+                        controller: passwordController,
+                        label: 'Password',
+                        icon: Icons.lock,
+                        obscureText: true,
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () async {
+                          Map<String, dynamic> data = {
+                            "name": nameController.text,
+                            "address": addressController.text,
+                            "phone": phoneController.text,
+                            "email": emailController.text,
+                          };
+                          await SampleRegister(context, emailController.text,
+                              passwordController.text, data, _file);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.indigo,
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: Text(
+                          'Register',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                    ],
                   ),
-                  SizedBox(height: 20),
-                  InkWell(
-                    onTap: _pickImage,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: _file != null ? FileImage(_file!) : null,
-                      child: _file == null
-                          ? Icon(
-                              Icons.add_a_photo,
-                              size: 50,
-                              color: Colors.grey[700],
-                            )
-                          : null,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: addressController,
-                    decoration: InputDecoration(
-                      labelText: 'Address',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: phoneController,
-                    decoration: InputDecoration(
-                      labelText: 'Phone',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                    obscureText: true, // Obscure password
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {
-                      Map<String, dynamic> data = {
-                        "name": nameController.text,
-                        "address": addressController.text,
-                        "phone": phoneController.text,
-                        "email": emailController.text,
-                      };
-                      SampleRegister(context, emailController.text,
-                          passwordController.text, data, _file);
-                    },
-                    child: Text(
-                      'Register',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                ],
+                ),
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    bool obscureText = false,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      style: TextStyle(color: Colors.black),
+      decoration: InputDecoration(
+        prefixIcon: Icon(icon, color: Colors.indigo),
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.indigo),
+        filled: true,
+        fillColor: Colors.white,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.indigo),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(color: Colors.blue),
         ),
       ),
     );
@@ -149,19 +193,19 @@ Future<void> SampleRegister(
       try {
         final store = FirebaseStorage.instance
             .ref()
-            .child('user_images')
+            .child('hotel_images')
             .child('${cred.user!.uid}.jpg');
         await store.putFile(_file!);
         final imageurl = await store.getDownloadURL();
         data['imgUrl'] = imageurl;
       } catch (e) {
-        print('error img add $e');
+        print('Error uploading image: $e');
       }
 
       try {
         await Sample_store.collection("Hotels").doc(email).set(data);
       } catch (e) {
-        print('error register $e');
+        print('Error saving hotel data: $e');
       }
     }
 
@@ -170,6 +214,6 @@ Future<void> SampleRegister(
   } catch (e) {
     print(e);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("unsuccessful")));
+        .showSnackBar(SnackBar(content: Text("Registration unsuccessful")));
   }
 }

@@ -5,6 +5,7 @@ import 'package:mealmate/Screens/Deliveryboy/deliveryboy_bottomnav.dart';
 import 'package:mealmate/Screens/Hotel/Hotel_bottomnav.dart';
 import 'package:mealmate/Screens/Signupoptions.dart';
 import 'package:mealmate/Screens/User/Bottomnav.dart';
+import 'package:mealmate/Screens/User/forgotpassword.dart';
 
 class Loginpage extends StatefulWidget {
    Loginpage({super.key});
@@ -199,11 +200,7 @@ class _LoginpageState extends State<Loginpage> {
                         alignment: Alignment.centerRight,
                         child: InkWell(
                           onTap: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => ForgotPasswordPage()),
-                            // );
+                           Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage(),));
                           },
                           child: Text(
                             "Forgot password?",

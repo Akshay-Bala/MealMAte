@@ -149,7 +149,7 @@ class Delivery extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding:  EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
                 "Dish Name",
                 style: TextStyle(fontWeight: FontWeight.bold),

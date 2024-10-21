@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Deliveryboyforgotpass extends StatelessWidget {
-   const Deliveryboyforgotpass({super.key});
+    Deliveryboyforgotpass({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class Deliveryboyforgotpass extends StatelessWidget {
         children: [
           // Background image or color
           Container(
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/background.jpg"), // Add your background image here
                 fit: BoxFit.cover,
@@ -21,7 +21,7 @@ class Deliveryboyforgotpass extends StatelessWidget {
           // Login form
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding:  EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -37,10 +37,10 @@ class Deliveryboyforgotpass extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                   SizedBox(height: 20),
                   
                   // Subtitle
-                  const Text(
+                   Text(
                     "Forgot your Password",
                     style: TextStyle(
                       fontSize: 16,
@@ -48,8 +48,8 @@ class Deliveryboyforgotpass extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
-                   const Text(
+                   SizedBox(height: 20),
+                    Text(
                     "Don't worry we will help you.Please enter your email to reset password",
                     style: TextStyle(
                       fontSize: 16,
@@ -57,7 +57,7 @@ class Deliveryboyforgotpass extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 40),
+                   SizedBox(height: 40),
 
                   // Email TextField
                   TextField(
@@ -70,7 +70,7 @@ class Deliveryboyforgotpass extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                   SizedBox(height: 20),
 
                   
 
@@ -81,18 +81,18 @@ class Deliveryboyforgotpass extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange.shade900,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding:  EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    child: const Text(
+                    child:  Text(
                       'Submit',
                       style: TextStyle(fontSize: 18,color: Colors.black),
                     ),
                   ),
                   
-                  const SizedBox(height: 10),
+                   SizedBox(height: 10),
                   
                   
                   

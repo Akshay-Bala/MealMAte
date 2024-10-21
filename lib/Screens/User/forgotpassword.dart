@@ -6,7 +6,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 // Adjust the import to your SignIn screen
 
 class ForgotPasswordPage extends StatefulWidget {
-  const ForgotPasswordPage({Key? key}) : super(key: key);
+   ForgotPasswordPage({Key? key}) : super(key: key);
 
   @override
   State<ForgotPasswordPage> createState() => _ForgotPasswordState();
@@ -117,26 +117,26 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(25.0),
+        padding:  EdgeInsets.all(25.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 30.0),
+             SizedBox(height: 30.0),
             GestureDetector(
               onTap: () => Navigator.pop(context),
-              child: const Icon(
+              child:  Icon(
                 Icons.arrow_back,
                 color: Colors.indigoAccent,
               ),
             ),
-            const SizedBox(height: 20.0),
+             SizedBox(height: 20.0),
             Center(
               child: Image.asset(
                 "assets/pictures/forgot-password.png",
                 height: MediaQuery.of(context).size.height * 0.25,
               ),
             ),
-            const SizedBox(height: 20.0),
+             SizedBox(height: 20.0),
             Text(
               "Forgot\nPassword?",
               style: GoogleFonts.poppins(
@@ -145,7 +145,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                 color: Colors.green,
               ),
             ),
-            const SizedBox(height: 20.0),
+             SizedBox(height: 20.0),
             Text(
               "Don’t worry. Please enter the address associated with your account.",
               style: GoogleFonts.poppins(
@@ -154,12 +154,12 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 40.0),
+             SizedBox(height: 40.0),
             _buildInputField(
               hintText: "Email ID",
               icon: Icons.email,
             ),
-            const SizedBox(height: 50.0),
+             SizedBox(height: 50.0),
             _buildSubmitBtn(),
           ],
         ),

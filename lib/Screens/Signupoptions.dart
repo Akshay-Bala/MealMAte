@@ -9,7 +9,7 @@ class SignupSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title:  Text(
           'Choose Signup Option',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -36,7 +36,7 @@ class SignupSelectionPage extends StatelessWidget {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding:  EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -51,7 +51,7 @@ class SignupSelectionPage extends StatelessWidget {
                   },
                   icon: Icons.delivery_dining,
                 ),
-                const SizedBox(height: 20),
+                 SizedBox(height: 20),
                 buildSignupButton(
                   context: context,
                   title: 'User Signup',
@@ -63,7 +63,7 @@ class SignupSelectionPage extends StatelessWidget {
                   },
                   icon: Icons.person,
                 ),
-                const SizedBox(height: 20),
+                 SizedBox(height: 20),
                 buildSignupButton(
                   context: context,
                   title: 'Hotel Signup',
@@ -92,18 +92,18 @@ class SignupSelectionPage extends StatelessWidget {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+        padding:  EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
         elevation: 8,
-        side: const BorderSide(color: Colors.white, width: 2),
+        side:  BorderSide(color: Colors.white, width: 2),
       ),
       onPressed: onPressed,
       icon: Icon(icon, size: 24, color: Colors.black),
       label: Text(
         title,
-        style: const TextStyle(
+        style:  TextStyle(
           fontSize: 18,
           color: Colors.black,
           fontWeight: FontWeight.bold,
