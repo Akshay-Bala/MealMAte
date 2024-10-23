@@ -40,17 +40,17 @@ class SignupSelectionPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                buildSignupButton(
-                  context: context,
-                  title: 'Delivery Boy Signup',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Deliveryboysignup()),
-                    );
-                  },
-                  icon: Icons.delivery_dining,
-                ),
+                // buildSignupButton(
+                //   context: context,
+                //   title: 'Delivery Boy Signup',
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (context) => Deliveryboysignup()),
+                //     );
+                //   },
+                //   icon: Icons.delivery_dining,
+                // ),
                  SizedBox(height: 20),
                 buildSignupButton(
                   context: context,

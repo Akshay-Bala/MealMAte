@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:mealmate/Screens/User/menu.dart';
-import 'package:mealmate/Screens/User/paymentoption.dart';
+import 'package:mealmate/Screens/User/payment.dart';
 
 class Cart extends StatefulWidget {
   final double totalPrice;

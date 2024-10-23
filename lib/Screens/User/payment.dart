@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mealmate/Screens/User/menu.dart'; // Ensure MenuItem is imported correctly
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mealmate/Screens/User/paymentoptions.dart';
 import 'package:mealmate/Screens/login.dart';
 
 class Payment extends StatelessWidget {
@@ -18,7 +19,7 @@ class Payment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Payment Method'),
+        title: Text('Select Payment'),
       ),
       body: Padding(
         padding:  EdgeInsets.all(20.0),
@@ -80,18 +81,30 @@ class Payment extends StatelessWidget {
               title: Text("Total Amount",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
               trailing: Text("₹ ${totalAmount.toStringAsFixed(2)}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
             ),
-
              SizedBox(height: 20),
 
-            // Confirm Payment Button
+            ElevatedButton(
+              onPressed: () {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentOptions(
+                  cart_items: cart_items,
+          totalAmount: totalAmount,
+          restEmail: restEmail,
+                ),));
+              },
+              child: Text("Pay through online"),
+            ),
+
+             SizedBox(height: 10),
+
             ElevatedButton(
               onPressed: () {
                 storePaymentDetails();
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Payment Confirmed!'),
+                  content: Text('Cash on Delivery Confirmed!'),
                 ));
               },
-              child: Text("Confirm order"),
+              child: Text("Cash on Delivery"),
             ),
           ],
         ),

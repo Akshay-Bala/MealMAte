@@ -216,7 +216,9 @@ Future<void> SampleRegister(
     }
 
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("Registered successfully")));
+        .showSnackBar(SnackBar(content: Text("User Registered successfully")));
+        Navigator.pop(context);
+        Navigator.pop(context);
   } catch (e) {
     print(e);
     ScaffoldMessenger.of(context)

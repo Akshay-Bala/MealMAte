@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mealmate/Screens/login.dart';
 
 class Deliveryboysignup extends StatefulWidget {
   Deliveryboysignup({super.key});
@@ -115,6 +116,7 @@ class _SampleregState extends State<Deliveryboysignup> {
                       "age": ageController.text,
                       "place": placeController.text,
                       "email": emailController.text,
+                      "hotel_id":currentuserdata['email'],
                     };
                     SampleRegister(
                       context,

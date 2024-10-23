@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mealmate/Screens/User/Profile.dart';
 import 'package:mealmate/Screens/login.dart'; // Assuming login.dart contains your LoginPage
 
 class Profileall extends StatelessWidget {
@@ -73,7 +74,7 @@ class Profileall extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            _navigateTo(context, '/view-activity');
+                           Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(),));
                           },
                           child: Text(
                             "View Activity",
