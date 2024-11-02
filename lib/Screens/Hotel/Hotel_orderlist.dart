@@ -47,11 +47,11 @@ class _HotelOrderlistState extends State<HotelOrderlist> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title:  Text("Orders",style: TextStyle(color: Colors.white),),
-       backgroundColor: Colors.deepPurple),
+       backgroundColor: Colors.indigo),
       body: Container(
         decoration:  BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.deepPurple, Colors.purpleAccent],
+            colors: [Colors.indigo, Colors.indigoAccent],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

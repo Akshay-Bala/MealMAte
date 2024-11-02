@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
        // 'Login': (context) =>  Loginpage(),
         'About': (context) =>  AboutPage(),
         'Rating': (context) =>  Rating(),
-        
       },
     );
   }

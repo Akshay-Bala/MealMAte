@@ -23,7 +23,7 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
       body: Container(
         decoration:  BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.deepPurple, Colors.purpleAccent],
+            colors: [Colors.indigo, Colors.indigoAccent],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -35,7 +35,18 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
               key: _formKey,
               child: ListView(
                 shrinkWrap: true,
-                children: [
+                children: [Center(
+                    child: CircleAvatar(
+                    radius: 60,
+                    backgroundImage: currentuserdata!['imgUrl'] != null
+                        ? NetworkImage(currentuserdata!['imgUrl'])
+                        : null,
+                    child: currentuserdata!['imgUrl'] == null
+                        ? Icon(Icons.person, size: 60, color: Colors.grey)
+                        : null,
+                  ),
+                  ),
+                  SizedBox(height: 30),
                   Text(
                     currentuserdata['name'],
                     style: TextStyle(
@@ -123,12 +134,12 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Deliveryboysignup(), // Create this screen
+                          builder: (context) => Deliveryboysignup(hotelEmail: currentuserdata['email'],), // Create this screen
                         ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.deepPurple,
+                      foregroundColor: Colors.indigo,
                       backgroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
@@ -141,6 +152,27 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
                     ),
                   ),
                    SizedBox(height: 20),
+                   ElevatedButton(
+                    onPressed: () {
+                      // Handle logout action
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Loginpage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.redAccent,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      'Logout',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
                 ],
               ),
             ),

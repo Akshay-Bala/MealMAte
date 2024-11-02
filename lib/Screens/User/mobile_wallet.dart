@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mealmate/Screens/User/menu.dart';
+import 'package:mealmate/Screens/login.dart';
 
 class MobileWallet extends StatefulWidget {
   final List<MenuItem> cart_items;
@@ -11,6 +13,7 @@ class MobileWallet extends StatefulWidget {
       required this.cart_items,
       required this.totalAmount,
       required this.restEmail});
+
   @override
   MobileWalletPageState createState() => MobileWalletPageState();
 }
@@ -94,6 +97,13 @@ class MobileWalletPageState extends State<MobileWallet> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Processing Payment...')),
                         );
+                        // Store payment details in Firestore
+                        storePaymentDetails();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -120,5 +130,36 @@ class MobileWalletPageState extends State<MobileWallet> {
         ),
       ),
     );
+  }
+
+  // Method to store payment details in Firestore
+  void storePaymentDetails() async {
+    String userId = currentuserdata['email']; // Make sure currentuserdata is correctly defined
+
+    CollectionReference payments = FirebaseFirestore.instance.collection('payments');
+    try {
+      await payments.add({
+        'user_email': userId,
+        'hotel_email': widget.restEmail,
+        'items': widget.cart_items.map((item) => {
+          'name': item.name,
+          'price': item.price,
+          'quantity': item.quantity,
+        }).toList(),
+        'total': widget.totalAmount,
+        'timestamp': FieldValue.serverTimestamp(),
+        'Order status': "Pending",
+        'Payment':"Online payment"
+      });
+      print('Payment successfully');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Payment details stored successfully!')),
+      );
+    } catch (e) {
+      print('Failed to store payment details: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Payment Unsuccessfull')),
+      );
+    }
   }
 }

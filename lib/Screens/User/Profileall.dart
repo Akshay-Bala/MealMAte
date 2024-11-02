@@ -49,7 +49,11 @@ class Profileall extends StatelessWidget {
                       padding: EdgeInsets.all(8.0),
                       child: CircleAvatar(
                         radius: 40,
-                        backgroundImage: NetworkImage(currentuserdata['imgUrl'] ?? 'null'),
+                        child: Text(
+                          currentuserdata['name'][0],
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 45),
+                        ),
                       ),
                     ),
                     SizedBox(width: 15),
@@ -74,7 +78,11 @@ class Profileall extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                           Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(),));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Profile(),
+                                ));
                           },
                           child: Text(
                             "View Activity",
@@ -105,10 +113,13 @@ class Profileall extends StatelessWidget {
             ),
             // Logout Button
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.0),
+              padding: EdgeInsets.symmetric(vertical: 15),
               child: ElevatedButton.icon(
                 onPressed: () {
-                  // logout_account(context);
+                   Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Loginpage()),
+                      );
                 },
                 icon: Icon(Icons.logout, color: Colors.white),
                 label: Text(
@@ -121,7 +132,7 @@ class Profileall extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green, // Logout button color
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 80),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -135,7 +146,8 @@ class Profileall extends StatelessWidget {
     );
   }
 
-  Widget _buildListTile(BuildContext context, String title, IconData icon, String routeName) {
+  Widget _buildListTile(
+      BuildContext context, String title, IconData icon, String routeName) {
     return InkWell(
       onTap: () {
         _navigateTo(context, routeName);

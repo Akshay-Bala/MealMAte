@@ -5,26 +5,27 @@ import 'package:mealmate/Screens/User/detailedhistory.dart';
 
 class History extends StatelessWidget {
   var userEmail = FirebaseAuth.instance.currentUser!.email;
-   History({super.key});
+  History({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Order History'),
+        title: Text('Order History'),
         backgroundColor: Colors.green,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('payments')
             .where('user_email', isEqualTo: userEmail)
+           // .orderBy('timestamp', descending: false)
             .snapshots(), // Fetch data in real-time
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return  Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return  Center(child: Text('No orders found.'));
+            return Center(child: Text('No orders found.'));
           }
 
           var orders = snapshot.data!.docs;
@@ -39,7 +40,8 @@ class History extends StatelessWidget {
 
               return OrderCard(
                 order: Order(
-                  date: (orderData['timestamp'] as Timestamp).toDate().toString(),
+                  date:
+                      (orderData['timestamp'] as Timestamp).toDate().toString(),
                   restaurant: orderData['hotel_email'],
                   items: itemNames,
                   total: orderData['total'] as double,
@@ -50,12 +52,9 @@ class History extends StatelessWidget {
           );
         },
       ),
-
     );
   }
 }
-
-
 
 class Order {
   final String date;
@@ -64,7 +63,7 @@ class Order {
   final double total;
   final String status;
 
-  Order( {
+  Order({
     required this.date,
     required this.restaurant,
     required this.items,
@@ -73,11 +72,10 @@ class Order {
   });
 }
 
-
 class OrderCard extends StatelessWidget {
   final Order order;
 
-   OrderCard({super.key, required this.order});
+  OrderCard({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -87,9 +85,9 @@ class OrderCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      margin:  EdgeInsets.all(10.0),
+      margin: EdgeInsets.all(10.0),
       child: Padding(
-        padding:  EdgeInsets.all(15.0),
+        padding: EdgeInsets.all(15.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -99,24 +97,24 @@ class OrderCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Text(
+                    Text(
                       'Order Date:',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     Text(
                       order.date,
-                      style:  TextStyle(color: Colors.black, fontSize: 14),
+                      style: TextStyle(color: Colors.black, fontSize: 14),
                     ),
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                     Text(
+                    Text(
                       'Payment: Cash on delivery',
                       style: TextStyle(color: Colors.grey, fontSize: 13),
                     ),
-                     Text(
+                    Text(
                       order.total.toString(), // Example of hardcoded savings
                       style: TextStyle(
                           color: Colors.black,
@@ -127,7 +125,7 @@ class OrderCard extends StatelessWidget {
                 ),
               ],
             ),
-             Divider(
+            Divider(
               height: 30,
               thickness: 2,
               color: Color.fromARGB(234, 234, 234, 234),
@@ -135,31 +133,31 @@ class OrderCard extends StatelessWidget {
               indent: 0,
             ),
             ListTile(
-              contentPadding:  EdgeInsets.all(7),
+              contentPadding: EdgeInsets.all(7),
               leading: Container(
                 width: 60,
                 height: 60,
                 color: Colors.orange.shade100, // Placeholder for image
-                child:  Icon(
+                child: Icon(
                   Icons.fastfood,
                   size: 40,
                   color: Colors.orange,
                 ),
               ),
               title: Padding(
-                padding:  EdgeInsets.only(bottom: 4.0),
+                padding: EdgeInsets.only(bottom: 4.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       order.restaurant,
-                      style:  TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 16),
                     ),
-                     Text(
+                    Text(
                       order.status,
                       style: TextStyle(color: Colors.green, fontSize: 14),
                     ),
-                     Text(
+                    Text(
                       'Delivered by 1 hour',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
@@ -170,7 +168,7 @@ class OrderCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                   SizedBox(
+                  SizedBox(
                     height: 7,
                   ),
                   IconButton(
@@ -182,7 +180,7 @@ class OrderCard extends StatelessWidget {
                         ),
                       );
                     },
-                    icon:  Icon(Icons.arrow_forward_ios_rounded),
+                    icon: Icon(Icons.arrow_forward_ios_rounded),
                   ),
                 ],
               ),

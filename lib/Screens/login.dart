@@ -26,222 +26,218 @@ class _LoginpageState extends State<Loginpage> {
     'Users', // Add any navigation here if Admin is supposed to go to a different page
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.green.shade700,
-              Colors.greenAccent.shade700,
-              Colors.lightGreenAccent.shade100,
-            ],
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-               SizedBox(height: 80),
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:  <Widget>[
-                    Text(
-                      "Login",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.2),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Welcome Back",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-               SizedBox(height: 40),
-              Container(
-                decoration:  BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(55),
-                    topRight: Radius.circular(55),
-                  ),
-                ),
-                child: Padding(
-                  padding:
-                       EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-                  child: Column(
-                    children: <Widget>[
-                      // Username field
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        elevation: 4,
-                        child: TextFormField(
-                          controller: usernamectrl,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            labelStyle: TextStyle(
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            prefixIcon:  Icon(Icons.email),
-                          ),
-                        ),
-                      ),
-                       SizedBox(height: 20),
-
-                      // Password field
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        elevation: 4,
-                        child: TextFormField(
-                          controller: passwordctrl,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            labelStyle: TextStyle(
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            prefixIcon: Icon(Icons.lock),
-                            suffixIcon: Icon(Icons.visibility),
-                          ),
-                        ),
-                      ),
-                       SizedBox(height: 20),
-
-                      // Dropdown for selecting user type
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        elevation: 4,
-                        child: DropdownButtonFormField<String>(
-                          value: selectedUserType,
-                          decoration: InputDecoration(
-                            labelText: 'Select Type',
-                            labelStyle: TextStyle(
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          items: userTypes
-                              .map(
-                                (type) => DropdownMenuItem(
-                                  value: type,
-                                  child: Text(type),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedUserType = value;
-                            });
-                          },
-                        ),
-                      ),
-                       SizedBox(height: 30),
-
-                      // Login button
-                      ElevatedButton(
-                        onPressed: () {
-                          if (selectedUserType != null) {
-                            login(
-                                context, usernamectrl.text, passwordctrl.text);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                               SnackBar(
-                                content: Text('Please select a user type'),
-                              ),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          padding:  EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 80),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          elevation: 8,
-                        ),
-                        child:  Text(
-                          'Login',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                       SizedBox(height: 10),
-
-                      // Forgot password link
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: () {
-                           Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage(),));
-                          },
-                          child: Text(
-                            "Forgot password?",
-                            style: TextStyle(
-                              color: Colors.green.shade700,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                       SizedBox(height: 20),
-
-                      // Signup link
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignupSelectionPage(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'Create an account',
-                          style: TextStyle(
-                            color: Colors.green.shade700,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    resizeToAvoidBottomInset: true,  // Allows the page to adjust when the keyboard appears
+    body: Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.green.shade700,
+            Colors.greenAccent.shade700,
+            Colors.lightGreenAccent.shade100,
+          ],
         ),
       ),
-    );
-  }
+      child: SingleChildScrollView(  // Wrap with SingleChildScrollView to avoid overflow
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 80),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Login",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Welcome Back",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 40),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(55),
+                  topRight: Radius.circular(55),
+                ),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+              child: Column(
+                children: <Widget>[
+                  // Username field
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    elevation: 4,
+                    child: TextFormField(
+                      controller: usernamectrl,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: Icon(Icons.email),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+
+                  // Password field
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    elevation: 4,
+                    child: TextFormField(
+                      controller: passwordctrl,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: Icon(Icons.visibility),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+
+                  // Dropdown for selecting user type
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    elevation: 4,
+                    child: DropdownButtonFormField<String>(
+                      value: selectedUserType,
+                      decoration: InputDecoration(
+                        labelText: 'Select Type',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      items: userTypes
+                          .map(
+                            (type) => DropdownMenuItem(
+                              value: type,
+                              child: Text(type),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedUserType = value;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 30),
+
+                  // Login button
+                  ElevatedButton(
+                    onPressed: () {
+                      if (selectedUserType != null) {
+                        login(context, usernamectrl.text, passwordctrl.text);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please select a user type'),
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 80),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      elevation: 8,
+                    ),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+
+                  // Forgot password link
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage(),));
+                      },
+                      child: Text(
+                        "Forgot password?",
+                        style: TextStyle(
+                          color: Colors.green.shade700,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+
+                  // Signup link
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignupSelectionPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Create an account',
+                      style: TextStyle(
+                        color: Colors.green.shade700,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 }
 
 // Updated login logic to navigate based on user type

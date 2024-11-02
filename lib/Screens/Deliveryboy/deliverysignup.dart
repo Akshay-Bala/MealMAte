@@ -7,7 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mealmate/Screens/login.dart';
 
 class Deliveryboysignup extends StatefulWidget {
-  Deliveryboysignup({super.key});
+  final String hotelEmail;
+  Deliveryboysignup({super.key, required this.hotelEmail});
 
   @override
   State<Deliveryboysignup> createState() => _SampleregState();
@@ -17,8 +18,15 @@ class _SampleregState extends State<Deliveryboysignup> {
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController placeController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController dev_emailController = TextEditingController();
+  TextEditingController hotelemailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    hotelemailController.text = widget.hotelEmail;
+  }
 
   final ImagePicker _picker = ImagePicker();
   File? _file;
@@ -96,10 +104,16 @@ class _SampleregState extends State<Deliveryboysignup> {
                   icon: Icons.location_on,
                 ),
                 SizedBox(height: 20),
-                _buildTextField(
-                  controller: emailController,
+                 _buildTextField(
+                  controller: dev_emailController,
                   label: 'Email',
                   icon: Icons.email,
+                ),
+                SizedBox(height: 20),
+                _buildTextField(
+                  controller: hotelemailController,
+                  label: 'Hotel Email',
+                  icon: Icons.email_outlined,
                 ),
                 SizedBox(height: 20),
                 _buildTextField(
@@ -115,12 +129,12 @@ class _SampleregState extends State<Deliveryboysignup> {
                       "name": nameController.text,
                       "age": ageController.text,
                       "place": placeController.text,
-                      "email": emailController.text,
-                      "hotel_id":currentuserdata['email'],
+                      "email": dev_emailController.text,
+                      "hotel_id":widget.hotelEmail,
                     };
                     SampleRegister(
                       context,
-                      emailController.text,
+                      dev_emailController.text,
                       passwordController.text,
                       data,
                       _file,
@@ -211,6 +225,7 @@ Future<void> SampleRegister(
 
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text("Registered successfully")));
+        Navigator.pop(context);
   } catch (e) {
     print('Error during registration: $e');
     ScaffoldMessenger.of(context)

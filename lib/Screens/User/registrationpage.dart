@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -41,114 +40,108 @@ class _UserRegistrationState extends State<UserRegistration> {
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.teal, Colors.white],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+              colors: [Colors.green.shade800, Colors.green.shade200],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
           ),
-          child: Padding(
-            padding:  EdgeInsets.all(20.0),
-            child: Center(
-              child: Card(
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding:  EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        'User Registration',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.teal,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 20),
-                      InkWell(
-                        onTap: _pickImage,
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.grey[300],
-                          backgroundImage: _file != null ? FileImage(_file!) : null,
-                          child: _file == null
-                              ? Icon(
-                                  Icons.add_a_photo,
-                                  size: 40,
-                                  color: Colors.grey[600],
-                                )
-                              : null,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      _buildTextField(
-                        controller: nameController,
-                        label: 'Name',
-                        icon: Icons.person,
-                      ),
-                      SizedBox(height: 15),
-                      _buildTextField(
-                        controller: ageController,
-                        label: 'Age',
-                        icon: Icons.calendar_today,
-                      ),
-                      SizedBox(height: 15),
-                      _buildTextField(
-                        controller: placeController,
-                        label: 'Place',
-                        icon: Icons.location_on,
-                      ),
-                      SizedBox(height: 15),
-                      _buildTextField(
-                        controller: emailController,
-                        label: 'Email',
-                        icon: Icons.email,
-                      ),
-                      SizedBox(height: 15),
-                      _buildTextField(
-                        controller: passwordController,
-                        label: 'Password',
-                        icon: Icons.lock,
-                        obscureText: true,
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () async {
-                          Map<String, dynamic> data = {
-                            "name": nameController.text,
-                            "age": ageController.text,
-                            "place": placeController.text,
-                            "email": emailController.text,
-                          };
-                          await SampleRegister(
-                            context,
-                            emailController.text,
-                            passwordController.text,
-                            data,
-                            _file,
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.teal,
-                          padding: EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: Text(
-                          'Register',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                    ],
+          child: Center(
+            child: Padding(
+              padding:  EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Create Account',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1.2,
+                    ),
                   ),
-                ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Join us and get started!',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white70,
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  InkWell(
+                    onTap: _pickImage,
+                    child: CircleAvatar(
+                      radius: 55,
+                      backgroundColor: Colors.white,
+                      backgroundImage: _file != null ? FileImage(_file!) : null,
+                      child: _file == null
+                          ? Icon(Icons.add_a_photo, size: 35, color: Colors.green)
+                          : null,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  _buildTextField(
+                    controller: nameController,
+                    label: 'Full Name',
+                    icon: Icons.person,
+                  ),
+                  SizedBox(height: 20),
+                  _buildTextField(
+                    controller: ageController,
+                    label: 'Age',
+                    icon: Icons.calendar_today,
+                  ),
+                  SizedBox(height: 20),
+                  _buildTextField(
+                    controller: placeController,
+                    label: 'Place',
+                    icon: Icons.location_on,
+                  ),
+                  SizedBox(height: 20),
+                  _buildTextField(
+                    controller: emailController,
+                    label: 'Email',
+                    icon: Icons.email,
+                  ),
+                  SizedBox(height: 20),
+                  _buildTextField(
+                    controller: passwordController,
+                    label: 'Password',
+                    icon: Icons.lock,
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: () async {
+                      Map<String, dynamic> data = {
+                        "name": nameController.text,
+                        "age": ageController.text,
+                        "place": placeController.text,
+                        "email": emailController.text,
+                      };
+                      await SampleRegister(
+                        context,
+                        emailController.text,
+                        passwordController.text,
+                        data,
+                        _file,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: EdgeInsets.symmetric(vertical: 20,horizontal: 30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      elevation: 8,
+                    ),
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -166,20 +159,20 @@ class _UserRegistrationState extends State<UserRegistration> {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
-      style: TextStyle(color: Colors.black),
       decoration: InputDecoration(
-        prefixIcon: Icon(icon, color: Colors.teal),
+        prefixIcon: Icon(icon, color: Colors.green),
         labelText: label,
-        labelStyle: TextStyle(color: Colors.teal),
+        labelStyle: TextStyle(color: Colors.black),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: Colors.white.withOpacity(0.9),
+        contentPadding: EdgeInsets.symmetric(vertical: 18),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide(color: Colors.teal),
+          borderSide: BorderSide(color: Colors.blue.shade300),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide(color: Colors.green),
+          borderSide: BorderSide(color: Colors.blueAccent),
         ),
       ),
     );
@@ -217,7 +210,7 @@ Future<void> SampleRegister(
 
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text("User Registered successfully")));
-        Navigator.pop(context);
+        Navigator.pop(context);  
         Navigator.pop(context);
   } catch (e) {
     print(e);

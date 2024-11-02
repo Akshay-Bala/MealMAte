@@ -131,11 +131,11 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ElevatedButton(
-                      onPressed: (order['Order status'] == 'Order confirmed by hotel and delivery_partner')
+                      onPressed: (order['Order status'] == 'Order confirmed')
                           ? () async {
                               await deliverOrder(order['orderId']);
                               setState(() {
-                                order['Order status'] = 'Order delivered successfully';
+                                order['Order status'] = 'Order Delivered';
                               });
                             }
                           : null,
@@ -147,13 +147,13 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
                       ),
                       child: Text("Delivered", style: TextStyle(color: Colors.black)),
                     ),
-                    if (order['Order status'] != 'Order confirmed by hotel and delivery_partner' &&
-                        order['Order status'] != 'Order delivered successfully')
+                    if (order['Order status'] != '' &&
+                        order['Order status'] != '')
                       ElevatedButton(
                         onPressed: () async {
                           await acceptOrder(order['orderId']);
                           setState(() {
-                            order['Order status'] = 'Order confirmed by hotel and delivery_partner';
+                            order['Order status'] = '';
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -202,7 +202,7 @@ Future<void> acceptOrder(String orderId) async {
 
       await paymentRef.update({
         'delivery_boy_id': FirebaseAuth.instance.currentUser?.email,
-        'Order status': 'Order confirmed by hotel and delivery_partner',
+        'Order status': '  ',
       });
 
       print('Order accepted and delivery_boy_id updated.');
@@ -219,7 +219,7 @@ Future<void> deliverOrder(String orderId) async {
     DocumentReference paymentRef = FirebaseFirestore.instance.collection('payments').doc(orderId);
 
     await paymentRef.update({
-      'Order status': 'Order delivered successfully',
+      'Order status': 'Order Delivered ',
     });
 
     print('Order status updated to "Order delivered successfully".');

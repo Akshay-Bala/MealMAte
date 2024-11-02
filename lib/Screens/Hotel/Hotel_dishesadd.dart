@@ -37,7 +37,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title:  Text("Add Dishes",style: TextStyle(color: Colors.white),),
-       backgroundColor: Colors.deepPurple),
+       backgroundColor: Colors.indigo),
       body: _buildBody(),
     );
   }
@@ -46,7 +46,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
     return Container(
       decoration:  BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.deepPurple, Colors.purpleAccent],
+          colors: [Colors.indigo, Colors.indigoAccent],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -159,7 +159,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
       ),
       child:  Text(
         'Add Dish',
-        style: TextStyle(fontSize: 18),
+        style: TextStyle(fontSize: 18,color: Colors.black),
       ),
     );
   }
@@ -252,7 +252,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Price: \$${dish["price"]}"),
+                    Text("Price: \₹ ${dish["price"]}"),
                     Text("Email: ${dish["email"]}"),
                   ],
                 ),

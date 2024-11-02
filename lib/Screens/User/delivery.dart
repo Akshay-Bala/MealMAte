@@ -27,19 +27,19 @@ class Delivery extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.green.shade700,
-        title:  Text(
+        backgroundColor: Colors.green,
+        title: Text(
           "MealMate",
           style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
           IconButton(
-            icon:  Icon(Icons.location_on),
+            icon: Icon(Icons.location_on),
             color: Colors.white,
             onPressed: () {},
           ),
           IconButton(
-            icon:  Icon(Icons.notifications),
+            icon: Icon(Icons.notifications),
             color: Colors.white,
             onPressed: () {},
           ),
@@ -57,175 +57,194 @@ class Delivery extends StatelessWidget {
               );
             },
           ),
-           SizedBox(width: 10),
+          SizedBox(width: 10),
         ],
       ),
-      body: Padding(
-        padding:  EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Search bar
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Search for food or restaurants",
-                  suffixIcon:  Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.green.withOpacity(.2),
-                ),
-              ),
-               SizedBox(height: 20),
-
-              // Carousel Slider
-              Container(
-                height: 200,
-                child: CarouselSlider(
-                  items: imgList.map((item) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        item,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      ),
-                    );
-                  }).toList(),
-                  options: CarouselOptions(
-                    height: double.infinity,
-                    autoPlay: true,
-                    enlargeCenterPage: true,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white10, Colors.white24],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                // Search bar
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Search for food or restaurants",
+                    suffixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.black.withOpacity(.2),
                   ),
                 ),
-              ),
-               SizedBox(height: 20),
+                SizedBox(height: 20),
 
-              // Section Title
-               Text(
-                "Popular Dishes",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.green),
-              ),
-               SizedBox(height: 10),
+                // Carousel Slider
+                Container(
+                  height: 200,
+                  child: CarouselSlider(
+                    items: imgList.map((item) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          item,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        ),
+                      );
+                    }).toList(),
+                    options: CarouselOptions(
+                      height: double.infinity,
+                      autoPlay: true,
+                      enlargeCenterPage: true,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
 
-              // Grid of Dishes
-              SizedBox(
-                height: 200,
-              
-                child: ListView.builder(
-  scrollDirection: Axis.horizontal,
-  itemCount: 8,
-  itemBuilder: (context, index) {
-    return GestureDetector(
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // To align text to the start
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                "https://img.freepik.com/premium-photo/chicken-biryani-plate-isolated-white-background-delicious-spicy-biryani-isolated_667286-5772.jpg?w=2000",
-                height: 150,
-                width: 200, // You can adjust the width to your requirement
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Icon(Icons.broken_image, size: 150); // Placeholder for error
-                },
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(), // Show loading indicator
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 8),
-            Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                "Dish Name",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  },
-),
+                // Section Title
+                Text(
+                  "Popular Dishes",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.green.shade800),
+                ),
+                SizedBox(height: 10),
 
-              ),
-               SizedBox(height: 20),
-
-              // Nearby Restaurants Title
-               Text(
-                "Nearby Restaurants",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.green),
-              ),
-               SizedBox(height: 10),
-
-              // Fetch and display restaurants from Firestore
-              FutureBuilder<List<Map<String, dynamic>>>(
-                future: getRestaurants(), // Fetch restaurants
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return  Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return  Center(child: Text("Error fetching restaurants"));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return  Center(child: Text("No restaurants available"));
-                  }
-
-                  final restaurants = snapshot.data!;
-                  return SizedBox(
-                    height: 300, // Adjust the height as needed
-                    child: ListView.builder(
-
-                      itemCount: restaurants.length,
-                      itemBuilder: (context, index) {
-                        final restaurant = restaurants[index];
-                        return Padding(
-                          padding:  EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            height: 150,
-                            child: Card(
-                              elevation: 4,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)
-                              ),
-                              child: ListTile(
-                                leading: Image.network(
-                                  restaurant['imgUrl'] ?? '',
-                                  width: 120,
-                                  height: 120,
-                                  fit: BoxFit.fitWidth,
+                // Grid of Dishes
+                SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 8,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        child: Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  "https://img.freepik.com/premium-photo/chicken-biryani-plate-isolated-white-background-delicious-spicy-biryani-isolated_667286-5772.jpg?w=2000",
+                                  height: 150,
+                                  width: 200,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Icon(Icons.broken_image, size: 150);
+                                  },
+                                  loadingBuilder: (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(child: CircularProgressIndicator());
+                                  },
                                 ),
-                                title: Text(restaurant['name'] ?? 'No Name',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                                onTap: () {
+                              ),
+                              SizedBox(height: 8),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  "Dish Name",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 20),
 
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) =>  Menu(restname: restaurant['name'], restaddress: restaurant['address'], restemail: restaurant['email'] ?? 'No Email',)),
-                                  );
-                                },
+                // Nearby Restaurants Title
+                Text(
+                  "Nearby Restaurants",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.green.shade800),
+                ),
+                SizedBox(height: 10),
+
+                // Fetch and display restaurants from Firestore
+                FutureBuilder<List<Map<String, dynamic>>>(
+                  future: getRestaurants(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text("Error fetching restaurants"));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(child: Text("No restaurants available"));
+                    }
+
+                    final restaurants = snapshot.data!;
+                    return SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: restaurants.length,
+                        itemBuilder: (context, index) {
+                          final restaurant = restaurants[index];
+                          return Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Container(
+                              width: 350,
+
+                              child: Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Image.network(
+                                      restaurant['imgUrl'] ?? '',
+                                      height: 250,
+                                      width: 350,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: Container(
+                                      padding: EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.5),
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(15),
+                                          bottomRight: Radius.circular(15),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        restaurant['name'] ?? 'No Name',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ],
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
