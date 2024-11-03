@@ -194,47 +194,60 @@ class Delivery extends StatelessWidget {
                         itemCount: restaurants.length,
                         itemBuilder: (context, index) {
                           final restaurant = restaurants[index];
-                          return Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Container(
-                              width: 350,
-
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
-                                    child: Image.network(
-                                      restaurant['imgUrl'] ?? '',
-                                      height: 250,
-                                      width: 350,
-                                      fit: BoxFit.cover,
-                                    ),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Menu(
+                                    restname: restaurant['name'] ?? 'No Name',
+                                    restaddress: restaurant['address'] ?? 'No Address',
+                                    restemail: restaurant['email'] ?? 'No Email',
                                   ),
-                                  Positioned(
-                                    bottom: 0,
-                                    left: 0,
-                                    right: 0,
-                                    child: Container(
-                                      padding: EdgeInsets.all(8.0),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.5),
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(15),
-                                          bottomRight: Radius.circular(15),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        restaurant['name'] ?? 'No Name',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        textAlign: TextAlign.center,
+                                ),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Container(
+                                width: 350,
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: Image.network(
+                                        restaurant['imgUrl'] ?? '',
+                                        height: 250,
+                                        width: 350,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    Positioned(
+                                      bottom: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Container(
+                                        padding: EdgeInsets.all(8.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.5),
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(15),
+                                            bottomRight: Radius.circular(15),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          restaurant['name'] ?? 'No Name',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );

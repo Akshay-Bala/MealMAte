@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mealmate/Screens/User/menu.dart'; // Ensure MenuItem is imported correctly
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mealmate/Screens/User/paymentoptions.dart';
@@ -103,6 +104,10 @@ class Payment extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text('Cash on Delivery Confirmed!'),
                 ));
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
+
               },
               child: Text("Cash on Delivery"),
             ),

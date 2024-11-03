@@ -80,7 +80,7 @@ class _CartState extends State<Cart> {
               children: [
                 Text("Deliver to", style: TextStyle(color: Colors.grey)),
                 SizedBox(width: 7),
-                Text("Home"),
+                Text(currentuserdata!['place']),
               ],
             ),
             subtitle: Text(
