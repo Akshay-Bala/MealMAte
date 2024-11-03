@@ -184,6 +184,16 @@ class _OrderCardState extends State<OrderCard> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                Expanded(
+                  child: Text(
+                    'Payment: ${widget.order['Payment']}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 10),

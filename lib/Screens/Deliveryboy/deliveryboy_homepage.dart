@@ -103,17 +103,17 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
                 SizedBox(height: 8.0),
                 Text(
                   "Order ID: ${order['orderId']}",
-                  style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8.0),
                 Text(
                   "Customer name:  ${userData['name'] ?? ''}",
-                  style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8.0),
                 Text(
                   "Address:  ${userData['place'] ?? ''}",
-                  style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8.0),
                 Text(
@@ -127,33 +127,36 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
                 ),
                 ...dishes.map((dish) => Text("${dish['name']} - Qty: ${dish['quantity']}")),
                 SizedBox(height: 16.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                      onPressed: (order['Order status'] == 'Order confirmed')
-                          ? () async {
-                              await deliverOrder(order['orderId']);
-                              setState(() {
-                                order['Order status'] = 'Order Delivered';
-                              });
-                            }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.greenAccent[700],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
+                Text(
+                  "Payment: ${order['Payment']}",
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8.0),
+                // Check order status to decide whether to show buttons or not
+                if (order['Order status'] == 'Order accepted')
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          await deliverOrder(order['orderId']);
+                          setState(() {
+                            order['Order status'] = 'Order Delivered'; // Update the UI
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.greenAccent[700],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                         ),
+                        child: Text("Delivered", style: TextStyle(color: Colors.black)),
                       ),
-                      child: Text("Delivered", style: TextStyle(color: Colors.black)),
-                    ),
-                    if (order['Order status'] != '' &&
-                        order['Order status'] != '')
                       ElevatedButton(
                         onPressed: () async {
                           await acceptOrder(order['orderId']);
                           setState(() {
-                            order['Order status'] = '';
+                            order['Order status'] = 'Order accepted'; // Update the UI
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -164,8 +167,14 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
                         ),
                         child: Text("Accept", style: TextStyle(color: Colors.black)),
                       ),
-                  ],
-                ),
+                    ],
+                  ),
+                // If the order is delivered, show a message
+                if (order['Order status'] == 'Order Delivered')
+                  Text(
+                    "Order has been delivered.",
+                    style: TextStyle(fontSize: 16, color: Colors.green),
+                  ),
               ],
             );
           },
@@ -196,13 +205,15 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
 Future<void> acceptOrder(String orderId) async {
   try {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
+    String? userEmail = FirebaseAuth.instance.currentUser?.email;
 
     if (userId != null) {
       DocumentReference paymentRef = FirebaseFirestore.instance.collection('payments').doc(orderId);
 
       await paymentRef.update({
-        'delivery_boy_id': FirebaseAuth.instance.currentUser?.email,
-        'Order status': '  ',
+        'delivery_boy_id': userEmail,
+        'Order status': 'Order accepted',
+        'Delivery Boy': 'Accepted order', // Keep the initial status
       });
 
       print('Order accepted and delivery_boy_id updated.');
@@ -219,7 +230,8 @@ Future<void> deliverOrder(String orderId) async {
     DocumentReference paymentRef = FirebaseFirestore.instance.collection('payments').doc(orderId);
 
     await paymentRef.update({
-      'Order status': 'Order Delivered ',
+      'Order status': 'Order Delivered',
+      'Delivery Boy': 'Order delivered',
     });
 
     print('Order status updated to "Order delivered successfully".');

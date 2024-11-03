@@ -99,6 +99,9 @@ class MobileWalletPageState extends State<MobileWallet> {
                         );
                         // Store payment details in Firestore
                         storePaymentDetails();
+                         ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Payment details stored successfully!')),
+      );
                         Navigator.pop(context);
                         Navigator.pop(context);
                         Navigator.pop(context);
@@ -149,12 +152,10 @@ class MobileWalletPageState extends State<MobileWallet> {
         'total': widget.totalAmount,
         'timestamp': FieldValue.serverTimestamp(),
         'Order status': "Pending",
-        'Payment':"Online payment"
+        'Payment':"Paid"
       });
       print('Payment successfully');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Payment details stored successfully!')),
-      );
+     
     } catch (e) {
       print('Failed to store payment details: $e');
       ScaffoldMessenger.of(context).showSnackBar(

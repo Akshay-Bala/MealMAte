@@ -55,10 +55,10 @@ class _CartState extends State<Cart> {
           },
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
         ),
-        title: Text(
-          "Order ID: 22261052067",
-          style: TextStyle(color: Colors.black),
-        ),
+        // title: Text(
+        //   "Order ID: 22261052067",
+        //   style: TextStyle(color: Colors.black),
+        // ),
       ),
       body: ListView(
         padding: EdgeInsets.zero,

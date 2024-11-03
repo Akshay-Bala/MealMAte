@@ -133,7 +133,8 @@ class Payment extends StatelessWidget {
         }).toList(),
         'total': totalAmount,
         'timestamp': FieldValue.serverTimestamp(),
-        'Order status': "Pending"
+        'Order status': "Pending",
+        'Payment': "COD"
       });
       print('Payment details stored successfully');
     } catch (e) {

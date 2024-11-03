@@ -2,10 +2,155 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mealmate/Screens/User/detailedhistory.dart';
+import 'package:mealmate/Screens/User/payment.dart';
+
+class OrderCard extends StatelessWidget {
+  final Order order;
+
+  OrderCard({Key? key, required this.order}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.white,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      margin: EdgeInsets.all(10.0),
+      child: Padding(
+        padding: EdgeInsets.all(15.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+             _buildOrderSummary(),
+            Divider(height: 30, thickness: 2, color: Colors.grey.shade300),
+            _buildOrderDetails(context),
+            _buildActionButton(context, order),
+          ]
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOrderSummary() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Order Date:', style: TextStyle(color: Colors.grey, fontSize: 12)),
+            Text(order.date, style: TextStyle(color: Colors.black, fontSize: 14)),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text('Payment: ${order.payment}', style: TextStyle(color: Colors.grey, fontSize: 13)),
+            Text(order.total.toString(), style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildOrderDetails(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.all(7),
+      leading: Container(
+        width: 60,
+        height: 60,
+        color: Colors.orange.shade100,
+        child: Icon(Icons.fastfood, size: 40, color: Colors.orange),
+      ),
+      title: Padding(
+        padding: EdgeInsets.only(bottom: 4.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(order.restaurant, style: TextStyle(fontSize: 16)),
+            Text(order.status, style: TextStyle(color: Colors.green, fontSize: 14)),
+          ],
+        ),
+      ),
+      trailing: IconButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Myorders(),
+            ),
+          );
+        },
+        icon: Icon(Icons.arrow_forward_ios_rounded),
+      ),
+    );
+  }
+
+  Widget _buildActionButton(BuildContext context, Order order) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: ElevatedButton(
+        onPressed: () async {
+          await updateOrderStatus(order); // Call the update function here
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+        child: Text("Order delivered", style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+
+  Future<void> updateOrderStatus(Order order) async {
+    try {
+      // Assuming you have the order ID accessible
+      String orderId = order.id; // Make sure to modify the Order class to include an ID
+      DocumentReference paymentRef = FirebaseFirestore.instance.collection('payments').doc(orderId);
+
+      await paymentRef.update({
+        'Order status': 'Order received',
+        // Add any other fields you might want to update here
+      });
+
+      print('Order status updated to "Order received".');
+    } catch (e) {
+      print('Failed to update order status: $e');
+    }
+  }
+}
+
+// Don't forget to add the ID to your Order class
+class Order {
+  final String id; // Added this line for order ID
+  final String date;
+  final String restaurant;
+  final List<String> items;
+  final double total;
+  final String status;
+  final String payment;
+
+  Order({
+    required this.id, // Include ID in the constructor
+    required this.date,
+    required this.restaurant,
+    required this.items,
+    required this.total,
+    required this.status,
+    required this.payment,
+  });
+}
 
 class History extends StatelessWidget {
-  var userEmail = FirebaseAuth.instance.currentUser!.email;
-  History({super.key});
+  final String? userEmail;
+
+  History({Key? key})
+      : userEmail = FirebaseAuth.instance.currentUser?.email,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +163,7 @@ class History extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection('payments')
             .where('user_email', isEqualTo: userEmail)
-           // .orderBy('timestamp', descending: false)
-            .snapshots(), // Fetch data in real-time
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -40,12 +184,12 @@ class History extends StatelessWidget {
 
               return OrderCard(
                 order: Order(
-                  date:
-                      (orderData['timestamp'] as Timestamp).toDate().toString(),
+                  id: orders[index].id, // Get the order ID here
+                  date: (orderData['timestamp'] as Timestamp).toDate().toString(),
                   restaurant: orderData['hotel_email'],
                   items: itemNames,
                   total: orderData['total'] as double,
-                  status: orderData['Order status'],
+                  status: orderData['Order status'], payment: orderData['Payment'],
                 ),
               );
             },
@@ -56,138 +200,5 @@ class History extends StatelessWidget {
   }
 }
 
-class Order {
-  final String date;
-  final String restaurant;
-  final List<String> items;
-  final double total;
-  final String status;
 
-  Order({
-    required this.date,
-    required this.restaurant,
-    required this.items,
-    required this.total,
-    required this.status,
-  });
-}
 
-class OrderCard extends StatelessWidget {
-  final Order order;
-
-  OrderCard({super.key, required this.order});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      margin: EdgeInsets.all(10.0),
-      child: Padding(
-        padding: EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Order Date:',
-                      style: TextStyle(color: Colors.grey, fontSize: 12),
-                    ),
-                    Text(
-                      order.date,
-                      style: TextStyle(color: Colors.black, fontSize: 14),
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Payment: Cash on delivery',
-                      style: TextStyle(color: Colors.grey, fontSize: 13),
-                    ),
-                    Text(
-                      order.total.toString(), // Example of hardcoded savings
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Divider(
-              height: 30,
-              thickness: 2,
-              color: Color.fromARGB(234, 234, 234, 234),
-              endIndent: 0,
-              indent: 0,
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.all(7),
-              leading: Container(
-                width: 60,
-                height: 60,
-                color: Colors.orange.shade100, // Placeholder for image
-                child: Icon(
-                  Icons.fastfood,
-                  size: 40,
-                  color: Colors.orange,
-                ),
-              ),
-              title: Padding(
-                padding: EdgeInsets.only(bottom: 4.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      order.restaurant,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      order.status,
-                      style: TextStyle(color: Colors.green, fontSize: 14),
-                    ),
-                    Text(
-                      'Delivered by 1 hour',
-                      style: TextStyle(color: Colors.grey, fontSize: 12),
-                    ),
-                  ],
-                ),
-              ),
-              trailing: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    height: 7,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Myorders(),
-                        ),
-                      );
-                    },
-                    icon: Icon(Icons.arrow_forward_ios_rounded),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
