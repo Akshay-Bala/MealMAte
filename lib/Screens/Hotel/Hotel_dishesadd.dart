@@ -17,7 +17,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   File? _imageFile;
-  List<Map<String, dynamic>> _dishes = []; // To store added dishes
+  List<Map<String, dynamic>> _dishes = [];
 
   @override
   void initState() {
@@ -36,22 +36,26 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:  Text("Add Dishes",style: TextStyle(color: Colors.white),),
-       backgroundColor: Colors.indigo),
+      appBar: AppBar(
+          title: Text(
+            "Add Dishes",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.indigo),
       body: _buildBody(),
     );
   }
 
   Widget _buildBody() {
     return Container(
-      decoration:  BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Colors.indigo, Colors.indigoAccent],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
       ),
-      padding:  EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0),
       child: Column(
         children: [
           Expanded(
@@ -61,39 +65,39 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
                 shrinkWrap: true,
                 children: [
                   _buildImagePicker(),
-                   SizedBox(height: 20),
+                  SizedBox(height: 20),
                   _buildTextField(
                       "Dish Name", _nameController, "Enter dish name"),
-                   SizedBox(height: 20),
+                  SizedBox(height: 20),
                   _buildTextField(
                     "Price",
                     _priceController,
                     "Enter dish price",
                     inputType: TextInputType.number,
                   ),
-                   SizedBox(height: 20),
+                  SizedBox(height: 20),
                   TextFormField(
                     readOnly: true,
                     controller: _emailController,
                     decoration: InputDecoration(
                       hintText: currentuserdata['email'],
-                      labelStyle:  TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide: BorderSide.none,
                       ),
-                      prefixIcon:  Icon(Icons.email, color: Colors.white),
+                      prefixIcon: Icon(Icons.email, color: Colors.white),
                     ),
-                    style:  TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white),
                     keyboardType: TextInputType.emailAddress,
                   ),
-                   SizedBox(height: 20),
+                  SizedBox(height: 20),
                   _buildAddDishButton(),
-                   SizedBox(height: 20),
-                   Divider(),
-                  _buildDishList(), // Show added dishes here
+                  SizedBox(height: 20),
+                  Divider(),
+                  _buildDishList(),
                 ],
               ),
             ),
@@ -114,7 +118,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
                 color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(8),
               ),
-              child:  Icon(Icons.add_a_photo, size: 50),
+              child: Icon(Icons.add_a_photo, size: 50),
             ),
     );
   }
@@ -129,13 +133,13 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle:  TextStyle(color: Colors.white),
+        labelStyle: TextStyle(color: Colors.white),
         enabledBorder: OutlineInputBorder(
-          borderSide:  BorderSide(color: Colors.white),
+          borderSide: BorderSide(color: Colors.white),
           borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide:  BorderSide(color: Colors.white, width: 2),
+          borderSide: BorderSide(color: Colors.white, width: 2),
           borderRadius: BorderRadius.circular(8),
         ),
       ),
@@ -151,15 +155,15 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
     return ElevatedButton(
       onPressed: _addDish,
       style: ElevatedButton.styleFrom(
-        padding:  EdgeInsets.symmetric(vertical: 15),
+        padding: EdgeInsets.symmetric(vertical: 15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
         backgroundColor: Colors.white,
       ),
-      child:  Text(
+      child: Text(
         'Add Dish',
-        style: TextStyle(fontSize: 18,color: Colors.black),
+        style: TextStyle(fontSize: 18, color: Colors.black),
       ),
     );
   }
@@ -183,8 +187,8 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
       await _saveDishToFirestore(data);
       _clearForm();
     } else if (_imageFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(content: Text("Please select an image")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Please select an image")));
     }
   }
 
@@ -201,8 +205,8 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
     }
     try {
       await FirebaseFirestore.instance.collection("Dishes").add(data);
-      ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(content: Text("Dish added successfully")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Dish added successfully")));
 
       setState(() {
         _dishes.add(data);
@@ -218,10 +222,10 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
       stream: FirebaseFirestore.instance.collection("Dishes").snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return  Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return  Text(
+          return Text(
             'No dishes added',
             style: TextStyle(color: Colors.white, fontSize: 16),
           );
@@ -238,7 +242,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
 
         return ListView.builder(
           shrinkWrap: true,
-          physics:  NeverScrollableScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           itemCount: dishes.length,
           itemBuilder: (context, index) {
             final dish = dishes[index];
@@ -247,7 +251,7 @@ class _HotelDishesAddState extends State<HotelDishesadd> {
               child: ListTile(
                 leading: dish["imgurl"] != null
                     ? Image.network(dish["imgurl"], width: 50, height: 50)
-                    :  Icon(Icons.fastfood),
+                    : Icon(Icons.fastfood),
                 title: Text(dish["name of the dish"]),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

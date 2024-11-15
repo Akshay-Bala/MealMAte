@@ -29,8 +29,10 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
 
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('payments')
-          .where('Order status', whereIn: ['Order accepted', 'Order confirmed by hotel and delivery_partner'])
-          .get();
+          .where('Order status', whereIn: [
+        'Order accepted',
+        'Order confirmed by hotel and delivery_partner'
+      ]).get();
 
       List<Map<String, dynamic>> acceptedOrders = snapshot.docs.map((doc) {
         Map<String, dynamic> orderData = doc.data() as Map<String, dynamic>;
@@ -64,7 +66,9 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
                   return _buildNewOrderCard(acceptedOrders[index]);
                 },
               )
-            : Center(child: Text('No new accepted orders.', style: TextStyle(fontSize: 16))),
+            : Center(
+                child: Text('No new accepted orders.',
+                    style: TextStyle(fontSize: 16))),
       ),
     );
   }
@@ -125,14 +129,14 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
                   "Ordered Dishes:",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                ...dishes.map((dish) => Text("${dish['name']} - Qty: ${dish['quantity']}")),
+                ...dishes.map((dish) =>
+                    Text("${dish['name']} - Qty: ${dish['quantity']}")),
                 SizedBox(height: 16.0),
                 Text(
                   "Payment: ${order['Payment']}",
                   style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8.0),
-                // Check order status to decide whether to show buttons or not
                 if (order['Order status'] == 'Order accepted')
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -141,7 +145,7 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
                         onPressed: () async {
                           await deliverOrder(order['orderId']);
                           setState(() {
-                            order['Order status'] = 'Order Delivered'; // Update the UI
+                            order['Order status'] = 'Order Delivered';
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -150,13 +154,14 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
-                        child: Text("Delivered", style: TextStyle(color: Colors.black)),
+                        child: Text("Delivered",
+                            style: TextStyle(color: Colors.black)),
                       ),
                       ElevatedButton(
                         onPressed: () async {
                           await acceptOrder(order['orderId']);
                           setState(() {
-                            order['Order status'] = 'Order accepted'; // Update the UI
+                            order['Order status'] = 'Order accepted';
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -165,11 +170,11 @@ class _DeliveryboyHomepageState extends State<DeliveryboyHomepage> {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
-                        child: Text("Accept", style: TextStyle(color: Colors.black)),
+                        child: Text("Accept",
+                            style: TextStyle(color: Colors.black)),
                       ),
                     ],
                   ),
-                // If the order is delivered, show a message
                 if (order['Order status'] == 'Order Delivered')
                   Text(
                     "Order has been delivered.",
@@ -208,12 +213,13 @@ Future<void> acceptOrder(String orderId) async {
     String? userEmail = FirebaseAuth.instance.currentUser?.email;
 
     if (userId != null) {
-      DocumentReference paymentRef = FirebaseFirestore.instance.collection('payments').doc(orderId);
+      DocumentReference paymentRef =
+          FirebaseFirestore.instance.collection('payments').doc(orderId);
 
       await paymentRef.update({
         'delivery_boy_id': userEmail,
         'Order status': 'Order accepted',
-        'Delivery Boy': 'Accepted order', // Keep the initial status
+        'Delivery Boy': 'Accepted order',
       });
 
       print('Order accepted and delivery_boy_id updated.');
@@ -227,7 +233,8 @@ Future<void> acceptOrder(String orderId) async {
 
 Future<void> deliverOrder(String orderId) async {
   try {
-    DocumentReference paymentRef = FirebaseFirestore.instance.collection('payments').doc(orderId);
+    DocumentReference paymentRef =
+        FirebaseFirestore.instance.collection('payments').doc(orderId);
 
     await paymentRef.update({
       'Order status': 'Order Delivered',

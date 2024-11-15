@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class DeliveryboyOrders extends StatelessWidget {
-   DeliveryboyOrders({super.key});
+  DeliveryboyOrders({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Orders'),
+        title: Text('Orders'),
         backgroundColor: Colors.blue[300],
         actions: [
           IconButton(
-            icon:  Icon(Icons.refresh, color: Colors.white),
+            icon: Icon(Icons.refresh, color: Colors.white),
             onPressed: () {},
           ),
         ],
@@ -19,7 +19,10 @@ class DeliveryboyOrders extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.lightBlueAccent, Colors.purpleAccent.withOpacity(0.5)],
+            colors: [
+              Colors.lightBlueAccent,
+              Colors.purpleAccent.withOpacity(0.5)
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -27,20 +30,18 @@ class DeliveryboyOrders extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildTab('All Orders', true),
-                 
                 ],
               ),
             ),
-             SizedBox(height: 10),
-            // Orders List
+            SizedBox(height: 10),
             Expanded(
               child: ListView(
-                padding:  EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 children: [
                   _buildOrderCard(
                     orderId: '1234567890',
@@ -48,7 +49,7 @@ class DeliveryboyOrders extends StatelessWidget {
                     date: '12-05-2024 05:30 PM',
                     amount: '150',
                     status: 'Completed',
-                    statusColor:  Colors.greenAccent,
+                    statusColor: Colors.greenAccent,
                   ),
                   _buildOrderCard(
                     orderId: '1234567891',
@@ -56,13 +57,12 @@ class DeliveryboyOrders extends StatelessWidget {
                     date: '12-05-2024 06:00 PM',
                     amount: '280',
                     status: 'Cancelled',
-                    statusColor:  Color.fromARGB(255, 250, 18, 1),
+                    statusColor: Color.fromARGB(255, 250, 18, 1),
                   ),
                 ],
               ),
             ),
-            // Footer
-             Padding(
+            Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -98,14 +98,14 @@ class DeliveryboyOrders extends StatelessWidget {
     required Color statusColor,
   }) {
     return Card(
-      margin:  EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 16),
       elevation: 6,
       color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Padding(
-        padding:  EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -115,20 +115,19 @@ class DeliveryboyOrders extends StatelessWidget {
                 Text('Order ID: $orderId'),
                 Text(
                   date,
-                  style:  TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Colors.grey),
                 ),
               ],
             ),
-             SizedBox(height: 8),
-           
+            SizedBox(height: 8),
             Text('To: $to'),
-             SizedBox(height: 16),
+            SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   '₹ $amount',
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),

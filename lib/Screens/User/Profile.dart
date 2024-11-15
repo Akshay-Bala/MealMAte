@@ -19,7 +19,7 @@ class _ProfileState extends State<Profile> {
   final ImagePicker _picker = ImagePicker();
   File? _file;
   Map<String, dynamic>? currentuserdata;
-  bool _isEditing = false; // Track whether the profile is in editing mode
+  bool _isEditing = false;
 
   @override
   void initState() {
@@ -30,7 +30,8 @@ class _ProfileState extends State<Profile> {
   Future<void> _fetchUserData() async {
     User? user = _auth.currentUser;
     if (user != null) {
-      DocumentSnapshot snapshot = await _store.collection("Users").doc(user.email).get();
+      DocumentSnapshot snapshot =
+          await _store.collection("Users").doc(user.email).get();
       setState(() {
         currentuserdata = snapshot.data() as Map<String, dynamic>;
       });
@@ -57,7 +58,6 @@ class _ProfileState extends State<Profile> {
       };
 
       if (_file != null) {
-        // Upload new image
         try {
           final storageRef = FirebaseStorage.instance
               .ref()
@@ -71,10 +71,10 @@ class _ProfileState extends State<Profile> {
         }
       }
 
-      // Update Firestore data
       try {
         await _store.collection("Users").doc(user.email).update(data);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Profile updated successfully")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Profile updated successfully")));
       } catch (e) {
         print('Error updating user data: $e');
       }
@@ -100,7 +100,8 @@ class _ProfileState extends State<Profile> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
-              BoxShadow(color: Colors.white, blurRadius: 10, offset: Offset(0, 5)),
+              BoxShadow(
+                  color: Colors.white, blurRadius: 10, offset: Offset(0, 5)),
             ],
           ),
           child: SingleChildScrollView(
@@ -108,7 +109,7 @@ class _ProfileState extends State<Profile> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: _isEditing ? _pickImage : null, // Allow image picking only when editing
+                  onTap: _isEditing ? _pickImage : null,
                   child: CircleAvatar(
                     radius: 60,
                     backgroundImage: currentuserdata!['imgUrl'] != null
@@ -122,7 +123,10 @@ class _ProfileState extends State<Profile> {
                 SizedBox(height: 20),
                 Text(
                   currentuserdata!['name'],
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green[700]),
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green[700]),
                 ),
                 SizedBox(height: 10),
                 buildInfoField("Location", currentuserdata!['place']),
@@ -130,7 +134,7 @@ class _ProfileState extends State<Profile> {
                 buildInfoField("Age", currentuserdata!['age'].toString()),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: _isEditing ? _updateProfile : null, // Update button is only enabled during editing
+                  onPressed: _isEditing ? _updateProfile : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     shape: RoundedRectangleBorder(
@@ -146,7 +150,7 @@ class _ProfileState extends State<Profile> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      _isEditing = !_isEditing; // Toggle edit mode
+                      _isEditing = !_isEditing;
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -176,12 +180,15 @@ class _ProfileState extends State<Profile> {
         children: [
           Text(
             label,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.green[700]),
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.green[700]),
           ),
           SizedBox(height: 5),
           TextFormField(
             initialValue: value,
-            readOnly: !_isEditing, // Enable editing only if _isEditing is true
+            readOnly: !_isEditing,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),

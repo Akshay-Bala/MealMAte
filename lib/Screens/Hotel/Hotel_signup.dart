@@ -50,16 +50,16 @@ class _HotelSignupState extends State<HotelSignup> {
               elevation: 8,
               shadowColor: Colors.indigo.withOpacity(0.4),
               color: Colors.indigo.withOpacity(0.85),
-              margin:  EdgeInsets.all(16),
+              margin: EdgeInsets.all(16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 30),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                     Text(
+                    Text(
                       'Register Your Hotel',
                       style: TextStyle(
                         fontSize: 28,
@@ -68,15 +68,16 @@ class _HotelSignupState extends State<HotelSignup> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                     SizedBox(height: 20),
+                    SizedBox(height: 20),
                     InkWell(
                       onTap: _pickImage,
                       child: CircleAvatar(
                         radius: 55,
                         backgroundColor: Colors.indigo[200],
-                        backgroundImage: _file != null ? FileImage(_file!) : null,
+                        backgroundImage:
+                            _file != null ? FileImage(_file!) : null,
                         child: _file == null
-                            ?  Icon(
+                            ? Icon(
                                 Icons.add_a_photo,
                                 size: 40,
                                 color: Colors.white,
@@ -84,38 +85,38 @@ class _HotelSignupState extends State<HotelSignup> {
                             : null,
                       ),
                     ),
-                     SizedBox(height: 20),
+                    SizedBox(height: 20),
                     _buildTextField(
                       controller: nameController,
                       label: 'Hotel Name',
                       icon: Icons.hotel,
                     ),
-                     SizedBox(height: 15),
+                    SizedBox(height: 15),
                     _buildTextField(
                       controller: addressController,
                       label: 'Address',
                       icon: Icons.location_on,
                     ),
-                     SizedBox(height: 15),
+                    SizedBox(height: 15),
                     _buildTextField(
                       controller: phoneController,
                       label: 'Phone',
                       icon: Icons.phone,
                     ),
-                     SizedBox(height: 15),
+                    SizedBox(height: 15),
                     _buildTextField(
                       controller: emailController,
                       label: 'Email',
                       icon: Icons.email,
                     ),
-                     SizedBox(height: 15),
+                    SizedBox(height: 15),
                     _buildTextField(
                       controller: passwordController,
                       label: 'Password',
                       icon: Icons.lock,
                       obscureText: true,
                     ),
-                     SizedBox(height: 20),
+                    SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () async {
                         Map<String, dynamic> data = {
@@ -129,12 +130,13 @@ class _HotelSignupState extends State<HotelSignup> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        padding:  EdgeInsets.symmetric(vertical: 20,horizontal: 25),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 25),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      child:  Text(
+                      child: Text(
                         'Register',
                         style: TextStyle(color: Colors.black, fontSize: 18),
                       ),
@@ -158,21 +160,21 @@ class _HotelSignupState extends State<HotelSignup> {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
-      style:  TextStyle(color: Colors.black87),
+      style: TextStyle(color: Colors.black87),
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.indigo),
         labelText: label,
         labelStyle: TextStyle(color: Colors.indigo.shade300),
         filled: true,
         fillColor: Colors.white.withOpacity(0.9),
-        contentPadding:  EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide(color: Colors.indigo.shade200),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide:  BorderSide(color: Colors.indigo),
+          borderSide: BorderSide(color: Colors.indigo),
         ),
       ),
     );
@@ -182,8 +184,8 @@ class _HotelSignupState extends State<HotelSignup> {
 final FirebaseAuth Sample_auth = FirebaseAuth.instance;
 final FirebaseFirestore Sample_store = FirebaseFirestore.instance;
 
-Future<void> SampleRegister(
-    BuildContext context, String email, String password, Map<String, dynamic> data, File? _file) async {
+Future<void> SampleRegister(BuildContext context, String email, String password,
+    Map<String, dynamic> data, File? _file) async {
   try {
     UserCredential cred = await Sample_auth.createUserWithEmailAndPassword(
         email: email, password: password);
@@ -209,11 +211,12 @@ Future<void> SampleRegister(
     }
 
     ScaffoldMessenger.of(context)
-        .showSnackBar( SnackBar(content: Text("Hotel Registered successfully")));
+        .showSnackBar(SnackBar(content: Text("Hotel Registered successfully")));
     Navigator.pop(context);
     Navigator.pop(context);
   } catch (e) {
     print(e);
-    ScaffoldMessenger.of(context).showSnackBar( SnackBar(content: Text("Hotel Registration unsuccessful")));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hotel Registration unsuccessful")));
   }
 }

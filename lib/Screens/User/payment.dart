@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:mealmate/Screens/User/menu.dart'; // Ensure MenuItem is imported correctly
+import 'package:mealmate/Screens/User/menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mealmate/Screens/User/paymentoptions.dart';
 import 'package:mealmate/Screens/login.dart';
@@ -10,7 +9,11 @@ class Payment extends StatelessWidget {
   final double billAmount;
   final String restEmail;
 
-  Payment({super.key, required this.cart_items, required this.billAmount, required this.restEmail});
+  Payment(
+      {super.key,
+      required this.cart_items,
+      required this.billAmount,
+      required this.restEmail});
 
   double get deliveryCharge => 50.0;
 
@@ -23,11 +26,10 @@ class Payment extends StatelessWidget {
         title: Text('Select Payment'),
       ),
       body: Padding(
-        padding:  EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Ordered Items Section
             Text(
               "Ordered Items:",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -53,51 +55,49 @@ class Payment extends StatelessWidget {
                 },
               ),
             ),
-             SizedBox(height: 10),
-            
-            // Bill Summary Section
+            SizedBox(height: 10),
             Text(
               "Bill Summary",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-             SizedBox(height: 10),
-
-            // MRP Total
+            SizedBox(height: 10),
             ListTile(
               leading: Icon(Icons.attach_money_outlined, color: Colors.grey),
               title: Text("MRP Total"),
               trailing: Text("₹ ${billAmount.toStringAsFixed(2)}"),
             ),
-
-            // Delivery Charges
             ListTile(
               leading: Icon(Icons.delivery_dining, color: Colors.grey),
               title: Text("Delivery Charges"),
               trailing: Text("₹ ${deliveryCharge.toStringAsFixed(2)}"),
             ),
-
-            // Total Amount
             ListTile(
               leading: Icon(Icons.attach_money, color: Colors.black),
-              title: Text("Total Amount",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-              trailing: Text("₹ ${totalAmount.toStringAsFixed(2)}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+              title: Text(
+                "Total Amount",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              trailing: Text(
+                "₹ ${totalAmount.toStringAsFixed(2)}",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
             ),
-             SizedBox(height: 20),
-
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-
-                Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentOptions(
-                  cart_items: cart_items,
-          totalAmount: totalAmount,
-          restEmail: restEmail,
-                ),));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentOptions(
+                        cart_items: cart_items,
+                        totalAmount: totalAmount,
+                        restEmail: restEmail,
+                      ),
+                    ));
               },
               child: Text("Pay through online"),
             ),
-
-             SizedBox(height: 10),
-
+            SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 storePaymentDetails();
@@ -107,7 +107,6 @@ class Payment extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.pop(context);
                 Navigator.pop(context);
-
               },
               child: Text("Cash on Delivery"),
             ),
@@ -118,19 +117,21 @@ class Payment extends StatelessWidget {
   }
 
   void storePaymentDetails() async {
-   
-    String userId =  currentuserdata['email'];
+    String userId = currentuserdata['email'];
 
-    CollectionReference payments = FirebaseFirestore.instance.collection('payments');
+    CollectionReference payments =
+        FirebaseFirestore.instance.collection('payments');
     try {
       await payments.add({
         'user_email': userId,
-        'hotel_email':restEmail,
-        'items': cart_items.map((item) => {
-          'name': item.name,
-          'price': item.price,
-          'quantity': item.quantity,
-        }).toList(),
+        'hotel_email': restEmail,
+        'items': cart_items
+            .map((item) => {
+                  'name': item.name,
+                  'price': item.price,
+                  'quantity': item.quantity,
+                })
+            .toList(),
         'total': totalAmount,
         'timestamp': FieldValue.serverTimestamp(),
         'Order status': "Pending",
@@ -142,4 +143,3 @@ class Payment extends StatelessWidget {
     }
   }
 }
-

@@ -20,15 +20,12 @@ class OrderCard extends StatelessWidget {
       margin: EdgeInsets.all(10.0),
       child: Padding(
         padding: EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-             _buildOrderSummary(),
-            Divider(height: 30, thickness: 2, color: Colors.grey.shade300),
-            _buildOrderDetails(context),
-            _buildActionButton(context, order),
-          ]
-        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          _buildOrderSummary(),
+          Divider(height: 30, thickness: 2, color: Colors.grey.shade300),
+          _buildOrderDetails(context),
+          _buildActionButton(context, order),
+        ]),
       ),
     );
   }
@@ -40,15 +37,22 @@ class OrderCard extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Order Date:', style: TextStyle(color: Colors.grey, fontSize: 12)),
-            Text(order.date, style: TextStyle(color: Colors.black, fontSize: 14)),
+            Text('Order Date:',
+                style: TextStyle(color: Colors.grey, fontSize: 12)),
+            Text(order.date,
+                style: TextStyle(color: Colors.black, fontSize: 14)),
           ],
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text('Payment: ${order.payment}', style: TextStyle(color: Colors.grey, fontSize: 13)),
-            Text(order.total.toString(), style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+            Text('Payment: ${order.payment}',
+                style: TextStyle(color: Colors.grey, fontSize: 13)),
+            Text(order.total.toString(),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold)),
           ],
         ),
       ],
@@ -70,7 +74,8 @@ class OrderCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(order.restaurant, style: TextStyle(fontSize: 16)),
-            Text(order.status, style: TextStyle(color: Colors.green, fontSize: 14)),
+            Text(order.status,
+                style: TextStyle(color: Colors.green, fontSize: 14)),
           ],
         ),
       ),
@@ -93,7 +98,7 @@ class OrderCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20.0),
       child: ElevatedButton(
         onPressed: () async {
-          await updateOrderStatus(order); // Call the update function here
+          await updateOrderStatus(order);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.green,
@@ -108,13 +113,12 @@ class OrderCard extends StatelessWidget {
 
   Future<void> updateOrderStatus(Order order) async {
     try {
-      // Assuming you have the order ID accessible
-      String orderId = order.id; // Make sure to modify the Order class to include an ID
-      DocumentReference paymentRef = FirebaseFirestore.instance.collection('payments').doc(orderId);
+      String orderId = order.id;
+      DocumentReference paymentRef =
+          FirebaseFirestore.instance.collection('payments').doc(orderId);
 
       await paymentRef.update({
         'Order status': 'Order received',
-        // Add any other fields you might want to update here
       });
 
       print('Order status updated to "Order received".');
@@ -124,9 +128,8 @@ class OrderCard extends StatelessWidget {
   }
 }
 
-// Don't forget to add the ID to your Order class
 class Order {
-  final String id; // Added this line for order ID
+  final String id;
   final String date;
   final String restaurant;
   final List<String> items;
@@ -135,7 +138,7 @@ class Order {
   final String payment;
 
   Order({
-    required this.id, // Include ID in the constructor
+    required this.id,
     required this.date,
     required this.restaurant,
     required this.items,
@@ -184,12 +187,14 @@ class History extends StatelessWidget {
 
               return OrderCard(
                 order: Order(
-                  id: orders[index].id, // Get the order ID here
-                  date: (orderData['timestamp'] as Timestamp).toDate().toString(),
+                  id: orders[index].id,
+                  date:
+                      (orderData['timestamp'] as Timestamp).toDate().toString(),
                   restaurant: orderData['hotel_email'],
                   items: itemNames,
                   total: orderData['total'] as double,
-                  status: orderData['Order status'], payment: orderData['Payment'],
+                  status: orderData['Order status'],
+                  payment: orderData['Payment'],
                 ),
               );
             },
@@ -199,6 +204,3 @@ class History extends StatelessWidget {
     );
   }
 }
-
-
-

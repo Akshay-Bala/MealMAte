@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mealmate/Screens/login.dart';
 
 class Deliveryboysignup extends StatefulWidget {
   final String hotelEmail;
@@ -55,7 +54,7 @@ class _SampleregState extends State<Deliveryboysignup> {
             ),
           ),
           child: Padding(
-            padding:  EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,7 +103,7 @@ class _SampleregState extends State<Deliveryboysignup> {
                   icon: Icons.location_on,
                 ),
                 SizedBox(height: 20),
-                 _buildTextField(
+                _buildTextField(
                   controller: dev_emailController,
                   label: 'Email',
                   icon: Icons.email,
@@ -130,7 +129,7 @@ class _SampleregState extends State<Deliveryboysignup> {
                       "age": ageController.text,
                       "place": placeController.text,
                       "email": dev_emailController.text,
-                      "hotel_id":widget.hotelEmail,
+                      "hotel_id": widget.hotelEmail,
                     };
                     SampleRegister(
                       context,
@@ -164,7 +163,6 @@ class _SampleregState extends State<Deliveryboysignup> {
     );
   }
 
-  // Helper widget to build the input fields
   Widget _buildTextField({
     required TextEditingController controller,
     required String label,
@@ -197,8 +195,8 @@ class _SampleregState extends State<Deliveryboysignup> {
 final FirebaseAuth Sample_auth = FirebaseAuth.instance;
 final FirebaseFirestore Sample_store = FirebaseFirestore.instance;
 
-Future<void> SampleRegister(
-    BuildContext context, String email, String password, Map<String, dynamic> data, File? _file) async {
+Future<void> SampleRegister(BuildContext context, String email, String password,
+    Map<String, dynamic> data, File? _file) async {
   try {
     UserCredential cred = await Sample_auth.createUserWithEmailAndPassword(
         email: email, password: password);
@@ -225,7 +223,7 @@ Future<void> SampleRegister(
 
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text("Registered successfully")));
-        Navigator.pop(context);
+    Navigator.pop(context);
   } catch (e) {
     print('Error during registration: $e');
     ScaffoldMessenger.of(context)

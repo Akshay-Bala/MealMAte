@@ -3,12 +3,10 @@ import 'package:mealmate/Screens/Deliveryboy/deliveryboy_account.dart';
 import 'package:mealmate/Screens/Deliveryboy/deliveryboy_homepage.dart';
 import 'package:mealmate/Screens/Deliveryboy/deliveryboy_orders.dart';
 
-
-
 class DeliveryboyBottomnav extends StatefulWidget {
   final int? ind;
 
-   DeliveryboyBottomnav({super.key, this.ind});
+  DeliveryboyBottomnav({super.key, this.ind});
 
   @override
   _BottomnaviState createState() => _BottomnaviState();
@@ -53,7 +51,7 @@ class _BottomnaviState extends State<DeliveryboyBottomnav> {
         children: _screens,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items:  <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.delivery_dining),
             label: 'Dashboard',

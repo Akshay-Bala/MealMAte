@@ -38,7 +38,7 @@ class _CartState extends State<Cart> {
     setState(() {
       item.quantity += change;
       if (item.quantity <= 0) {
-        widget.cartitems.remove(item); // Remove item if quantity is zero
+        widget.cartitems.remove(item);
       }
     });
   }
@@ -55,10 +55,6 @@ class _CartState extends State<Cart> {
           },
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
         ),
-        // title: Text(
-        //   "Order ID: 22261052067",
-        //   style: TextStyle(color: Colors.black),
-        // ),
       ),
       body: ListView(
         padding: EdgeInsets.zero,
@@ -88,13 +84,9 @@ class _CartState extends State<Cart> {
               style: TextStyle(color: Colors.grey),
             ),
           ),
-
           SizedBox(height: 5),
-
-          // Cart Items List
           ...widget.cartitems.map((item) {
-            double itemTotalPrice = item.price *
-                item.quantity; // Calculate total price for the item
+            double itemTotalPrice = item.price * item.quantity;
             return Card(
               margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
               child: ListTile(
@@ -102,10 +94,8 @@ class _CartState extends State<Cart> {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                        "\₹ ${item.price.toStringAsFixed(2)} each"), // Price per item
-                    Text(
-                        "Total: \₹ ${itemTotalPrice.toStringAsFixed(2)}"), // Total price for this item
+                    Text("\₹ ${item.price.toStringAsFixed(2)} each"),
+                    Text("Total: \₹ ${itemTotalPrice.toStringAsFixed(2)}"),
                   ],
                 ),
                 trailing: Row(
@@ -115,7 +105,7 @@ class _CartState extends State<Cart> {
                       icon: Icon(Icons.remove),
                       onPressed: () => _updateQuantity(item, -1),
                     ),
-                    Text(item.quantity.toString()), // Display quantity
+                    Text(item.quantity.toString()),
                     IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () => _updateQuantity(item, 1),
@@ -126,17 +116,6 @@ class _CartState extends State<Cart> {
             );
           }).toList(),
           SizedBox(height: 5),
-          // ListTile(
-          //   tileColor: Colors.white,
-          //   leading: Icon(Icons.attach_money_outlined, color: Colors.grey, size: 30),
-          //   title: Row(
-          //     children: [
-          //       Text("MRP Total", style: TextStyle(color: Colors.grey)),
-          //       SizedBox(width: 7),
-          //       Text("\$${mrpTotal.toStringAsFixed(2)}"),
-          //     ],
-          //   ),
-          // ),
           SizedBox(
             height: 10,
           ),
@@ -153,31 +132,24 @@ class _CartState extends State<Cart> {
             ),
             trailing: Text("\₹ ${mrpTotal.toStringAsFixed(2)}"),
           ),
-
           SizedBox(height: 8),
-
-          // Delivery Charges
           ListTile(
             tileColor: Colors.white,
             leading: Icon(Icons.delivery_dining, color: Colors.grey),
             title: Text("Delivery Charges"),
             trailing: Text("\₹ 50"),
           ),
-
-          // Total Amount
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Total Amount"),
-                Text(
-                    "\₹ ${(mrpTotal + 50).toStringAsFixed(2)}"), // Total with delivery
+                Text("\₹ ${(mrpTotal + 50).toStringAsFixed(2)}"),
               ],
             ),
           ),
           SizedBox(height: 8),
-
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: SizedBox(

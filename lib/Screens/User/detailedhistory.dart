@@ -60,20 +60,26 @@ class Myorders extends StatelessWidget {
                       SizedBox(height: 4),
                       ListTile(
                         tileColor: Colors.white,
-                        leading: Icon(Icons.calendar_today_outlined, color: Colors.grey),
-                        title: Text("Delivery on", style: TextStyle(color: Colors.grey)),
+                        leading: Icon(Icons.calendar_today_outlined,
+                            color: Colors.grey),
+                        title: Text("Delivery on",
+                            style: TextStyle(color: Colors.grey)),
                         trailing: Text(
-                          (orderData['timestamp'] as Timestamp).toDate().toString(),
+                          (orderData['timestamp'] as Timestamp)
+                              .toDate()
+                              .toString(),
                           style: TextStyle(fontSize: 14),
                         ),
                       ),
                       SizedBox(height: 4),
                       ListTile(
                         tileColor: Colors.white,
-                        leading: Icon(Icons.home_outlined, color: Colors.grey, size: 30),
+                        leading: Icon(Icons.home_outlined,
+                            color: Colors.grey, size: 30),
                         title: Row(
                           children: [
-                            Text("Deliver to", style: TextStyle(color: Colors.grey)),
+                            Text("Deliver to",
+                                style: TextStyle(color: Colors.grey)),
                             SizedBox(width: 7),
                             Text(currentuserdata['name']),
                           ],
@@ -105,12 +111,12 @@ class Myorders extends StatelessWidget {
                             final item = items[itemIndex];
                             return ListTile(
                               title: Text(
-                                item['name'] ?? 'Unknown Item', // Default name if 'name' is null
+                                item['name'] ?? 'Unknown Item',
                                 style: TextStyle(fontSize: 16),
                               ),
-                              subtitle: Text("Qty: ${item['quantity'] ?? '0'}"), // Default quantity if null
+                              subtitle: Text("Qty: ${item['quantity'] ?? '0'}"),
                               trailing: Text(
-                                '₹${item['price']?.toString() ?? '0.00'}', // Default price if null
+                                '₹${item['price']?.toString() ?? '0.00'}',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             );
@@ -145,38 +151,48 @@ class Myorders extends StatelessWidget {
                             child: Column(
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("MRP Total", style: TextStyle(color: Colors.grey)),
-                                    Text("₹${orderData['total'].toStringAsFixed(2)}"),
+                                    Text("MRP Total",
+                                        style: TextStyle(color: Colors.grey)),
+                                    Text(
+                                        "₹${orderData['total'].toStringAsFixed(2)}"),
                                   ],
                                 ),
                                 SizedBox(height: 8),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Discount", style: TextStyle(color: Colors.grey)),
-                                    Text("- ₹0.00"), // No discount in this example
+                                    Text("Discount",
+                                        style: TextStyle(color: Colors.grey)),
+                                    Text("- ₹0.00"),
                                   ],
                                 ),
                                 SizedBox(height: 8),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Shipping Fee", style: TextStyle(color: Colors.grey)),
-                                    Text("+ ₹50.00"), // Assuming shipping is fixed at ₹50
+                                    Text("Shipping Fee",
+                                        style: TextStyle(color: Colors.grey)),
+                                    Text("+ ₹50.00"),
                                   ],
                                 ),
                                 SizedBox(height: 15),
                                 DottedLine(dashColor: Colors.grey),
                                 SizedBox(height: 8),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Bill Amount", style: TextStyle(color: Colors.grey)),
+                                    Text("Bill Amount",
+                                        style: TextStyle(color: Colors.grey)),
                                     Text(
                                       "₹${(orderData['total'] + 50).toStringAsFixed(2)}",
-                                      style: TextStyle(fontWeight: FontWeight.w600),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
                                     ),
                                   ],
                                 ),

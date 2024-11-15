@@ -16,10 +16,12 @@ class Delivery extends StatelessWidget {
     "https://wallpapercave.com/wp/wp8329822.jpg",
   ];
 
-  // Method to fetch restaurants from Firebase
   Future<List<Map<String, dynamic>>> getRestaurants() async {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Hotels').get();
-    return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    QuerySnapshot snapshot =
+        await FirebaseFirestore.instance.collection('Hotels').get();
+    return snapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
   }
 
   @override
@@ -30,7 +32,8 @@ class Delivery extends StatelessWidget {
         backgroundColor: Colors.green,
         title: Text(
           "MealMate",
-          style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
           IconButton(
@@ -73,7 +76,6 @@ class Delivery extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // Search bar
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: "Search for food or restaurants",
@@ -87,8 +89,6 @@ class Delivery extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-
-                // Carousel Slider
                 Container(
                   height: 200,
                   child: CarouselSlider(
@@ -110,15 +110,14 @@ class Delivery extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-
-                // Section Title
                 Text(
                   "Popular Dishes",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.green.shade800),
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green.shade800),
                 ),
                 SizedBox(height: 10),
-
-                // Grid of Dishes
                 SizedBox(
                   height: 200,
                   child: ListView.builder(
@@ -144,9 +143,11 @@ class Delivery extends StatelessWidget {
                                   errorBuilder: (context, error, stackTrace) {
                                     return Icon(Icons.broken_image, size: 150);
                                   },
-                                  loadingBuilder: (context, child, loadingProgress) {
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
                                     if (loadingProgress == null) return child;
-                                    return Center(child: CircularProgressIndicator());
+                                    return Center(
+                                        child: CircularProgressIndicator());
                                   },
                                 ),
                               ),
@@ -166,15 +167,14 @@ class Delivery extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-
-                // Nearby Restaurants Title
                 Text(
                   "Nearby Restaurants",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.green.shade800),
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green.shade800),
                 ),
                 SizedBox(height: 10),
-
-                // Fetch and display restaurants from Firestore
                 FutureBuilder<List<Map<String, dynamic>>>(
                   future: getRestaurants(),
                   builder: (context, snapshot) {
@@ -201,8 +201,10 @@ class Delivery extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) => Menu(
                                     restname: restaurant['name'] ?? 'No Name',
-                                    restaddress: restaurant['address'] ?? 'No Address',
-                                    restemail: restaurant['email'] ?? 'No Email',
+                                    restaddress:
+                                        restaurant['address'] ?? 'No Address',
+                                    restemail:
+                                        restaurant['email'] ?? 'No Email',
                                   ),
                                 ),
                               );

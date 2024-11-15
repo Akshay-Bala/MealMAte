@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mealmate/Screens/User/Profile.dart';
-import 'package:mealmate/Screens/login.dart'; // Assuming login.dart contains your LoginPage
+import 'package:mealmate/Screens/login.dart';
 
 class Profileall extends StatelessWidget {
   Profileall({super.key});
@@ -10,8 +10,6 @@ class Profileall extends StatelessWidget {
   }
 
   void _logout(BuildContext context) {
-    // Perform logout operation, e.g., clearing user session, shared preferences, etc.
-    // After logout, navigate to the login screen
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => Loginpage()),
@@ -30,7 +28,6 @@ class Profileall extends StatelessWidget {
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Profile Card
             Card(
               elevation: 5,
               shape: RoundedRectangleBorder(
@@ -100,7 +97,6 @@ class Profileall extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            // Menu List
             Expanded(
               child: ListView(
                 children: <Widget>[
@@ -111,15 +107,14 @@ class Profileall extends StatelessWidget {
                 ],
               ),
             ),
-            // Logout Button
             Padding(
               padding: EdgeInsets.symmetric(vertical: 15),
               child: ElevatedButton.icon(
                 onPressed: () {
-                   Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => Loginpage()),
-                      );
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Loginpage()),
+                  );
                 },
                 icon: Icon(Icons.logout, color: Colors.white),
                 label: Text(
@@ -131,7 +126,7 @@ class Profileall extends StatelessWidget {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, // Logout button color
+                  backgroundColor: Colors.green,
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

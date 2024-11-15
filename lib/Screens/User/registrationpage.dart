@@ -47,7 +47,7 @@ class _UserRegistrationState extends State<UserRegistration> {
           ),
           child: Center(
             child: Padding(
-              padding:  EdgeInsets.all(24.0),
+              padding: EdgeInsets.all(24.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -76,7 +76,8 @@ class _UserRegistrationState extends State<UserRegistration> {
                       backgroundColor: Colors.white,
                       backgroundImage: _file != null ? FileImage(_file!) : null,
                       child: _file == null
-                          ? Icon(Icons.add_a_photo, size: 35, color: Colors.green)
+                          ? Icon(Icons.add_a_photo,
+                              size: 35, color: Colors.green)
                           : null,
                     ),
                   ),
@@ -130,7 +131,8 @@ class _UserRegistrationState extends State<UserRegistration> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
-                      padding: EdgeInsets.symmetric(vertical: 20,horizontal: 30),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -182,8 +184,8 @@ class _UserRegistrationState extends State<UserRegistration> {
 final FirebaseAuth Sample_auth = FirebaseAuth.instance;
 final FirebaseFirestore Sample_store = FirebaseFirestore.instance;
 
-Future<void> SampleRegister(
-    BuildContext context, String email, String password, Map<String, dynamic> data, File? _file) async {
+Future<void> SampleRegister(BuildContext context, String email, String password,
+    Map<String, dynamic> data, File? _file) async {
   try {
     UserCredential cred = await Sample_auth.createUserWithEmailAndPassword(
         email: email, password: password);
@@ -210,8 +212,8 @@ Future<void> SampleRegister(
 
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text("User Registered successfully")));
-        Navigator.pop(context);  
-        Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
   } catch (e) {
     print(e);
     ScaffoldMessenger.of(context)

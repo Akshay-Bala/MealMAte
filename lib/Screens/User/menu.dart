@@ -19,20 +19,20 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  double _totalPrice = 0.0; // Total price tracker
+  double _totalPrice = 0.0;
   List<MenuItem> _menuItems = [];
-  List<MenuItem> _cartItems = []; // Local cart state
+  List<MenuItem> _cartItems = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchMenuItems(widget.restemail); // Fetch based on restaurant email
+    _fetchMenuItems(widget.restemail);
   }
 
   Future<void> _fetchMenuItems(String restEmail) async {
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('Dishes') // Ensure this collection exists
-        .where('email', isEqualTo: restEmail) // Find restaurant by email
+        .collection('Dishes')
+        .where('email', isEqualTo: restEmail)
         .get();
 
     if (snapshot.docs.isNotEmpty) {
@@ -51,13 +51,11 @@ class _MenuState extends State<Menu> {
   void _addToCart(MenuItem item) {
     setState(() {
       if (_cartItems.contains(item)) {
-        // Item already in cart, increase quantity
         _cartItems.firstWhere((cartItem) => cartItem == item).quantity++;
       } else {
-        // Item not in cart, add it
         _cartItems.add(item);
       }
-      _totalPrice += item.price; // Update total price
+      _totalPrice += item.price;
     });
   }
 
@@ -93,7 +91,7 @@ class _MenuState extends State<Menu> {
                   final isAdded = _cartItems.contains(item);
                   return MenuItemCard(
                     menuItem: item,
-                    onAddToCart: _addToCart, // Pass the function directly
+                    onAddToCart: _addToCart,
                     isAdded: isAdded,
                   );
                 },
@@ -103,24 +101,26 @@ class _MenuState extends State<Menu> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigate to Cart Page
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Cart(
                         cartitems: _cartItems,
                         totalPrice: _totalPrice,
-                        restEmail: widget.restemail, restname: widget.restname, restaddress: widget.restaddress,
+                        restEmail: widget.restemail,
+                        restname: widget.restname,
+                        restaddress: widget.restaddress,
                       ),
                     ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade700, // Button color
-                  padding: EdgeInsets.symmetric(vertical: 16), // Button padding
+                  backgroundColor: Colors.green.shade700,
+                  padding: EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: Text(
-                  'Go to Cart',style: TextStyle(color: Colors.black),
+                  'Go to Cart',
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ),
@@ -136,7 +136,7 @@ class MenuItemCard extends StatelessWidget {
   final Function(MenuItem) onAddToCart;
   final bool isAdded;
 
-   MenuItemCard({
+  MenuItemCard({
     Key? key,
     required this.menuItem,
     required this.onAddToCart,
@@ -182,13 +182,14 @@ class MenuItemCard extends StatelessWidget {
                   SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () {
-                      onAddToCart(menuItem); // Call the function when button pressed
+                      onAddToCart(menuItem);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade700, // Button color
+                      backgroundColor: Colors.green.shade700,
                     ),
                     child: Text(
-                      isAdded ? "Added" : "Add to cart",style: TextStyle(color: Colors.black),
+                      isAdded ? "Added" : "Add to cart",
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ],
@@ -201,7 +202,7 @@ class MenuItemCard extends StatelessWidget {
                 child: Image.network(
                   menuItem.imageUrl.isNotEmpty
                       ? menuItem.imageUrl
-                      : "https://wallpapercave.com/wp/wp7556107.jpg", // Placeholder or actual image
+                      : "https://wallpapercave.com/wp/wp7556107.jpg",
                   height: 120,
                   width: double.infinity,
                   fit: BoxFit.cover,

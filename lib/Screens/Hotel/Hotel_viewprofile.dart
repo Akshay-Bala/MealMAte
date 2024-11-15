@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mealmate/Screens/Deliveryboy/deliverysignup.dart';
-import 'package:mealmate/Screens/login.dart'; // Adjust the import according to your project structure
+import 'package:mealmate/Screens/login.dart';
 
 class HotelViewprofile extends StatefulWidget {
-   HotelViewprofile({super.key});
+  HotelViewprofile({super.key});
 
   @override
   _HotelProfilePageState createState() => _HotelProfilePageState();
@@ -12,7 +12,6 @@ class HotelViewprofile extends StatefulWidget {
 class _HotelProfilePageState extends State<HotelViewprofile> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers for the text fields
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -21,7 +20,7 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.indigo, Colors.indigoAccent],
             begin: Alignment.topLeft,
@@ -30,21 +29,22 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
         ),
         child: Center(
           child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 24.0),
+            padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: Form(
               key: _formKey,
               child: ListView(
                 shrinkWrap: true,
-                children: [Center(
+                children: [
+                  Center(
                     child: CircleAvatar(
-                    radius: 60,
-                    backgroundImage: currentuserdata!['imgUrl'] != null
-                        ? NetworkImage(currentuserdata!['imgUrl'])
-                        : null,
-                    child: currentuserdata!['imgUrl'] == null
-                        ? Icon(Icons.person, size: 60, color: Colors.grey)
-                        : null,
-                  ),
+                      radius: 60,
+                      backgroundImage: currentuserdata!['imgUrl'] != null
+                          ? NetworkImage(currentuserdata!['imgUrl'])
+                          : null,
+                      child: currentuserdata!['imgUrl'] == null
+                          ? Icon(Icons.person, size: 60, color: Colors.grey)
+                          : null,
+                    ),
                   ),
                   SizedBox(height: 30),
                   Text(
@@ -56,67 +56,61 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                   SizedBox(height: 30),
-
-                  // Email Field
+                  SizedBox(height: 30),
                   TextFormField(
                     readOnly: true,
                     controller: _emailController,
                     decoration: InputDecoration(
                       hintText: currentuserdata['email'],
-                      labelStyle:  TextStyle(color: Colors.white),
-                      hintStyle:  TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.white),
+                      hintStyle: TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide: BorderSide.none,
                       ),
-                      prefixIcon:  Icon(Icons.email, color: Colors.white),
+                      prefixIcon: Icon(Icons.email, color: Colors.white),
                     ),
-                    style:  TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white),
                     keyboardType: TextInputType.emailAddress,
                   ),
-                   SizedBox(height: 20),
-
-                  // Phone Number Field
+                  SizedBox(height: 20),
                   TextFormField(
                     readOnly: true,
                     controller: _phoneController,
                     decoration: InputDecoration(
                       hintText: currentuserdata['phone'],
-                      labelStyle:  TextStyle(color: Colors.white),
-                      hintStyle:  TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.white),
+                      hintStyle: TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide: BorderSide.none,
                       ),
-                      prefixIcon:  Icon(Icons.phone, color: Colors.white),
+                      prefixIcon: Icon(Icons.phone, color: Colors.white),
                     ),
-                    style:  TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white),
                     keyboardType: TextInputType.phone,
                   ),
-                   SizedBox(height: 20),
-
-                  // Address Field
+                  SizedBox(height: 20),
                   TextFormField(
                     readOnly: true,
                     controller: _addressController,
                     decoration: InputDecoration(
                       hintText: currentuserdata['address'],
-                      labelStyle:  TextStyle(color: Colors.white),
-                      hintStyle:  TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.white),
+                      hintStyle: TextStyle(color: Colors.white),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide: BorderSide.none,
                       ),
-                      prefixIcon:  Icon(Icons.location_on, color: Colors.white),
+                      prefixIcon: Icon(Icons.location_on, color: Colors.white),
                     ),
-                    style:  TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white),
                     maxLines: 3,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -125,16 +119,15 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
                       return null;
                     },
                   ),
-                   SizedBox(height: 30),
-
-                  // Add Delivery Boy Button
+                  SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigate to the Add Delivery Boy screen
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Deliveryboysignup(hotelEmail: currentuserdata['email'],), // Create this screen
+                          builder: (context) => Deliveryboysignup(
+                            hotelEmail: currentuserdata['email'],
+                          ),
                         ),
                       );
                     },
@@ -151,10 +144,9 @@ class _HotelProfilePageState extends State<HotelViewprofile> {
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
-                   SizedBox(height: 20),
-                   ElevatedButton(
+                  SizedBox(height: 20),
+                  ElevatedButton(
                     onPressed: () {
-                      // Handle logout action
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => Loginpage()),

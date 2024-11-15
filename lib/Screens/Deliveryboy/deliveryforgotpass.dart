@@ -1,32 +1,29 @@
 import 'package:flutter/material.dart';
 
 class Deliveryboyforgotpass extends StatelessWidget {
-    Deliveryboyforgotpass({super.key});
+  Deliveryboyforgotpass({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(),
       body: Stack(
         children: [
-          // Background image or color
           Container(
-            decoration:  BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/background.jpg"), // Add your background image here
+                image: AssetImage("assets/background.jpg"),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          // Login form
           Center(
             child: Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Title Text
                   Text(
                     "Meal Mate",
                     style: TextStyle(
@@ -37,10 +34,8 @@ class Deliveryboyforgotpass extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                   SizedBox(height: 20),
-                  
-                  // Subtitle
-                   Text(
+                  SizedBox(height: 20),
+                  Text(
                     "Forgot your Password",
                     style: TextStyle(
                       fontSize: 16,
@@ -48,8 +43,8 @@ class Deliveryboyforgotpass extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                   SizedBox(height: 20),
-                    Text(
+                  SizedBox(height: 20),
+                  Text(
                     "Don't worry we will help you.Please enter your email to reset password",
                     style: TextStyle(
                       fontSize: 16,
@@ -57,9 +52,7 @@ class Deliveryboyforgotpass extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                   SizedBox(height: 40),
-
-                  // Email TextField
+                  SizedBox(height: 40),
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Enter your email id',
@@ -70,34 +63,22 @@ class Deliveryboyforgotpass extends StatelessWidget {
                       ),
                     ),
                   ),
-                   SizedBox(height: 20),
-
-                  
-
-                  // Login Button
+                  SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
-                      // Add your login logic here
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange.shade900,
-                      padding:  EdgeInsets.symmetric(vertical: 16),
+                      padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    child:  Text(
+                    child: Text(
                       'Submit',
-                      style: TextStyle(fontSize: 18,color: Colors.black),
+                      style: TextStyle(fontSize: 18, color: Colors.black),
                     ),
                   ),
-                  
-                   SizedBox(height: 10),
-                  
-                  
-                  
-                  // Sign Up Text
-                 
+                  SizedBox(height: 10),
                 ],
               ),
             ),
@@ -107,4 +88,3 @@ class Deliveryboyforgotpass extends StatelessWidget {
     );
   }
 }
-

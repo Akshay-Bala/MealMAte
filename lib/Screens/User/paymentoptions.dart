@@ -27,7 +27,7 @@ class PaymentOptions extends StatelessWidget {
         backgroundColor: Colors.green,
       ),
       body: Container(
-        height: double.infinity, // Fill the entire screen height
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.green, Colors.greenAccent],
@@ -38,14 +38,14 @@ class PaymentOptions extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 20), // Add some space at the top if needed
+              SizedBox(height: 20),
               Center(
                 child: Text(
                   'Total Amount to Pay: ₹ ${totalAmount.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black, // Text color for visibility
+                    color: Colors.black,
                   ),
                 ),
               ),
@@ -68,33 +68,25 @@ class PaymentOptions extends StatelessWidget {
                       icon: Icons.credit_card,
                       title: 'Credit Card',
                       description: 'Pay with your credit card',
-                      onTap: () {
-                        // Handle Credit Card Payment
-                      },
+                      onTap: () {},
                     ),
                     PaymentOptionCard(
                       icon: Icons.account_balance_wallet,
                       title: 'Bank Transfer',
                       description: 'Pay via bank account',
-                      onTap: () {
-                        // Handle Bank Transfer Payment
-                      },
+                      onTap: () {},
                     ),
                     PaymentOptionCard(
                       icon: Icons.payment,
                       title: 'PayPal',
                       description: 'Pay via PayPal',
-                      onTap: () {
-                        // Handle PayPal Payment
-                      },
+                      onTap: () {},
                     ),
                     PaymentOptionCard(
                       icon: Icons.account_balance,
                       title: 'UPI',
                       description: 'Pay using UPI',
-                      onTap: () {
-                        // Handle UPI Payment
-                      },
+                      onTap: () {},
                     ),
                     GestureDetector(
                       onTap: () {
@@ -155,7 +147,7 @@ class PaymentOptions extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 30), // Add space at the bottom for scrolling
+              SizedBox(height: 30),
             ],
           ),
         ),

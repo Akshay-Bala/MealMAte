@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Rating extends StatefulWidget {
-   Rating({super.key});
+  Rating({super.key});
 
   @override
   _RatingPageState createState() => _RatingPageState();
@@ -15,22 +15,22 @@ class _RatingPageState extends State<Rating> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Rate Us'),
+        title: Text('Rate Us'),
         backgroundColor: Colors.green.shade500,
       ),
       body: Padding(
-        padding:  EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             Text(
+            Text(
               'We value your feedback!',
             ),
-             SizedBox(height: 16),
-             Text(
+            SizedBox(height: 16),
+            Text(
               'Rate your experience:',
             ),
-             SizedBox(height: 8),
+            SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(5, (index) {
@@ -48,30 +48,29 @@ class _RatingPageState extends State<Rating> {
                 );
               }),
             ),
-             SizedBox(height: 16),
-             Text(
+            SizedBox(height: 16),
+            Text(
               'Leave us a message:',
             ),
-             SizedBox(height: 8),
+            SizedBox(height: 8),
             TextField(
               controller: _feedbackController,
               maxLines: 4,
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Type your feedback here...',
               ),
             ),
-             SizedBox(height: 16),
+            SizedBox(height: 16),
             Center(
               child: ElevatedButton(
-                
                 onPressed: () {
                   final feedback = _feedbackController.text;
                   ScaffoldMessenger.of(context).showSnackBar(
-                     SnackBar(content: Text('Thank you for your feedback!')),
+                    SnackBar(content: Text('Thank you for your feedback!')),
                   );
                 },
-                child:  Text('Submit Feedback'),
+                child: Text('Submit Feedback'),
               ),
             ),
           ],
@@ -80,4 +79,3 @@ class _RatingPageState extends State<Rating> {
     );
   }
 }
-

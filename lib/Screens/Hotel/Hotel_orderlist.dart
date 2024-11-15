@@ -12,7 +12,6 @@ class HotelOrderlist extends StatefulWidget {
 class _HotelOrderlistState extends State<HotelOrderlist> {
   List<Map<String, dynamic>> orders = [];
 
-
   @override
   void initState() {
     super.initState();
@@ -28,10 +27,9 @@ class _HotelOrderlistState extends State<HotelOrderlist> {
           .where('hotel_email', isEqualTo: email)
           .get();
 
-      // Convert the fetched documents into a list of maps (orders)
       List<Map<String, dynamic>> fetchedOrders = snapshot.docs.map((doc) {
         Map<String, dynamic> orderData = doc.data() as Map<String, dynamic>;
-        orderData['orderId'] = doc.id; // Adding the document ID as orderId
+        orderData['orderId'] = doc.id;
         return orderData;
       }).toList();
 
@@ -46,10 +44,14 @@ class _HotelOrderlistState extends State<HotelOrderlist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:  Text("Orders",style: TextStyle(color: Colors.white),),
-       backgroundColor: Colors.indigo),
+      appBar: AppBar(
+          title: Text(
+            "Orders",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.indigo),
       body: Container(
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.indigo, Colors.indigoAccent],
             begin: Alignment.topLeft,
@@ -57,15 +59,14 @@ class _HotelOrderlistState extends State<HotelOrderlist> {
           ),
         ),
         child: Padding(
-          padding:  EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
-               SizedBox(height: 20),
+              SizedBox(height: 20),
               Expanded(
                 child: orders.isEmpty
-                    ?  Center(
+                    ? Center(
                         child: Text(
                           'No orders found.',
                           style: TextStyle(
@@ -78,7 +79,10 @@ class _HotelOrderlistState extends State<HotelOrderlist> {
                         itemCount: orders.length,
                         itemBuilder: (context, index) {
                           final order = orders[index];
-                          return OrderCard(order: order, onStatusChange: getOrderedList,);
+                          return OrderCard(
+                            order: order,
+                            onStatusChange: getOrderedList,
+                          );
                         },
                       ),
               ),
@@ -89,9 +93,10 @@ class _HotelOrderlistState extends State<HotelOrderlist> {
     );
   }
 }
+
 class OrderCard extends StatefulWidget {
   final Map<String, dynamic> order;
-  final Function onStatusChange; // Callback to refresh the UI after status change
+  final Function onStatusChange;
 
   OrderCard({super.key, required this.order, required this.onStatusChange});
 
@@ -112,18 +117,20 @@ class _OrderCardState extends State<OrderCard> {
 
   Future<void> updateOrderStatus(String orderId, String newStatus) async {
     try {
-      // Update Firestore order status
-      await FirebaseFirestore.instance.collection('payments').doc(orderId).update({
+      await FirebaseFirestore.instance
+          .collection('payments')
+          .doc(orderId)
+          .update({
         'Order status': newStatus,
       });
       print('Order status updated to: $newStatus');
       setState(() {
         if (newStatus == 'Order accepted') {
           isAccepted = true;
-          isRejected = false; // Ensure rejected is false if accepted
+          isRejected = false;
         } else if (newStatus == 'Order rejected') {
           isRejected = true;
-          isAccepted = false; // Ensure accepted is false if rejected
+          isAccepted = false;
         }
       });
     } catch (e) {
@@ -146,7 +153,6 @@ class _OrderCardState extends State<OrderCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Order ID and Date
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -169,8 +175,6 @@ class _OrderCardState extends State<OrderCard> {
               ],
             ),
             SizedBox(height: 10),
-
-            // Amount and Payment Status
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -197,8 +201,6 @@ class _OrderCardState extends State<OrderCard> {
               ],
             ),
             SizedBox(height: 10),
-
-            // Dishes and Quantities
             Text(
               'Ordered Dishes:',
               style: TextStyle(
@@ -211,7 +213,7 @@ class _OrderCardState extends State<OrderCard> {
               height: dishes.length * 50,
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(), // Prevent scrolling issues inside the card
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: dishes.length,
                 itemBuilder: (context, index) {
                   final dish = dishes[index];
@@ -241,8 +243,6 @@ class _OrderCardState extends State<OrderCard> {
               ),
             ),
             SizedBox(height: 10),
-
-            // Payment status and icon
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -262,16 +262,15 @@ class _OrderCardState extends State<OrderCard> {
               ],
             ),
             SizedBox(height: 20),
-
-            // Accept and Reject buttons
             if (!isAccepted && !isRejected) ...[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
                     onPressed: () async {
-                      await updateOrderStatus(widget.order['orderId'], 'Order accepted');
-                      widget.onStatusChange(); // Callback to refresh the UI
+                      await updateOrderStatus(
+                          widget.order['orderId'], 'Order accepted');
+                      widget.onStatusChange();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Order Accepted!'),
@@ -279,14 +278,15 @@ class _OrderCardState extends State<OrderCard> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green, // Background color
+                      backgroundColor: Colors.green,
                     ),
                     child: Text('Accept'),
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      await updateOrderStatus(widget.order['orderId'], 'Order rejected');
-                      widget.onStatusChange(); // Callback to refresh the UI
+                      await updateOrderStatus(
+                          widget.order['orderId'], 'Order rejected');
+                      widget.onStatusChange();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Order Rejected!'),
@@ -294,7 +294,7 @@ class _OrderCardState extends State<OrderCard> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, // Background color
+                      backgroundColor: Colors.red,
                     ),
                     child: Text('Reject'),
                   ),
@@ -303,12 +303,14 @@ class _OrderCardState extends State<OrderCard> {
             ] else if (isAccepted) ...[
               Text(
                 'Order Accepted',
-                style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
               ),
             ] else if (isRejected) ...[
               Text(
                 'Order Rejected',
-                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
               ),
             ],
           ],
@@ -318,22 +320,17 @@ class _OrderCardState extends State<OrderCard> {
   }
 }
 
-
-
-
-
-
 class OrderStatusBadge extends StatelessWidget {
   final String status;
 
-   OrderStatusBadge({super.key, required this.status});
+  OrderStatusBadge({super.key, required this.status});
 
   @override
   Widget build(BuildContext context) {
     Color statusColor = Colors.green;
 
     return Container(
-      padding:  EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
         color: statusColor.withOpacity(0.2),
         borderRadius: BorderRadius.circular(12),

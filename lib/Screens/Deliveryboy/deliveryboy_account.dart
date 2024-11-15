@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mealmate/Screens/login.dart';
 
 class DeliveryboyAccount extends StatefulWidget {
-   DeliveryboyAccount({super.key});
+  DeliveryboyAccount({super.key});
 
   @override
   _DeliveryBoyProfileState createState() => _DeliveryBoyProfileState();
@@ -16,7 +16,7 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
 
-  bool _isEditing = false; // Track if we are in edit mode
+  bool _isEditing = false;
 
   @override
   void initState() {
@@ -27,7 +27,10 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
   Future<void> _loadProfileData() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection("Delivery_boy").doc(user.email).get();
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection("Delivery_boy")
+          .doc(user.email)
+          .get();
       if (snapshot.exists) {
         var data = snapshot.data() as Map<String, dynamic>;
         _nameController.text = data["Name"];
@@ -47,10 +50,15 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
       };
 
       try {
-        await FirebaseFirestore.instance.collection("Delivery_boy").doc(user.email).update(data);
-        ScaffoldMessenger.of(context).showSnackBar( SnackBar(content: Text("Profile updated successfully")));
+        await FirebaseFirestore.instance
+            .collection("Delivery_boy")
+            .doc(user.email)
+            .update(data);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Profile updated successfully")));
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Update failed: ${e.toString()}")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Update failed: ${e.toString()}")));
       }
     }
   }
@@ -67,11 +75,13 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            // Background gradient
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.lightBlueAccent, Colors.purpleAccent.withOpacity(0.5)],
+                  colors: [
+                    Colors.lightBlueAccent,
+                    Colors.purpleAccent.withOpacity(0.5)
+                  ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -80,63 +90,59 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
               width: MediaQuery.of(context).size.width,
             ),
             Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Top section with icon
                   Container(
-                    padding:  EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child:  Icon(
+                    child: Icon(
                       Icons.delivery_dining,
                       size: 80,
                       color: Colors.white,
                     ),
                   ),
-                   SizedBox(height: 30),
-
-                  // Form Section
+                  SizedBox(height: 30),
                   Form(
                     key: formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // Name Field
                         buildInputField(
                           controller: _nameController,
                           label: currentuserdata['name'],
                           icon: Icons.person,
                           enabled: _isEditing,
-                          validator: (value) => value == null || value.isEmpty ? 'Enter your name' : null,
+                          validator: (value) => value == null || value.isEmpty
+                              ? 'Enter your name'
+                              : null,
                         ),
-                         SizedBox(height: 16),
-
-                        // Email Field
+                        SizedBox(height: 16),
                         buildInputField(
                           controller: _emailController,
                           label: currentuserdata['email'],
                           icon: Icons.email,
-                          enabled: false, // Email should be read-only
-                          validator: (value) => value == null || value.isEmpty ? 'Enter a valid email' : null,
+                          enabled: false,
+                          validator: (value) => value == null || value.isEmpty
+                              ? 'Enter a valid email'
+                              : null,
                         ),
-                         SizedBox(height: 16),
-
-                        // Phone Field
+                        SizedBox(height: 16),
                         buildInputField(
                           controller: _placeController,
                           label: currentuserdata['place'],
                           icon: Icons.phone,
                           keyboardType: TextInputType.phone,
                           enabled: _isEditing,
-                          validator: (value) => value == null || value.isEmpty ? 'Enter your phone number' : null,
+                          validator: (value) => value == null || value.isEmpty
+                              ? 'Enter your phone number'
+                              : null,
                         ),
-                         SizedBox(height: 24),
-
-                        // Edit/Save Button
+                        SizedBox(height: 24),
                         ElevatedButton(
                           onPressed: () {
                             if (_isEditing) {
@@ -145,30 +151,28 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
                               }
                             }
                             setState(() {
-                              _isEditing = !_isEditing; // Toggle editing state
+                              _isEditing = !_isEditing;
                             });
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orange.shade800,
-                            padding:  EdgeInsets.symmetric(vertical: 16),
+                            padding: EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                           child: Text(
                             _isEditing ? 'Save Changes' : 'Edit Profile',
-                            style:  TextStyle(fontSize: 18, color: Colors.white),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
-                         SizedBox(height: 20),
-
-                        // Logout Button
+                        SizedBox(height: 20),
                         TextButton(
                           onPressed: () async {
                             await FirebaseAuth.instance.signOut();
-                            Navigator.pop(context); // Go back to login screen
+                            Navigator.pop(context);
                           },
-                          child:  Text(
+                          child: Text(
                             'Logout',
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
@@ -185,7 +189,6 @@ class _DeliveryBoyProfileState extends State<DeliveryboyAccount> {
     );
   }
 
-  // Input Field Helper Function
   Widget buildInputField({
     required TextEditingController controller,
     required String label,

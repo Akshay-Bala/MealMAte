@@ -3,10 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-// Adjust the import to your SignIn screen
 
 class ForgotPasswordPage extends StatefulWidget {
-   ForgotPasswordPage({Key? key}) : super(key: key);
+  ForgotPasswordPage({Key? key}) : super(key: key);
 
   @override
   State<ForgotPasswordPage> createState() => _ForgotPasswordState();
@@ -15,7 +14,6 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPasswordPage> {
   final TextEditingController _emailController = TextEditingController();
 
-  // Email/Mobile TextField
   Widget _buildInputField({
     required String hintText,
     required IconData icon,
@@ -50,7 +48,6 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
     );
   }
 
-  // Submit Button
   Widget _buildSubmitBtn() {
     return SizedBox(
       width: double.infinity,
@@ -94,14 +91,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
         type: QuickAlertType.success,
         title: 'Success',
         text: 'Password reset link sent to $email. Check your inbox.',
-        onConfirmBtnTap: () {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //       builder: (context) =>
-          //           SignInScreen()), // Adjust to your sign-in screen
-          // );
-        },
+        onConfirmBtnTap: () {},
       );
     } catch (e) {
       QuickAlert.show(
@@ -117,26 +107,26 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding:  EdgeInsets.all(25.0),
+        padding: EdgeInsets.all(25.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             SizedBox(height: 30.0),
+            SizedBox(height: 30.0),
             GestureDetector(
               onTap: () => Navigator.pop(context),
-              child:  Icon(
+              child: Icon(
                 Icons.arrow_back,
                 color: Colors.indigoAccent,
               ),
             ),
-             SizedBox(height: 20.0),
+            SizedBox(height: 20.0),
             Center(
               child: Image.asset(
                 "assets/pictures/forgot-password.png",
                 height: MediaQuery.of(context).size.height * 0.25,
               ),
             ),
-             SizedBox(height: 20.0),
+            SizedBox(height: 20.0),
             Text(
               "Forgot\nPassword?",
               style: GoogleFonts.poppins(
@@ -145,7 +135,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                 color: Colors.green,
               ),
             ),
-             SizedBox(height: 20.0),
+            SizedBox(height: 20.0),
             Text(
               "Don’t worry. Please enter the address associated with your account.",
               style: GoogleFonts.poppins(
@@ -154,12 +144,12 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-             SizedBox(height: 40.0),
+            SizedBox(height: 40.0),
             _buildInputField(
               hintText: "Email ID",
               icon: Icons.email,
             ),
-             SizedBox(height: 50.0),
+            SizedBox(height: 50.0),
             _buildSubmitBtn(),
           ],
         ),

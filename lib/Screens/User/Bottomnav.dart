@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mealmate/Screens/User/G_map.dart';
 import 'package:mealmate/Screens/User/Profileall.dart';
-import 'package:mealmate/Screens/User/cart.dart';
-
 import 'package:mealmate/Screens/User/delivery.dart';
 import 'package:mealmate/Screens/User/history.dart';
 
 class Bottomnavi extends StatefulWidget {
   final int? ind;
 
-   Bottomnavi({super.key, this.ind});
+  Bottomnavi({super.key, this.ind});
 
   @override
   _BottomnaviState createState() => _BottomnaviState();
@@ -23,7 +21,7 @@ class _BottomnaviState extends State<Bottomnavi> {
     Delivery(),
     Gmaplocation(),
     History(),
-     Profileall(),
+    Profileall(),
   ];
 
   @override
@@ -55,7 +53,7 @@ class _BottomnaviState extends State<Bottomnavi> {
         children: _screens,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items:  <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.delivery_dining),
             label: 'Delivery',
