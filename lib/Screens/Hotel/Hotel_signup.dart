@@ -181,6 +181,8 @@ class _HotelSignupState extends State<HotelSignup> {
   }
 }
 
+
+
 final FirebaseAuth Sample_auth = FirebaseAuth.instance;
 final FirebaseFirestore Sample_store = FirebaseFirestore.instance;
 
